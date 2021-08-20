@@ -36,28 +36,31 @@ const LoginForm = ({ setIsLoggedIn }) => {
 	}, [id, password])
 
 	return (
-		<FormWrapper onFinish={onSubmitForm}>
-			<div>
-				<label htmlFor='id'>아이디</label>
-				<br />
-				<Input name='id' value={id} onChange={onChange} required />
-			</div>
-			<div>
-				<label htmlFor='password'>비밀번호</label>
-				<br />
-				<Input name='password' value={password} onChange={onChange} required />
-			</div>
-			<ButtonWrapper>
-				<Button type='primary' htmlType='submit' loading={false}>
-					로그인
-				</Button>
-				<Link href='/signup'>
-					<a>
-						<Button>회원가입</Button>
-					</a>
-				</Link>
-			</ButtonWrapper>
-		</FormWrapper>
+		<>
+			<FormWrapper onFinish={onSubmitForm}>
+				<div>
+					<label htmlFor='id'>아이디</label>
+					<br />
+					<Input name='id' value={id} onChange={onChange} required />
+				</div>
+				<div>
+					<label htmlFor='password'>비밀번호</label>
+					<br />
+					<Input name='password' value={password} onChange={onChange} required />
+				</div>
+				<ButtonWrapper>
+					<Button type='primary' htmlType='submit' loading={false}>
+						로그인
+					</Button>
+					<Link href='/signup'>
+						<a>
+							<Button>회원가입</Button>
+						</a>
+					</Link>
+				</ButtonWrapper>
+			</FormWrapper>
+			<div>abcd</div>
+		</>
 	)
 }
 
