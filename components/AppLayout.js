@@ -18,23 +18,24 @@ import LoginForm from '../components/LoginForm'
 const AppLayout = ({ children }) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false)
 	const style = useMemo(() => ({ verticalAlign: 'middle' }), []) // 리렌더링 방지
+
 	return (
 		<div>
 			<Menu mode='horizontal'>
-				<Menu.Item>
+				<Menu.Item key={0}>
 					<Link href='/'>
 						<a>노드버드</a>
 					</Link>
 				</Menu.Item>
-				<Menu.Item>
+				<Menu.Item key={1}>
 					<Link href='/profile'>
 						<a>프로필</a>
 					</Link>
 				</Menu.Item>
-				<Menu.Item>
+				<Menu.Item key={2}>
 					<Input.Search style={style} enterButton />
 				</Menu.Item>
-				<Menu.Item>
+				<Menu.Item key={3}>
 					<Link href='/signup'>
 						<a>회원가입</a>
 					</Link>

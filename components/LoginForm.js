@@ -1,9 +1,11 @@
 // 요즘엔 컴포넌트, 컨테이너를 나누는 걸 선호하지 않는다.
-import React, { useState, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 import { Button, Form, Input } from 'antd'
 import styled from 'styled-components'
+
+import useInputs from '../hooks/useInputs'
 
 const ButtonWrapper = styled.div`
 	margin-top: 10px;
@@ -13,21 +15,11 @@ const FormWrapper = styled(Form)`
 `
 
 const LoginForm = ({ setIsLoggedIn }) => {
-	const [inputs, setInputs] = useState({
+	const [inputs, onChange] = useInputs({
 		id: '',
 		password: '',
 	})
 	const { id, password } = inputs
-	const onChange = useCallback(
-		(e) => {
-			const { name, value } = e.target
-			setInputs({
-				...inputs,
-				[name]: value,
-			})
-		},
-		[inputs],
-	)
 
 	const onSubmitForm = useCallback(() => {
 		// antDesign에서 Form의 onFinish에는 e.preventDefault()가 적용되어있다.
@@ -65,7 +57,7 @@ const LoginForm = ({ setIsLoggedIn }) => {
 }
 
 LoginForm.propTypes = {
-	setIsLoggedIn: PropTypes.node.isRequired,
+	setIsLoggedIn: PropTypes.func.isRequired,
 }
 
 export default LoginForm
