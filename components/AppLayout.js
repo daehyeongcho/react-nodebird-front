@@ -1,10 +1,11 @@
 /** 일부 컴포넌트들의 공통 부분은 이렇게 따로 컴포넌트를
  * 만든 다음에 각 컴포넌트를 감싸면 됨
  */
-import React, { useState, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 import { Input, Menu, Row, Col } from 'antd'
+import { useSelector } from 'react-redux'
 // import styled from 'styled-components'
 
 import UserProfile from '../components/UserProfile'
@@ -16,7 +17,7 @@ import LoginForm from '../components/LoginForm'
 // `
 
 const AppLayout = ({ children }) => {
-	const [isLoggedIn, setIsLoggedIn] = useState(false)
+	const { isLoggedIn } = useSelector((state) => state.user)
 	const style = useMemo(() => ({ verticalAlign: 'middle' }), []) // 리렌더링 방지
 
 	return (
@@ -43,7 +44,7 @@ const AppLayout = ({ children }) => {
 			</Menu>
 			<Row gutter={8}>
 				<Col xs={24} md={6}>
-					{isLoggedIn ? <UserProfile setIsLoggedIn={setIsLoggedIn} /> : <LoginForm setIsLoggedIn={setIsLoggedIn} dummy='zxcbsdf' />}
+					{isLoggedIn ? <UserProfile /> : <LoginForm dummy='zxcbsdf' />}
 				</Col>
 				<Col xs={24} md={12}>
 					{children}
