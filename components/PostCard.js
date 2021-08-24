@@ -7,6 +7,7 @@ import { Card, Button, Popover, Avatar, List, Comment } from 'antd'
 
 import PostImages from './PostImages'
 import CommentForm from './CommentForm'
+import PostCardContent from './PostCardContent'
 
 const PostCard = ({ post }) => {
 	const id = useSelector((state) => state.user.me?.id)
@@ -51,7 +52,11 @@ const PostCard = ({ post }) => {
 					</Popover>,
 				]}
 			>
-				<Card.Meta avatar={<Avatar>{post.User.nickname[0]}</Avatar>} title={post.User.nickname} description={post.content} />
+				<Card.Meta
+					avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+					title={post.User.nickname}
+					description={<PostCardContent postData={post.content} />}
+				/>
 			</Card>
 			{commentFormOpened && (
 				<div>
