@@ -1,57 +1,37 @@
-import { all, fork, takeLatest, delay, put } from 'redux-saga/effects'
-import axios from 'axios'
+import { all, fork, takeLatest, delay } from 'redux-saga/effects'
+// import axios from 'axios'
 
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE } from '../reducers/user'
+import { LOGIN_REQUEST, LOGOUT_REQUEST, SIGNUP_REQUEST, FOLLOW_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user'
+import { createSaga } from '../utils'
 
-function loginAPI(data) {
-	return axios.post('/api/login', data)
-}
+const loginAPI = (/*data*/) => delay(1000)
+const logoutAPI = () => delay(1000)
+const signupAPI = (/*data*/) => delay(1000)
+const followAPI = (/*data*/) => delay(1000)
+const unfollowAPI = (/*data*/) => delay(1000)
 
-function logoutAPI() {
-	return axios.post('/api/logout')
-}
-
-function* login(action) {
-	try {
-		console.log('saga login')
-		// const result = yield call(loginAPI, action.data)
-		yield delay(1000)
-		yield put({
-			type: LOGIN_SUCCESS,
-			data: action.data,
-		})
-	} catch (err) {
-		yield put({
-			type: LOGIN_FAILURE,
-			data: err.response.data,
-		})
-	}
-}
-
-function* logout() {
-	try {
-		// const result = yield call(logoutAPI)
-		yield delay(1000)
-		yield put({
-			type: LOGOUT_SUCCESS,
-			data: null,
-		})
-	} catch (err) {
-		yield put({
-			type: LOGOUT_FAILURE,
-			data: err.response.data,
-		})
-	}
-}
+const login = createSaga(LOGIN_REQUEST, loginAPI)
+const logout = createSaga(LOGOUT_REQUEST, logoutAPI)
+const signup = createSaga(SIGNUP_REQUEST, signupAPI)
+const follow = createSaga(FOLLOW_REQUEST, followAPI)
+const unfollow = createSaga(UNFOLLOW_REQUEST, unfollowAPI)
 
 function* watchLogin() {
 	yield takeLatest(LOGIN_REQUEST, login)
 }
-
 function* watchLogout() {
 	yield takeLatest(LOGOUT_REQUEST, logout)
 }
+function* watchSignUp() {
+	yield takeLatest(SIGNUP_REQUEST, signup)
+}
+function* watchFollow() {
+	yield takeLatest(SIGNUP_REQUEST, follow)
+}
+function* watchUnfollow() {
+	yield takeLatest(SIGNUP_REQUEST, unfollow)
+}
 
 export default function* userSaga() {
-	yield all([fork(watchLogin), fork(watchLogout)])
+	yield all([fork(watchLogin), fork(watchLogout), fork(watchSignUp), fork(watchFollow), fork(watchUnfollow)])
 }

@@ -1,3 +1,5 @@
+import { createReducer } from '../utils'
+
 export const initialState = {
 	// 서버 쪽에서 데이터를 어떤 식으로 보낼 건지 미리 물어봐야 함
 	mainPosts: [
@@ -34,7 +36,12 @@ export const initialState = {
 		},
 	],
 	imagePaths: [], // 이미지 업로드 시 경로
-	postAdded: false, // 게시글 추가 완료됐을 때
+	addPostLoading: false,
+	addPostDone: false,
+	addPostError: null,
+	addCommentLoading: false,
+	addCommentDone: false,
+	addCommentError: null,
 }
 
 const dummyPost = {
@@ -52,21 +59,29 @@ export const ADD_POST_REQUEST = 'ADD_POST_REQUEST'
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS'
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE'
 
-export const addPostRequest = (data) => {
-	return {
-		type: ADD_POST_REQUEST,
-		data,
-	}
-}
+export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST'
+export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS'
+export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE'
+
+export const addPostRequest = (data) => ({
+	type: ADD_POST_REQUEST,
+	data,
+})
+export const addCommentRequest = (data) => ({
+	type: ADD_COMMENT_REQUEST,
+	data,
+})
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
 		case ADD_POST_REQUEST:
-			return {
-				...state,
-				mainPosts: [dummyPost, ...state.mainPosts],
-				postAdded: true,
-			}
+		case ADD_POST_SUCCESS:
+		case ADD_POST_FAILURE:
+			return createReducer(ADD_POST_REQUEST, { mainPosts: [dummyPost, ...state.mainPosts] }, initialState)
+		case ADD_COMMENT_REQUEST:
+		case ADD_COMMENT_SUCCESS:
+		case ADD_COMMENT_FAILURE:
+			return createReducer(ADD_COMMENT_REQUEST, null, initialState)
 		default:
 			return state
 	}

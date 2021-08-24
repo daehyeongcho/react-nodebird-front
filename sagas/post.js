@@ -1,32 +1,22 @@
-import { all, fork, takeLatest, delay, put } from 'redux-saga/effects'
-import axios from 'axios'
+import { all, fork, takeLatest, delay } from 'redux-saga/effects'
+// import axios from 'axios'
 
-import { ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE } from '../reducers/post'
+import { ADD_POST_REQUEST, ADD_COMMENT_REQUEST } from '../reducers/post'
+import { createSaga } from '../utils'
 
-function addPostAPI(data) {
-	return axios.post('/api/addpost', data)
-}
+const addPostAPI = (/*data*/) => delay(1000)
+const addCommentAPI = (/*data*/) => delay(1000)
 
-function* addPost(action) {
-	try {
-		// const result = yield call(addPostAPI, action.data)
-		yield delay(1000)
-		yield put({
-			type: ADD_POST_SUCCESS,
-			data: null,
-		})
-	} catch (err) {
-		yield put({
-			type: ADD_POST_FAILURE,
-			data: err.response.data,
-		})
-	}
-}
+const addPost = createSaga(ADD_POST_REQUEST, addPostAPI)
+const addComment = createSaga(ADD_COMMENT_REQUEST, addCommentAPI)
 
 function* watchAddPost() {
 	yield takeLatest(ADD_POST_REQUEST, addPost)
 }
+function* watchAddComment() {
+	yield takeLatest(ADD_COMMENT_REQUEST, addComment)
+}
 
 export default function* postSaga() {
-	yield all([fork(watchAddPost)])
+	yield all([fork(watchAddPost), fork(watchAddComment)])
 }
