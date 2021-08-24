@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 import { Input, Form, Button } from 'antd'
 
 import { useInput } from '../hooks/useInputs'
 
 const CommentForm = ({ post }) => {
-	const id = useSelector((state) => state.user.me?.id)
+	// const id = useSelector((state) => state.user.me?.id)
 	const [commentText, onChangeCommentText] = useInput('')
 	const onSubmit = useCallback(() => {
 		console.log(post.id, commentText)
