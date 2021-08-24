@@ -37,13 +37,6 @@ export const initialState = {
 	postAdded: false, // 게시글 추가 완료됐을 때
 }
 
-const ADD_POST = 'ADD_POST'
-export const addPost = (data) => {
-	return {
-		type: ADD_POST,
-		data,
-	}
-}
 const dummyPost = {
 	id: 2,
 	content: '더미 데이터입니다.',
@@ -55,9 +48,20 @@ const dummyPost = {
 	Comments: [],
 }
 
+export const ADD_POST_REQUEST = 'ADD_POST_REQUEST'
+export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS'
+export const ADD_POST_FAILURE = 'ADD_POST_FAILURE'
+
+export const addPostRequest = (data) => {
+	return {
+		type: ADD_POST_REQUEST,
+		data,
+	}
+}
+
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
-		case ADD_POST:
+		case ADD_POST_REQUEST:
 			return {
 				...state,
 				mainPosts: [dummyPost, ...state.mainPosts],
