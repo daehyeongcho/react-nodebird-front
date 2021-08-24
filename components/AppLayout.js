@@ -33,7 +33,7 @@ const Global = createGlobalStyle`
 `
 
 const AppLayout = ({ children }) => {
-	const { isLoggedIn } = useSelector((state) => state.user)
+	const { me } = useSelector((state) => state.user)
 	const style = useMemo(() => ({ verticalAlign: 'middle' }), []) // 리렌더링 방지
 
 	return (
@@ -61,7 +61,7 @@ const AppLayout = ({ children }) => {
 			</Menu>
 			<Row gutter={8}>
 				<Col xs={24} md={6}>
-					{isLoggedIn ? <UserProfile /> : <LoginForm dummy='zxcbsdf' />}
+					{me ? <UserProfile /> : <LoginForm dummy='zxcbsdf' />}
 				</Col>
 				<Col xs={24} md={12}>
 					{children}

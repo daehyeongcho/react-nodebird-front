@@ -50,8 +50,9 @@ export const loginRequest = (data) => ({
 export const logoutRequest = () => ({
 	type: LOGOUT_REQUEST,
 })
-export const signupRequest = () => ({
+export const signupRequest = (data) => ({
 	type: SIGNUP_REQUEST,
+	data,
 })
 export const followRequest = () => ({
 	type: FOLLOW_REQUEST,
@@ -80,19 +81,19 @@ const reducer = (state = initialState, action) => {
 		case LOGOUT_REQUEST:
 		case LOGOUT_SUCCESS:
 		case LOGOUT_FAILURE:
-			return createReducer(LOGOUT_REQUEST, null, initialState)
+			return createReducer(LOGOUT_REQUEST, null, initialState)(state, action)
 		case SIGNUP_REQUEST:
 		case SIGNUP_SUCCESS:
 		case SIGNUP_FAILURE:
-			return createReducer(SIGNUP_REQUEST, null, initialState)
+			return createReducer(SIGNUP_REQUEST, null, initialState)(state, action)
 		case FOLLOW_REQUEST:
 		case FOLLOW_SUCCESS:
 		case FOLLOW_FAILURE:
-			return createReducer(FOLLOW_REQUEST, null, initialState)
+			return createReducer(FOLLOW_REQUEST, null, initialState)(state, action)
 		case UNFOLLOW_REQUEST:
 		case UNFOLLOW_SUCCESS:
 		case UNFOLLOW_FAILURE:
-			return createReducer(UNFOLLOW_REQUEST, null, initialState)
+			return createReducer(UNFOLLOW_REQUEST, null, initialState)(state, action)
 		default:
 			return state
 	}

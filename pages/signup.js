@@ -1,11 +1,14 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
+import { useDispatch, useSelector } from 'react-redux'
+
 import { Form, Input, Checkbox, Button } from 'antd'
 import styled from 'styled-components'
 
 import AppLayout from '../components/AppLayout'
 import useInputs from '../hooks/useInputs'
+import { signupRequest } from '../reducers/user'
 
 const ErrorMessage = styled.div`
 	color: red;
@@ -32,13 +35,15 @@ SubForm.propTypes = {
 }
 
 const Signup = () => {
-	const [inputs, onChange] = useInputs({ id: '', nickname: '', password: '' })
+	const dispatch = useDispatch()
+	const { signupLoading } = useSelector((state) => state.user)
+	const [inputs, onChange] = useInputs({ email: '', password: '', nickname: '' })
 
 	const [passwordCheck, setPasswordCheck] = useState('')
 	const [passwordError, setPasswordError] = useState(false)
 	const [term, setTerm] = useState(false)
 
-	const { id, nickname, password } = inputs
+	const { email, password, nickname } = inputs
 
 	const onChangePasswordCheck = useCallback(
 		(e) => {
@@ -52,7 +57,8 @@ const Signup = () => {
 	}, [])
 
 	const onSubmit = useCallback(() => {
-		console.log(id, nickname, password)
+		console.log(email, nickname, password)
+		dispatch(signupRequest({ email, password, nickname }))
 	}, [])
 
 	return (
@@ -63,7 +69,7 @@ const Signup = () => {
 					<title>회원가입 | NodeBird</title>
 				</Head>
 				<Form onFinish={onSubmit}>
-					<SubForm labelText='아이디' name='id' value={id} onChange={onChange} />
+					<SubForm labelText='이메일' name='email' type='email' value={email} onChange={onChange} />
 					<SubForm labelText='닉네임' name='nickname' value={nickname} onChange={onChange} />
 					<SubForm labelText='비밀번호' name='password' value={password} onChange={onChange} type='password' />
 					<SubForm
@@ -80,7 +86,7 @@ const Signup = () => {
 						</Checkbox>
 					</div>
 					<div style={{ marginTop: 10 }}>
-						<Button type='primary' htmlType='submit' disabled={!term || passwordError}>
+						<Button type='primary' htmlType='submit' disabled={!term || passwordError} loading={signupLoading}>
 							가입하기
 						</Button>
 					</div>

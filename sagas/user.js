@@ -26,10 +26,10 @@ function* watchSignUp() {
 	yield takeLatest(SIGNUP_REQUEST, signup)
 }
 function* watchFollow() {
-	yield takeLatest(SIGNUP_REQUEST, follow)
+	yield takeLatest(FOLLOW_REQUEST, follow)
 }
 function* watchUnfollow() {
-	yield takeLatest(SIGNUP_REQUEST, unfollow)
+	yield takeLatest(UNFOLLOW_REQUEST, unfollow)
 }
 
 export default function* userSaga() {

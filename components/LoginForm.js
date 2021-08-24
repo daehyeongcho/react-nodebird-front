@@ -17,26 +17,26 @@ const FormWrapper = styled(Form)`
 
 const LoginForm = () => {
 	const dispatch = useDispatch()
-	const { isLoggingIn } = useSelector((state) => state.user)
+	const { loginLoading } = useSelector((state) => state.user)
 	const [inputs, onChange] = useInputs({
-		id: '',
+		email: '',
 		password: '',
 	})
-	const { id, password } = inputs
+	const { email, password } = inputs
 
 	const onSubmitForm = useCallback(() => {
 		// antDesign에서 Form의 onFinish에는 e.preventDefault()가 적용되어있다.
-		console.log(id, password)
-		dispatch(loginRequest({ id, password }))
-	}, [id, password])
+		console.log(email, password)
+		dispatch(loginRequest({ email, password }))
+	}, [email, password])
 
 	return (
 		<>
 			<FormWrapper onFinish={onSubmitForm}>
 				<div>
-					<label htmlFor='id'>아이디</label>
+					<label htmlFor='email'>이메일</label>
 					<br />
-					<Input name='id' value={id} onChange={onChange} required />
+					<Input name='email' value={email} onChange={onChange} required />
 				</div>
 				<div>
 					<label htmlFor='password'>비밀번호</label>
@@ -44,7 +44,7 @@ const LoginForm = () => {
 					<Input name='password' value={password} onChange={onChange} required />
 				</div>
 				<ButtonWrapper>
-					<Button type='primary' htmlType='submit' loading={isLoggingIn}>
+					<Button type='primary' htmlType='submit' loading={loginLoading}>
 						로그인
 					</Button>
 					<Link href='/signup'>

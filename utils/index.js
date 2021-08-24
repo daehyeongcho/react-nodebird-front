@@ -3,6 +3,9 @@ import { call, put } from 'redux-saga/effects'
 // ex. ADD_POST -> addPost
 export const camelize = (str) => str.toLowerCase().replace(/_([a-z])/g, (g) => g[1].toUpperCase())
 
+/** _REQUEST, _SUCCESS, _FAILURE 액션 처리하는 리듀서 생성
+ * data: {[key]: value} 형식으로 넣어줘야 함.
+ */
 export const createReducer = (typeRequest, data, initialState) => {
 	const type = typeRequest.replace('_REQUEST', '')
 	const [typeSuccess, typeFailure] = [`${type}_SUCCESS`, `${type}_FAILURE`]
