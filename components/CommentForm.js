@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 // import { useSelector } from 'react-redux'
 import { Input, Form, Button } from 'antd'
 
 import { useInput } from '../hooks/useInputs'
-import { addPostRequest } from '../reducers/post'
-import { useDispatch, useSelector } from 'react-redux'
+import { addCommentRequest } from '../reducers/post'
 
 const CommentForm = ({ post }) => {
 	const dispatch = useDispatch()
@@ -15,20 +15,24 @@ const CommentForm = ({ post }) => {
 
 	useEffect(() => {
 		if (addCommentDone) {
-			resetCommentText
+			resetCommentText()
 		}
-	}, [])
+	}, [addCommentDone])
 
 	const onSubmit = useCallback(() => {
 		console.log(post.id, commentText)
-		dispatch(addPostRequest({ content: commentText, postId: post.id, userId: id }))
+		dispatch(addCommentRequest({ content: commentText, postId: post.id, userId: id }))
 	}, [commentText])
 
 	return (
 		<Form onFinish={onSubmit}>
 			<Form.Item style={{ position: 'relative', margin: 0 }}>
 				<Input.TextArea value={commentText} onChange={onChangeCommentText} rows={4} />
-				<Button style={{ position: 'absolute', right: 0, bottom: -40, zIndex: 1 }} type='primary' htmlType='submit'>
+				<Button
+					style={{ position: 'absolute', right: 0, bottom: -40, zIndex: 1 }}
+					type='primary'
+					htmlType='submit'
+				>
 					삐약
 				</Button>
 			</Form.Item>

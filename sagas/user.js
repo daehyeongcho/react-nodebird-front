@@ -1,20 +1,20 @@
-import { all, fork, takeLatest, delay } from 'redux-saga/effects'
-// import axios from 'axios'
+import { all, fork, takeLatest } from 'redux-saga/effects'
 
-import { LOGIN_REQUEST, LOGOUT_REQUEST, SIGNUP_REQUEST, FOLLOW_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user'
+import {
+	LOGIN_REQUEST,
+	LOGOUT_REQUEST,
+	SIGNUP_REQUEST,
+	FOLLOW_REQUEST,
+	UNFOLLOW_REQUEST,
+} from '../reducers/user'
 import { createSaga } from '../utils'
+import * as API from '../api/user'
 
-const loginAPI = (/*data*/) => delay(1000)
-const logoutAPI = () => delay(1000)
-const signupAPI = (/*data*/) => delay(1000)
-const followAPI = (/*data*/) => delay(1000)
-const unfollowAPI = (/*data*/) => delay(1000)
-
-const login = createSaga(LOGIN_REQUEST, loginAPI)
-const logout = createSaga(LOGOUT_REQUEST, logoutAPI)
-const signup = createSaga(SIGNUP_REQUEST, signupAPI)
-const follow = createSaga(FOLLOW_REQUEST, followAPI)
-const unfollow = createSaga(UNFOLLOW_REQUEST, unfollowAPI)
+const login = createSaga(LOGIN_REQUEST, API.loginAPI)
+const logout = createSaga(LOGOUT_REQUEST, API.logoutAPI)
+const signup = createSaga(SIGNUP_REQUEST, API.signupAPI)
+const follow = createSaga(FOLLOW_REQUEST, API.followAPI)
+const unfollow = createSaga(UNFOLLOW_REQUEST, API.unfollowAPI)
 
 function* watchLogin() {
 	yield takeLatest(LOGIN_REQUEST, login)
@@ -33,5 +33,11 @@ function* watchUnfollow() {
 }
 
 export default function* userSaga() {
-	yield all([fork(watchLogin), fork(watchLogout), fork(watchSignUp), fork(watchFollow), fork(watchUnfollow)])
+	yield all([
+		fork(watchLogin),
+		fork(watchLogout),
+		fork(watchSignUp),
+		fork(watchFollow),
+		fork(watchUnfollow),
+	])
 }

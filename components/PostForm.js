@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react'
 import { Button, Form, Input } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { addPost } from '../reducers/post'
+import { addPostRequest } from '../reducers/post'
 import { useInput } from '../hooks/useInputs'
 
 const PostForm = () => {
@@ -18,7 +18,7 @@ const PostForm = () => {
 	}, [addPostDone])
 
 	const onSubmit = useCallback(() => {
-		dispatch(addPost(text))
+		dispatch(addPostRequest(text))
 	}, [text])
 	const onClickImageUpload = useCallback(() => {
 		imageInput.current.click()
@@ -26,7 +26,12 @@ const PostForm = () => {
 
 	return (
 		<Form style={{ margin: '10px 0 20px' }} encType='multipart/form-data' onFinish={onSubmit}>
-			<Input.TextArea value={text} onChange={onChangeText} maxLength={140} placeholder='어떤 신기한 일이 있었나요?' />
+			<Input.TextArea
+				value={text}
+				onChange={onChangeText}
+				maxLength={140}
+				placeholder='어떤 신기한 일이 있었나요?'
+			/>
 			<div>
 				<input type='file' multiple hidden ref={imageInput} />
 				<Button onClick={onClickImageUpload}>이미지 업로드</Button>

@@ -2,7 +2,13 @@ import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 
-import { EllipsisOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, RetweetOutlined } from '@ant-design/icons'
+import {
+	EllipsisOutlined,
+	HeartTwoTone,
+	HeartOutlined,
+	MessageOutlined,
+	RetweetOutlined,
+} from '@ant-design/icons'
 import { Card, Button, Popover, Avatar, List, Comment } from 'antd'
 
 import PostImages from './PostImages'
@@ -23,7 +29,7 @@ const PostCard = ({ post }) => {
 
 	return (
 		<div style={{ marginBottom: 20 }}>
-			<Card
+			<Card // 본문
 				cover={post.Images[0] && <PostImages images={post.Images} />}
 				actions={[
 					<RetweetOutlined key='retweet' />,
@@ -58,7 +64,8 @@ const PostCard = ({ post }) => {
 					description={<PostCardContent postData={post.content} />}
 				/>
 			</Card>
-			{commentFormOpened && (
+
+			{commentFormOpened && ( // 댓글
 				<div>
 					<CommentForm post={post} />
 					<List
@@ -67,21 +74,23 @@ const PostCard = ({ post }) => {
 						dataSource={post.Comments}
 						renderItem={(item) => (
 							<li>
-								<Comment author={item.User.nickname} avatar={<Avatar>{item.User.nickname[0]}</Avatar>} content={item.content} />
+								<Comment
+									author={item.User.nickname}
+									avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+									content={item.content}
+								/>
 							</li>
 						)}
-					></List>
+					/>
 				</div>
 			)}
-			{/* <Comments /> */}
-			PostCard
 		</div>
 	)
 }
 
 PostCard.propTypes = {
 	post: PropTypes.shape({
-		id: PropTypes.number,
+		id: PropTypes.string,
 		User: PropTypes.object,
 		content: PropTypes.string,
 		createdAt: PropTypes.object,

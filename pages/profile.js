@@ -18,9 +18,15 @@ const Profile = () => {
 				<title>내 프로필 | NodeBird</title>
 			</Head>
 			<AppLayout>
-				<NicknameEditForm />
-				<FollowList header='팔로잉 목록' data={me.Followings} dummy='zxcfqwe' />
-				<FollowList header='팔로워 목록' data={me.Followers} dummy='dummy' />
+				{me ? (
+					<>
+						<NicknameEditForm />
+						<FollowList header='팔로잉 목록' data={me.Followings} dummy='zxcfqwe' />
+						<FollowList header='팔로워 목록' data={me.Followers} dummy='dummy' />
+					</>
+				) : (
+					<></>
+				)}
 			</AppLayout>
 		</>
 	)

@@ -41,8 +41,11 @@ export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST'
 export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS'
 export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE'
 
-// action creator
-// success, failure 액션은 saga가 알아서 호출해줌
+/** action creator
+ * - 한번씩만 쓰이는 액션들이라 이렇게 따로 정의안하고
+ *   즉석에서 디스패치해도 상관 없다.
+ * - success, failure 액션은 saga가 알아서 호출해줌
+ */
 export const loginRequest = (data) => ({
 	type: LOGIN_REQUEST,
 	data,
@@ -63,25 +66,30 @@ export const unfollowRequest = () => ({
 
 const dummyUser = (data) => ({
 	...data,
-	nickname: 'fosel',
+	nickname: '랜디',
 	id: 1,
 	Posts: [],
-	Followings: [],
-	Followers: [],
+	Followings: ['제로초', '바보', '노드버드오피셜', '랜디', '태리', '드림'].map((nickname) => ({
+		nickname,
+	})),
+	Followers: ['제로초', '바보', '노드버드오피셜'].map((nickname) => ({ nickname })),
 })
 
 // (이전상태, 액션) => 다음상태
-
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
 		case LOGIN_REQUEST:
 		case LOGIN_SUCCESS:
 		case LOGIN_FAILURE:
-			return createReducer(LOGIN_REQUEST, { me: dummyUser(action.data) }, initialState)(state, action)
+			return createReducer(
+				LOGIN_REQUEST,
+				{ me: dummyUser(action.data) },
+				initialState,
+			)(state, action)
 		case LOGOUT_REQUEST:
 		case LOGOUT_SUCCESS:
 		case LOGOUT_FAILURE:
-			return createReducer(LOGOUT_REQUEST, null, initialState)(state, action)
+			return createReducer(LOGOUT_REQUEST, { me: null }, initialState)(state, action)
 		case SIGNUP_REQUEST:
 		case SIGNUP_SUCCESS:
 		case SIGNUP_FAILURE:

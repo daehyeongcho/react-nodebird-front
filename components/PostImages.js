@@ -24,8 +24,20 @@ const PostImages = ({ images }) => {
 	if (images.length === 2) {
 		return (
 			<>
-				<img role='presentation' style={{ display: 'inline-block', width: '50%' }} src={images[0].src} alt={images[0].src} onClick={onZoom} />
-				<img role='presentation' style={{ display: 'inline-block', width: '50%' }} src={images[1].src} alt={images[1].src} onClick={onZoom} />
+				<img
+					role='presentation'
+					style={{ display: 'inline-block', width: '50%' }}
+					src={images[0].src}
+					alt={images[0].src}
+					onClick={onZoom}
+				/>
+				<img
+					role='presentation'
+					style={{ display: 'inline-block', width: '50%' }}
+					src={images[1].src}
+					alt={images[1].src}
+					onClick={onZoom}
+				/>
 				{showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
 			</>
 		)
@@ -34,10 +46,21 @@ const PostImages = ({ images }) => {
 		// 3개 이상일 땐 이미지 하나만 보여주고 나머지는 더보기 버튼
 		<>
 			<div>
-				<img role='presentation' width='50%' src={images[0].src} alt={images[0].src} onClick={onZoom} />
+				<img
+					role='presentation'
+					width='50%'
+					src={images[0].src}
+					alt={images[0].src}
+					onClick={onZoom}
+				/>
 				<div
 					role='presentation'
-					style={{ display: 'inline-block', width: '50%', textAlign: 'center', verticalAlign: 'middle' }}
+					style={{
+						display: 'inline-block',
+						width: '50%',
+						textAlign: 'center',
+						verticalAlign: 'middle',
+					}}
 					onClick={onZoom}
 				>
 					<PlusOutlined />

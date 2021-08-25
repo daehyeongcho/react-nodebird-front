@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { List, Button, Card } from 'antd'
 import { StopOutlined } from '@ant-design/icons'
 
+/** 팔로우/팔로잉 목록 컴포넌트 */
 const FollowList = ({ header, data }) => {
 	return (
 		<>

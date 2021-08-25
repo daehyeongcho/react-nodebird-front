@@ -5,6 +5,7 @@ import Slick from 'react-slick'
 import { Overlay, CloseBtn, Global, Header, ImageWrapper, Indicator, SlickWrapper } from './styles'
 import useKeypress from '../../hooks/useKeypress'
 
+/** 이미지 클릭했을 때 확대해서 보여주기 */
 const ImagesZoom = ({ images, onClose }) => {
 	const [currentSlide, setCurrentSlide] = useState(0)
 	useKeypress(27, onClose) // esc 눌렀을 때 slick 끄기

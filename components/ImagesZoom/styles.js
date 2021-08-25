@@ -1,6 +1,9 @@
 import styled, { createGlobalStyle } from 'styled-components'
 import { CloseOutlined } from '@ant-design/icons'
 
+/** styled component 부분이 너무 많아지면 보기 안좋아서
+ * 별도의 파일로 분리함.
+ */
 export const Overlay = styled.div`
 	position: fixed;
 	z-index: 5000;
@@ -65,7 +68,8 @@ export const Indicator = styled.div`
 	}
 `
 
-// slick의 css에 덮어씌움
+/** slick의 css에 덮어씌움
+ */
 export const Global = createGlobalStyle`
     .slick-slide {
         display: inline-block;

@@ -1,6 +1,8 @@
-import { call, put } from 'redux-saga/effects'
+import { call, delay, put } from 'redux-saga/effects'
 
-// ex. ADD_POST -> addPost
+/** underscore 형태의 string을 camelCase로 변형
+ * - ex. ADD_POST -> addPost
+ */
 export const camelize = (str) => str.toLowerCase().replace(/_([a-z])/g, (g) => g[1].toUpperCase())
 
 /** _REQUEST, _SUCCESS, _FAILURE 액션 처리하는 리듀서 생성
@@ -9,7 +11,11 @@ export const camelize = (str) => str.toLowerCase().replace(/_([a-z])/g, (g) => g
 export const createReducer = (typeRequest, data, initialState) => {
 	const type = typeRequest.replace('_REQUEST', '')
 	const [typeSuccess, typeFailure] = [`${type}_SUCCESS`, `${type}_FAILURE`]
-	const [loading, done, error] = [`${camelize(type)}Loading`, `${camelize(type)}Done`, `${camelize(type)}Error`]
+	const [loading, done, error] = [
+		`${camelize(type)}Loading`,
+		`${camelize(type)}Done`,
+		`${camelize(type)}Error`,
+	]
 
 	return (state = initialState, action) => {
 		switch (action.type) {
@@ -34,18 +40,23 @@ export const createReducer = (typeRequest, data, initialState) => {
 					[loading]: false,
 					[error]: action.error,
 				}
+			default:
+				return state
 		}
 	}
 }
 
+/** _REQUEST, _SUCCESS, _FAILURE 액션 처리하는 사가 생성
+ * - API를 비롯한 비동기 로직들은 모두 여기서 처리된다.
+ */
 export const createSaga = (typeRequest, api) => {
 	const type = typeRequest.replace('_REQUEST', '')
 	const [typeSuccess, typeFailure] = [`${type}_SUCCESS`, `${type}_FAILURE`]
 	return function* saga(action) {
 		try {
 			console.log(`saga ${typeRequest}`)
-			const result = yield call(api, action.data)
-			console.log(result)
+			// const result = yield call(api, action.data)
+			yield delay(1000)
 			yield put({
 				type: typeSuccess,
 				data: action.data,

@@ -1,14 +1,11 @@
-import { all, fork, takeLatest, delay } from 'redux-saga/effects'
-// import axios from 'axios'
+import { all, fork, takeLatest } from 'redux-saga/effects'
 
 import { ADD_POST_REQUEST, ADD_COMMENT_REQUEST } from '../reducers/post'
 import { createSaga } from '../utils'
+import * as API from '../api/post'
 
-const addPostAPI = (/*data*/) => delay(1000)
-const addCommentAPI = (/*data*/) => delay(1000)
-
-const addPost = createSaga(ADD_POST_REQUEST, addPostAPI)
-const addComment = createSaga(ADD_COMMENT_REQUEST, addCommentAPI)
+const addPost = createSaga(ADD_POST_REQUEST, API.addPostAPI)
+const addComment = createSaga(ADD_COMMENT_REQUEST, API.addCommentAPI)
 
 function* watchAddPost() {
 	yield takeLatest(ADD_POST_REQUEST, addPost)
