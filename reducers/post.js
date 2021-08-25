@@ -5,6 +5,9 @@ import {
 	ADD_POST_REQUEST,
 	ADD_POST_SUCCESS,
 	ADD_POST_FAILURE,
+	REMOVE_POST_REQUEST,
+	REMOVE_POST_SUCCESS,
+	REMOVE_POST_FAILURE,
 	ADD_COMMENT_REQUEST,
 	ADD_COMMENT_SUCCESS,
 	ADD_COMMENT_FAILURE,
@@ -88,6 +91,16 @@ const reducer = (state = initialState, action) => {
 			return createReducer(
 				ADD_POST_REQUEST,
 				{ mainPosts: [dummyPost(action.data), ...state.mainPosts] },
+				initialState,
+			)(state, action)
+		case REMOVE_POST_REQUEST:
+		case REMOVE_POST_SUCCESS:
+		case REMOVE_POST_FAILURE:
+			return createReducer(
+				REMOVE_POST_REQUEST,
+				{
+					mainPosts: state.mainPosts.filter((post) => post.postId !== action.data.postId),
+				},
 				initialState,
 			)(state, action)
 		case ADD_COMMENT_REQUEST:

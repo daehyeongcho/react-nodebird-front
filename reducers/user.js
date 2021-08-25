@@ -16,6 +16,7 @@ import {
 	UNFOLLOW_SUCCESS,
 	UNFOLLOW_FAILURE,
 	ADD_POST_TO_ME,
+	REMOVE_POST_OF_ME,
 } from '../actions/user'
 
 export const initialState = {
@@ -81,6 +82,14 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				me: { ...state.me, Posts: [{ postId: action.data.postId }, ...state.me.Posts] },
+			}
+		case REMOVE_POST_OF_ME:
+			return {
+				...state,
+				me: {
+					...state.me,
+					Posts: state.me.Posts.filter((post) => post.postId !== action.data.postId),
+				},
 			}
 		default:
 			return state
