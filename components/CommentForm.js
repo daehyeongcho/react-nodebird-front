@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { Input, Form, Button } from 'antd'
 
 import { useInput } from '../hooks/useInputs'
-import { addCommentRequest } from '../reducers/post'
+import { addCommentRequest } from '../actions/post'
 
 const CommentForm = ({ post }) => {
 	const dispatch = useDispatch()
@@ -20,9 +20,9 @@ const CommentForm = ({ post }) => {
 	}, [addCommentDone])
 
 	const onSubmit = useCallback(() => {
-		console.log(post.id, commentText)
-		dispatch(addCommentRequest({ content: commentText, postId: post.id, userId: id }))
-	}, [commentText])
+		console.log('callback', post.postId, commentText)
+		dispatch(addCommentRequest({ content: commentText, postId: post.postId, userId: id }))
+	}, [addCommentRequest, commentText, post.postId, id])
 
 	return (
 		<Form onFinish={onSubmit}>

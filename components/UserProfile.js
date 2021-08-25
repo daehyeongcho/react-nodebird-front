@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, Avatar, Button } from 'antd'
 
-import { logoutRequest } from '../reducers/user'
+import { logoutRequest } from '../actions/user'
 
 const UserProfile = () => {
 	const dispatch = useDispatch()
@@ -32,7 +32,7 @@ const UserProfile = () => {
 					</div>,
 				]}
 			>
-				<Card.Meta avatar={<Avatar>{me.nickname[0]}</Avatar>} title='fosel' />
+				<Card.Meta avatar={<Avatar>{me.nickname[0]}</Avatar>} title={me.nickname} />
 				<Button onClick={onLogout} loading={logoutLoading}>
 					로그아웃
 				</Button>

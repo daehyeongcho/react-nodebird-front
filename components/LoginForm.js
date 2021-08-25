@@ -6,7 +6,7 @@ import { Button, Form, Input } from 'antd'
 import styled from 'styled-components'
 
 import useInputs from '../hooks/useInputs'
-import { loginRequest } from '../reducers/user'
+import { loginRequest } from '../actions/user'
 
 const ButtonWrapper = styled.div`
 	margin-top: 10px;
@@ -41,7 +41,13 @@ const LoginForm = () => {
 				<div>
 					<label htmlFor='password'>비밀번호</label>
 					<br />
-					<Input name='password' value={password} onChange={onChange} required />
+					<Input
+						name='password'
+						type='password'
+						value={password}
+						onChange={onChange}
+						required
+					/>
 				</div>
 				<ButtonWrapper>
 					<Button type='primary' htmlType='submit' loading={loginLoading}>

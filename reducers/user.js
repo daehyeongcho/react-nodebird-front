@@ -1,4 +1,22 @@
 import { createReducer } from '../utils'
+import {
+	LOGIN_REQUEST,
+	LOGIN_SUCCESS,
+	LOGIN_FAILURE,
+	LOGOUT_REQUEST,
+	LOGOUT_SUCCESS,
+	LOGOUT_FAILURE,
+	SIGNUP_REQUEST,
+	SIGNUP_SUCCESS,
+	SIGNUP_FAILURE,
+	FOLLOW_REQUEST,
+	FOLLOW_SUCCESS,
+	FOLLOW_FAILURE,
+	UNFOLLOW_REQUEST,
+	UNFOLLOW_SUCCESS,
+	UNFOLLOW_FAILURE,
+	ADD_POST_TO_ME,
+} from '../actions/user'
 
 export const initialState = {
 	loginLoading: false, // 로그인 시도 중
@@ -20,49 +38,6 @@ export const initialState = {
 	signUpData: {},
 	loginData: {},
 }
-
-export const LOGIN_REQUEST = 'LOGIN_REQUEST'
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
-export const LOGIN_FAILURE = 'LOGIN_FAILURE'
-
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
-export const LOGOUT_FAILURE = 'LOGOUT_FAILURE'
-
-export const SIGNUP_REQUEST = 'SIGNUP_REQUEST'
-export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
-export const SIGNUP_FAILURE = 'SIGNUP_FAILURE'
-
-export const FOLLOW_REQUEST = 'FOLLOW_REQUEST'
-export const FOLLOW_SUCCESS = 'FOLLOW_SUCCESS'
-export const FOLLOW_FAILURE = 'FOLLOW_FAILURE'
-
-export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST'
-export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS'
-export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE'
-
-/** action creator
- * - 한번씩만 쓰이는 액션들이라 이렇게 따로 정의안하고
- *   즉석에서 디스패치해도 상관 없다.
- * - success, failure 액션은 saga가 알아서 호출해줌
- */
-export const loginRequest = (data) => ({
-	type: LOGIN_REQUEST,
-	data,
-})
-export const logoutRequest = () => ({
-	type: LOGOUT_REQUEST,
-})
-export const signupRequest = (data) => ({
-	type: SIGNUP_REQUEST,
-	data,
-})
-export const followRequest = () => ({
-	type: FOLLOW_REQUEST,
-})
-export const unfollowRequest = () => ({
-	type: UNFOLLOW_REQUEST,
-})
 
 const dummyUser = (data) => ({
 	...data,
@@ -102,6 +77,11 @@ const reducer = (state = initialState, action) => {
 		case UNFOLLOW_SUCCESS:
 		case UNFOLLOW_FAILURE:
 			return createReducer(UNFOLLOW_REQUEST, null, initialState)(state, action)
+		case ADD_POST_TO_ME:
+			return {
+				...state,
+				me: { ...state.me, Posts: [{ postId: action.data.postId }, ...state.me.Posts] },
+			}
 		default:
 			return state
 	}

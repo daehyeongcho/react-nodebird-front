@@ -8,7 +8,7 @@ import styled from 'styled-components'
 
 import AppLayout from '../components/AppLayout'
 import useInputs from '../hooks/useInputs'
-import { signupRequest } from '../reducers/user'
+import { signupRequest } from '../actions/user'
 
 const ErrorMessage = styled.div`
 	color: red;
@@ -28,8 +28,8 @@ SubForm.propTypes = {
 	name: PropTypes.string.isRequired,
 	value: PropTypes.string.isRequired,
 	onChange: PropTypes.func.isRequired,
-	type: PropTypes.string,
-	content: PropTypes.node,
+	type: PropTypes.string.isRequired,
+	content: PropTypes.node.isRequired,
 }
 
 const Signup = () => {

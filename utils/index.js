@@ -1,4 +1,7 @@
-import { call, delay, put } from 'redux-saga/effects'
+import { nanoid } from 'nanoid'
+import { delay, put } from 'redux-saga/effects'
+
+import { ADD_POST_TO_ME } from '../actions/user'
 
 /** underscore 형태의 string을 camelCase로 변형
  * - ex. ADD_POST -> addPost
@@ -50,6 +53,7 @@ export const createReducer = (typeRequest, data, initialState) => {
  * - API를 비롯한 비동기 로직들은 모두 여기서 처리된다.
  */
 export const createSaga = (typeRequest, api) => {
+	console.log(api)
 	const type = typeRequest.replace('_REQUEST', '')
 	const [typeSuccess, typeFailure] = [`${type}_SUCCESS`, `${type}_FAILURE`]
 	return function* saga(action) {
@@ -57,10 +61,17 @@ export const createSaga = (typeRequest, api) => {
 			console.log(`saga ${typeRequest}`)
 			// const result = yield call(api, action.data)
 			yield delay(1000)
+			const postId = action.data.postId ? action.data.postId : nanoid()
 			yield put({
 				type: typeSuccess,
-				data: action.data,
+				data: { ...action.data, postId },
 			})
+			if (type === 'ADD_POST') {
+				yield put({
+					type: ADD_POST_TO_ME,
+					data: { postId },
+				})
+			}
 		} catch (err) {
 			yield put({
 				type: typeFailure,

@@ -1,15 +1,23 @@
 import { nanoid } from 'nanoid'
 
 import { createReducer } from '../utils'
+import {
+	ADD_POST_REQUEST,
+	ADD_POST_SUCCESS,
+	ADD_POST_FAILURE,
+	ADD_COMMENT_REQUEST,
+	ADD_COMMENT_SUCCESS,
+	ADD_COMMENT_FAILURE,
+} from '../actions/post'
 
 export const initialState = {
 	// 서버 쪽에서 데이터를 어떤 식으로 보낼 건지 미리 물어봐야 함
 	mainPosts: [
 		{
-			id: 1,
+			postId: 1,
 			User: {
-				id: 1,
-				nickname: '랜디',
+				id: 2,
+				nickname: 'fosel',
 			},
 			content: '첫 번째 게시글 #해시태그 #빅테크',
 			Images: [
@@ -25,7 +33,7 @@ export const initialState = {
 			],
 			Comments: [
 				{
-					id: nanoid(),
+					commentId: nanoid(),
 					User: {
 						id: nanoid(),
 						nickname: 'nero',
@@ -33,7 +41,7 @@ export const initialState = {
 					content: '꿈의 기업들',
 				},
 				{
-					id: nanoid(),
+					commentId: nanoid(),
 					User: {
 						id: nanoid(),
 						nickname: 'randy',
@@ -52,9 +60,9 @@ export const initialState = {
 	addCommentError: null,
 }
 
-const dummyPost = (data) => ({
-	id: nanoid(),
-	content: data,
+const dummyPost = ({ content }) => ({
+	postId: nanoid(),
+	content,
 	User: {
 		id: 1,
 		nickname: '랜디',
@@ -63,30 +71,13 @@ const dummyPost = (data) => ({
 	Comments: [],
 })
 
-const dummyComment = (data) => ({
-	id: nanoid(),
-	content: data,
+const dummyComment = ({ content }) => ({
+	commentId: nanoid(),
+	content,
 	User: {
 		id: 1,
 		nickname: '랜디',
 	},
-})
-
-export const ADD_POST_REQUEST = 'ADD_POST_REQUEST'
-export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS'
-export const ADD_POST_FAILURE = 'ADD_POST_FAILURE'
-
-export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST'
-export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS'
-export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE'
-
-export const addPostRequest = (data) => ({
-	type: ADD_POST_REQUEST,
-	data,
-})
-export const addCommentRequest = (data) => ({
-	type: ADD_COMMENT_REQUEST,
-	data,
 })
 
 const reducer = (state = initialState, action) => {
@@ -106,10 +97,10 @@ const reducer = (state = initialState, action) => {
 				ADD_COMMENT_REQUEST,
 				{
 					mainPosts: state.mainPosts.map((post) =>
-						post.id === action.data.postId
+						post.postId === action.data.postId
 							? {
 									...post,
-									Comments: [dummyComment(action.data.content), ...post.Comments],
+									Comments: [dummyComment(action.data), ...post.Comments],
 							  }
 							: post,
 					),
