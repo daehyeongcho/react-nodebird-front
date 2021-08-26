@@ -19,6 +19,7 @@ import {
 } from '../actions/user'
 // import * as API from '../api/user'
 
+/* LOGIN_REQUEST 액션 처리 */
 function* login(action) {
 	try {
 		// const result = yield call(API.loginAPI, action.data)
@@ -34,6 +35,8 @@ function* login(action) {
 		})
 	}
 }
+
+/* LOGOUT_REQUEST 액션 처리 */
 function* logout() {
 	try {
 		// const result = yield call(API.logoutAPI)
@@ -48,6 +51,8 @@ function* logout() {
 		})
 	}
 }
+
+/* SIGNUP_REQUEST 액션 처리 */
 function* signup() {
 	try {
 		// const result = yield call(API.signupAPI)
@@ -62,6 +67,8 @@ function* signup() {
 		})
 	}
 }
+
+/* FOLLOW_REQUEST 액션 처리 */
 function* follow(action) {
 	try {
 		// const result = yield call(API.followAPI, action.data)
@@ -77,6 +84,8 @@ function* follow(action) {
 		})
 	}
 }
+
+/* UNFOLLOW_REQUEST 액션 처리 */
 function* unfollow(action) {
 	try {
 		// const result = yield call(API.unfollowAPI, action.data)
@@ -93,6 +102,7 @@ function* unfollow(action) {
 	}
 }
 
+/* 리스너 */
 function* watchLogin() {
 	yield takeLatest(LOGIN_REQUEST, login)
 }

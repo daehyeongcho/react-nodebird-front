@@ -42,6 +42,7 @@ export const initialState = {
 	loginData: {},
 }
 
+/* 더미 유저 데이터 */
 const dummyUser = (data) => ({
 	...data,
 	nickname: '랜디',
@@ -57,7 +58,6 @@ const dummyUser = (data) => ({
 	})),
 })
 
-// (이전상태, 액션) => 다음상태
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
 		case LOGIN_REQUEST:

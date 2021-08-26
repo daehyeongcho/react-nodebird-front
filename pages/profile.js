@@ -6,10 +6,11 @@ import AppLayout from '../components/AppLayout'
 import FollowList from '../components/FollowList'
 import NicknameEditForm from '../components/NicknameEditForm'
 
+/** 프로필 페이지
+ * - 로그인 되어 있으면 닉네임 변경 폼과 팔로잉, 팔로우 목록을 보여준다.
+ */
 const Profile = () => {
-	const { me } = useSelector((state) => state.user)
-	// const followingList = ['제로초', '바보', '노드버드오피셜', '랜디', '태리'].map((nickname) => ({ nickname }))
-	// const followerList = ['제로초', '바보', '노드버드오피셜'].map((nickname) => ({ nickname }))
+	const { me } = useSelector((state) => state.user) // 현재 로그인 되어있는 유저
 
 	return (
 		<>
@@ -21,8 +22,8 @@ const Profile = () => {
 				{me ? (
 					<>
 						<NicknameEditForm />
-						<FollowList header='팔로잉 목록' data={me.Followings} dummy='zxcfqwe' />
-						<FollowList header='팔로워 목록' data={me.Followers} dummy='dummy' />
+						<FollowList header='팔로잉 목록' data={me.Followings} />
+						<FollowList header='팔로워 목록' data={me.Followers} />
 					</>
 				) : (
 					<></>

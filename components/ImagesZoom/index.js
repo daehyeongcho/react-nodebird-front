@@ -5,14 +5,16 @@ import Slick from 'react-slick'
 import { Overlay, CloseBtn, Global, Header, ImageWrapper, Indicator, SlickWrapper } from './styles'
 import useKeypress from '../../hooks/useKeypress'
 
-/** 이미지 클릭했을 때 확대해서 보여주기 */
+/** ImagesZoom
+ * - 이미지 눌렀을 때 확대된 상태로 슬라이더로 보여줌
+ */
 const ImagesZoom = ({ images, onClose }) => {
-	const [currentSlide, setCurrentSlide] = useState(0)
-	useKeypress(27, onClose) // esc 눌렀을 때 slick 끄기
+	const [currentSlide, setCurrentSlide] = useState(0) // 현재 이미지 슬라이드 번호
+	useKeypress(27, onClose) // Esc 눌렀을 때 슬라이더 종료
 
 	return (
 		<Overlay>
-			<Global />
+			<Global /> {/* antd 양식 덮어씌움 */}
 			<Header>
 				<h1>상세 이미지</h1>
 				<CloseBtn onClick={onClose}>X</CloseBtn>

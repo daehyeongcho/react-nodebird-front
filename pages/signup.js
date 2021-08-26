@@ -10,10 +10,12 @@ import AppLayout from '../components/AppLayout'
 import useInputs from '../hooks/useInputs'
 import { signupRequest } from '../actions/user'
 
+/* 빨간색 에러메시지를 위한 스타일드 컴포넌트 */
 const ErrorMessage = styled.div`
 	color: red;
 `
 
+/* 회원가입 정보 입력 받는 부분이 공통적인 부분이 많아서 분리. */
 const SubForm = ({ labelText, name, value, onChange, type = null, content = null }) => (
 	<div>
 		<label htmlFor={name}>{labelText}</label>
@@ -24,25 +26,30 @@ const SubForm = ({ labelText, name, value, onChange, type = null, content = null
 )
 
 SubForm.propTypes = {
-	labelText: PropTypes.string.isRequired,
-	name: PropTypes.string.isRequired,
-	value: PropTypes.string.isRequired,
-	onChange: PropTypes.func.isRequired,
-	type: PropTypes.string.isRequired,
-	content: PropTypes.node.isRequired,
+	labelText: PropTypes.string.isRequired, // 빈칸에 들어있는 설명
+	name: PropTypes.string.isRequired, // <Input name>
+	value: PropTypes.string.isRequired, // <Input value>
+	onChange: PropTypes.func.isRequired, // <Input onChange>
+	type: PropTypes.string.isRequired, // <Input type>. 기본값은 null
+	content: PropTypes.node.isRequired, // 입력 창 밑에 들어갈 부분
 }
 
+/** 회원가입 페이지
+ * - 사용자로부터 이메일, 닉네임, 비밀번호를 받아서
+ * - 비밀번호 더블체크를 한 후 약관에 동의하면 회원가입을 시켜줌.
+ */
 const Signup = () => {
 	const dispatch = useDispatch()
-	const { signupLoading } = useSelector((state) => state.user)
-	const [inputs, onChange] = useInputs({ email: '', password: '', nickname: '' })
-
-	const [passwordCheck, setPasswordCheck] = useState('')
-	const [passwordError, setPasswordError] = useState(false)
-	const [term, setTerm] = useState(false)
-
+	const { signupLoading } = useSelector((state) => state.user) // 회원가입 진행 중
+	const [inputs, onChange] = useInputs({ email: '', password: '', nickname: '' }) // email, password, nickname을 useState로 선언
 	const { email, password, nickname } = inputs
+	const [passwordCheck, setPasswordCheck] = useState('') // 비밀번호 확인
+	const [passwordError, setPasswordError] = useState(false) // 비밀번호와 비밀번호 확인이 서로 다르면 true
+	const [term, setTerm] = useState(false) // 약관에 동의하면 true
 
+	/** 비밀번호 확인 부분이 바뀔 때마다 passwordCheck state에 넣어주고,
+	 * 비밀번호와 비밀번호 확인이 서로 같은지 체크한다.
+	 */
 	const onChangePasswordCheck = useCallback(
 		(e) => {
 			setPasswordCheck(e.target.value)
@@ -50,13 +57,16 @@ const Signup = () => {
 		},
 		[password],
 	)
+
+	/* 약관 동의에 체크할 때마다 term state에 반영 */
 	const onChangeTerm = useCallback((e) => {
 		setTerm(e.target.checked)
 	}, [])
 
+	/* 가입하기 버튼 눌렀을 때 */
 	const onSubmit = useCallback(() => {
 		console.log(email, nickname, password)
-		dispatch(signupRequest({ email, password, nickname }))
+		dispatch(signupRequest({ email, password, nickname })) // SIGNUP_REQUEST 요청 보냄
 	}, [])
 
 	return (

@@ -1,19 +1,15 @@
 import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
-import { Input, Menu, Row, Col } from 'antd'
 import { useSelector } from 'react-redux'
+
+import { Input, Menu, Row, Col } from 'antd'
 import { createGlobalStyle } from 'styled-components'
 
-import UserProfile from './UserProfile'
-import LoginForm from './LoginForm'
+import UserProfile from './UserProfile' // 왼쪽 상단에 보여 줄 사용자 프로필 폼
+import LoginForm from './LoginForm' // 왼쪽 상단에 보여 줄 로그인 폼
 
-// component에 적용할 땐 styled(component)
-// const SearchInput = styled(Input.Search)`
-// 	vertical-align: middle;
-// `
-
-/** 기존의 antd 디자인을 바꾸려면 createGlobalStyle을 통해 덮어씌워야 함.
+/** antd 스타일 덮어씌우기 위한 global style
  * - gutter 적용 시 최하단에 슬라이더 나타나는 문제 해결을 위함.
  */
 const Global = createGlobalStyle`
@@ -31,18 +27,18 @@ const Global = createGlobalStyle`
     }
 `
 
-/** 공통 메뉴 컴포넌트
- * - 일부 컴포넌트들의 공통 부분은 이렇게 따로 컴포넌트를 만든 다음에
- *   각 컴포넌트를 감싸면 됨
+/** 페이지 레이아웃 컴포넌트
+ * - 모든 페이지마다 들어갈 공통 메뉴들 및 레이아웃이 들어있는 컴포넌트
  */
 const AppLayout = ({ children }) => {
-	const { me } = useSelector((state) => state.user)
-	const style = useMemo(() => ({ verticalAlign: 'middle' }), []) // 리렌더링 방지
+	const { me } = useSelector((state) => state.user) // 현재 로그인 되어있는 유저 정보
+	const inputSearchStyle = useMemo(() => ({ verticalAlign: 'middle' }), []) // 리렌더링 방지를 위해 style을 useMemo로 선언
 
 	return (
 		<div>
-			<Global />
+			<Global /> {/* antd style 덮어씌움 */}
 			<Menu mode='horizontal'>
+				{/* 공통 메뉴 */}
 				<Menu.Item key={0}>
 					<Link href='/'>
 						<a>노드버드</a>
@@ -54,7 +50,7 @@ const AppLayout = ({ children }) => {
 					</Link>
 				</Menu.Item>
 				<Menu.Item key={2}>
-					<Input.Search style={style} enterButton />
+					<Input.Search style={inputSearchStyle} enterButton />
 				</Menu.Item>
 				<Menu.Item key={3}>
 					<Link href='/signup'>
@@ -63,6 +59,7 @@ const AppLayout = ({ children }) => {
 				</Menu.Item>
 			</Menu>
 			<Row gutter={8}>
+				{/* 페이지 레이아웃 */}
 				<Col xs={24} md={6}>
 					{me ? <UserProfile /> : <LoginForm />}
 				</Col>

@@ -16,8 +16,9 @@ export const addPostRequest = (data) => ({
 	type: ADD_POST_REQUEST,
 	data,
 })
-export const removePostRequest = () => ({
+export const removePostRequest = (data) => ({
 	type: REMOVE_POST_REQUEST,
+	data,
 })
 export const addCommentRequest = (data) => ({
 	type: ADD_COMMENT_REQUEST,

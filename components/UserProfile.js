@@ -4,9 +4,14 @@ import { Card, Avatar, Button } from 'antd'
 
 import { logoutRequest } from '../actions/user'
 
+/** UserProfile
+ * - 로그인 성공 시 보여줄 유저의 대략적인 정보(트윗 수, 팔로잉 수, 팔로워 수)
+ */
 const UserProfile = () => {
 	const dispatch = useDispatch()
-	const { me, logoutLoading } = useSelector((state) => state.user)
+	const { me, logoutLoading } = useSelector((state) => state.user) // 현재 로그인 된 유저의 정보
+
+	/* 로그아웃 버튼 누르면 LOGOUT_REQUEST 요청 보냄 */
 	const onLogout = useCallback(() => {
 		dispatch(logoutRequest())
 	}, [])

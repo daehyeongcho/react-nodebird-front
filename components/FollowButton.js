@@ -1,20 +1,22 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
+
 import { Button } from 'antd'
 
 import { followRequest, unfollowRequest } from '../actions/user'
 
+/* 팔로우/언팔로우 버튼 */
 const FollowButton = ({ post }) => {
 	const dispatch = useDispatch()
-	const { me, followLoading, unfollowLoading } = useSelector((state) => state.user)
-	const isFollowing =
+	const { me, followLoading, unfollowLoading } = useSelector((state) => state.user) // 현재 로그인되어있는 사용자정보 및 팔로우, 언팔로우 대기 정보
+	const isFollowing = // post의 User가 me의 팔로우 목록에 있는지 확인
 		me && me.Followings.find((following) => following.userId === post.User.userId)
 	const onClickButton = useCallback(() => {
 		if (isFollowing) {
-			dispatch(unfollowRequest({ userId: post.User.userId }))
+			dispatch(unfollowRequest({ userId: post.User.userId })) // 팔로워이면 버튼 클릭 시 언팔로우 요청
 		} else {
-			dispatch(followRequest({ userId: post.User.userId, nickname: post.User.nickname }))
+			dispatch(followRequest({ userId: post.User.userId, nickname: post.User.nickname })) // 팔로워가 아니면 버튼 클릭 시 팔로우 요청
 		}
 	}, [isFollowing])
 
@@ -27,10 +29,10 @@ const FollowButton = ({ post }) => {
 
 FollowButton.propTypes = {
 	post: PropTypes.shape({
-		postId: PropTypes.string,
-		User: PropTypes.object,
-		content: PropTypes.string,
-		createdAt: PropTypes.object,
+		postId: PropTypes.string, // post의 아이디
+		User: PropTypes.object, // post의 글쓴이
+		content: PropTypes.string, // post 내용
+		createdAt: PropTypes.object, // post가 언
 		Comments: PropTypes.arrayOf(PropTypes.object),
 		Images: PropTypes.arrayOf(PropTypes.object),
 	}).isRequired,

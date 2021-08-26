@@ -11,18 +11,23 @@ import {
 } from '@ant-design/icons'
 import { Card, Button, Popover, Avatar, List, Comment } from 'antd'
 
-import PostImages from './PostImages'
-import CommentForm from './CommentForm'
-import PostCardContent from './PostCardContent'
-import FollowButton from './FollowButton'
-import { REMOVE_POST_REQUEST } from '../actions/post'
+import PostImages from './PostImages' // 트윗에 첨부된 이미지를 보여주는 폼
+import CommentForm from './CommentForm' // 댓글 작성 폼
+import PostCardContent from './PostCardContent' // 본문에 있는 해시태그 처리
+import FollowButton from './FollowButton' // 팔로우/언팔로우 버튼
+import { removePostRequest } from '../actions/post'
 
+/** PostCard
+ * - 트윗 하나를 렌더링하기 위한 컴포넌트
+ * - 트윗에 첨부된 이미지, 트윗 작성자 닉네임, 내용 및
+ * - 리트윗, 좋아요, 댓글, 기타 버튼들로 구성되어 있다.
+ */
 const PostCard = ({ post }) => {
 	const dispatch = useDispatch()
-	const { removePostLoading } = useSelector((state) => state.post)
-	const userId = useSelector((state) => state.user.me?.userId)
-	const [liked, setLiked] = useState(false)
-	const [commentFormOpened, setCommentFormOpened] = useState(false)
+	const { removePostLoading } = useSelector((state) => state.post) // 트윗 삭제 중 state
+	const userId = useSelector((state) => state.user.me?.userId) // 현재 로그인 되어있는 사용자 userId
+	const [liked, setLiked] = useState(false) // 좋아요 버튼 누를 시 true
+	const [commentFormOpened, setCommentFormOpened] = useState(false) // 댓글 버튼 누를 때 true
 
 	const onToggleLike = useCallback(() => {
 		setLiked((prev) => !prev)
@@ -31,16 +36,15 @@ const PostCard = ({ post }) => {
 		setCommentFormOpened((prev) => !prev)
 	}, [])
 
+	/* 삭제 버튼 누를 시 REMOVE_POST_REQUEST 요청 보냄 */
 	const onRemovePost = useCallback(() => {
-		dispatch({
-			type: REMOVE_POST_REQUEST,
-			data: { postId: post.postId },
-		})
-	})
+		console.log('removePostRequest', post.postId)
+		dispatch(removePostRequest({ postId: post.postId }))
+	}, [])
 
 	return (
 		<div style={{ marginBottom: 20 }}>
-			<Card // 본문
+			<Card
 				cover={post.Images[0] && <PostImages images={post.Images} />}
 				actions={[
 					<RetweetOutlined key='retweet' />,
@@ -74,7 +78,7 @@ const PostCard = ({ post }) => {
 						<EllipsisOutlined />
 					</Popover>,
 				]}
-				extra={userId && post.User.userId !== userId ? <FollowButton post={post} /> : null}
+				extra={userId && post.User.userId !== userId ? <FollowButton post={post} /> : null} // 로그인 되어있고 post작성자가 본인이 아니면 팔로우버튼 보여줌
 			>
 				<Card.Meta
 					avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
@@ -83,9 +87,10 @@ const PostCard = ({ post }) => {
 				/>
 			</Card>
 
-			{commentFormOpened && ( // 댓글
+			{/* 댓글 버튼 누르면 댓글 창 보여줌 */}
+			{commentFormOpened && (
 				<div>
-					<CommentForm post={post} />
+					{userId && <CommentForm post={post} />}
 					<List
 						header={`${post.Comments.length}개의 댓글`}
 						itemLayout='horizontal'

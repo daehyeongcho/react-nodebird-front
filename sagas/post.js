@@ -15,6 +15,7 @@ import {
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../actions/user'
 // import * as API from '../api/post'
 
+/* 트윗 작성 요청 처리 */
 function* addPost(action) {
 	try {
 		// const result = yield call(API.addPostAPI, action.data)
@@ -35,10 +36,13 @@ function* addPost(action) {
 		})
 	}
 }
+
+/* 트윗 삭제 요청 처리 */
 function* removePost(action) {
 	try {
 		// const result = yield call(API.removeCommentAPI)
 		yield delay(1000)
+		console.log('action.data', action.data)
 		yield put({
 			type: REMOVE_POST_SUCCESS,
 			data: action.data,
@@ -54,13 +58,16 @@ function* removePost(action) {
 		})
 	}
 }
+
+/* 댓글 작성 요청 처리 */
 function* addComment(action) {
 	try {
 		// const result = yield call(API.addCommentAPI, action.data)
 		yield delay(1000)
+		const commentId = nanoid()
 		yield put({
 			type: ADD_COMMENT_SUCCESS,
-			data: action.data,
+			data: { commentId, ...action.data },
 		})
 	} catch (err) {
 		yield put({
@@ -69,6 +76,8 @@ function* addComment(action) {
 		})
 	}
 }
+
+/* 요청 리스너 */
 function* watchAddPost() {
 	yield takeLatest(ADD_POST_REQUEST, addPost)
 }
