@@ -19,26 +19,29 @@ export const initialState = {
 		{
 			postId: 1,
 			User: {
-				id: 2,
+				userId: 2,
 				nickname: 'fosel',
 			},
 			content: '첫 번째 게시글 #해시태그 #빅테크',
 			Images: [
 				{
-					id: nanoid(),
+					imageId: nanoid(),
 					src: 'https://www.google.co.kr/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png',
 				},
 				{
-					id: nanoid(),
+					imageId: nanoid(),
 					src: 'http://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4OAgf?ver=6a31',
 				},
-				{ id: nanoid(), src: 'https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg' },
+				{
+					imageId: nanoid(),
+					src: 'https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg',
+				},
 			],
 			Comments: [
 				{
 					commentId: nanoid(),
 					User: {
-						id: nanoid(),
+						userId: nanoid(),
 						nickname: 'nero',
 					},
 					content: '꿈의 기업들',
@@ -46,7 +49,7 @@ export const initialState = {
 				{
 					commentId: nanoid(),
 					User: {
-						id: nanoid(),
+						userId: nanoid(),
 						nickname: 'randy',
 					},
 					content: '빅테크 기업들',
@@ -63,13 +66,10 @@ export const initialState = {
 	addCommentError: null,
 }
 
-const dummyPost = ({ content }) => ({
-	postId: nanoid(),
+const dummyPost = ({ postId, content, User }) => ({
+	postId,
 	content,
-	User: {
-		id: 1,
-		nickname: '랜디',
-	},
+	User,
 	Images: [],
 	Comments: [],
 })
@@ -78,7 +78,7 @@ const dummyComment = ({ content }) => ({
 	commentId: nanoid(),
 	content,
 	User: {
-		id: 1,
+		userId: 1,
 		nickname: '랜디',
 	},
 })

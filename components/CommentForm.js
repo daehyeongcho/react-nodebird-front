@@ -9,7 +9,7 @@ import { addCommentRequest } from '../actions/post'
 
 const CommentForm = ({ post }) => {
 	const dispatch = useDispatch()
-	const id = useSelector((state) => state.user.me?.id)
+	const userId = useSelector((state) => state.user.me?.userId)
 	const { addCommentDone } = useSelector((state) => state.post)
 	const [commentText, onChangeCommentText, resetCommentText] = useInput('')
 
@@ -21,19 +21,19 @@ const CommentForm = ({ post }) => {
 
 	const onSubmit = useCallback(() => {
 		console.log('callback', post.postId, commentText)
-		dispatch(addCommentRequest({ content: commentText, postId: post.postId, userId: id }))
-	}, [addCommentRequest, commentText, post.postId, id])
+		dispatch(addCommentRequest({ content: commentText, postId: post.postId, userId }))
+	}, [addCommentRequest, commentText, post.postId, userId])
 
 	return (
 		<Form onFinish={onSubmit}>
-			<Form.Item style={{ position: 'relative', margin: 0 }}>
+			<Form.Item>
 				<Input.TextArea value={commentText} onChange={onChangeCommentText} rows={4} />
 				<Button
 					style={{ position: 'absolute', right: 0, bottom: -40, zIndex: 1 }}
 					type='primary'
 					htmlType='submit'
 				>
-					삐약
+					댓글달기
 				</Button>
 			</Form.Item>
 		</Form>

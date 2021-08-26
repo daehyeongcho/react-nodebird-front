@@ -14,12 +14,13 @@ import { Card, Button, Popover, Avatar, List, Comment } from 'antd'
 import PostImages from './PostImages'
 import CommentForm from './CommentForm'
 import PostCardContent from './PostCardContent'
+import FollowButton from './FollowButton'
 import { REMOVE_POST_REQUEST } from '../actions/post'
 
 const PostCard = ({ post }) => {
 	const dispatch = useDispatch()
 	const { removePostLoading } = useSelector((state) => state.post)
-	const id = useSelector((state) => state.user.me?.id)
+	const userId = useSelector((state) => state.user.me?.userId)
 	const [liked, setLiked] = useState(false)
 	const [commentFormOpened, setCommentFormOpened] = useState(false)
 
@@ -53,7 +54,7 @@ const PostCard = ({ post }) => {
 						key='more'
 						content={
 							<Button.Group>
-								{id && post.User.id === id ? (
+								{userId && post.User.userId === userId ? (
 									<>
 										<Button>수정</Button>
 										<Button
@@ -73,6 +74,7 @@ const PostCard = ({ post }) => {
 						<EllipsisOutlined />
 					</Popover>,
 				]}
+				extra={userId && post.User.userId !== userId ? <FollowButton post={post} /> : null}
 			>
 				<Card.Meta
 					avatar={<Avatar>{post.User.nickname[0]}</Avatar>}

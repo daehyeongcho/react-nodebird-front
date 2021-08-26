@@ -38,9 +38,11 @@ export const signupRequest = (data) => ({
 	type: SIGNUP_REQUEST,
 	data,
 })
-export const followRequest = () => ({
+export const followRequest = (data) => ({
 	type: FOLLOW_REQUEST,
+	data,
 })
-export const unfollowRequest = () => ({
+export const unfollowRequest = (data) => ({
 	type: UNFOLLOW_REQUEST,
+	data,
 })

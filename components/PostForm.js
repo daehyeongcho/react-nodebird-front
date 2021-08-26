@@ -8,6 +8,7 @@ import { useInput } from '../hooks/useInputs'
 const PostForm = () => {
 	const dispatch = useDispatch()
 	const { imagePaths, addPostDone } = useSelector((state) => state.post)
+	const { userId, nickname } = useSelector((state) => state.user?.me)
 	const [text, onChangeText, resetText] = useInput('')
 	const imageInput = useRef()
 
@@ -18,7 +19,7 @@ const PostForm = () => {
 	}, [addPostDone])
 
 	const onSubmit = useCallback(() => {
-		dispatch(addPostRequest({ content: text }))
+		dispatch(addPostRequest({ User: { userId, nickname }, content: text }))
 	}, [text])
 	const onClickImageUpload = useCallback(() => {
 		imageInput.current.click()
@@ -36,7 +37,7 @@ const PostForm = () => {
 				<input type='file' multiple hidden ref={imageInput} />
 				<Button onClick={onClickImageUpload}>이미지 업로드</Button>
 				<Button type='primary' style={{ float: 'right' }} htmlType='submit'>
-					짹짹
+					트윗하기
 				</Button>
 			</div>
 			<div>

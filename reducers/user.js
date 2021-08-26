@@ -1,3 +1,5 @@
+import { nanoid } from 'nanoid'
+
 import { createReducer } from '../utils'
 import {
 	LOGIN_REQUEST,
@@ -43,12 +45,16 @@ export const initialState = {
 const dummyUser = (data) => ({
 	...data,
 	nickname: '랜디',
-	id: 1,
+	userId: nanoid(),
 	Posts: [],
-	Followings: ['제로초', '바보', '노드버드오피셜', '랜디', '태리', '드림'].map((nickname) => ({
+	Followings: ['제로초', '바보', '노드버드오피셜', '태리', '드림'].map((nickname) => ({
+		userId: nanoid(),
 		nickname,
 	})),
-	Followers: ['제로초', '바보', '노드버드오피셜'].map((nickname) => ({ nickname })),
+	Followers: ['긴토키', '용사'].map((nickname) => ({
+		userId: nanoid(),
+		nickname,
+	})),
 })
 
 // (이전상태, 액션) => 다음상태
@@ -73,11 +79,34 @@ const reducer = (state = initialState, action) => {
 		case FOLLOW_REQUEST:
 		case FOLLOW_SUCCESS:
 		case FOLLOW_FAILURE:
-			return createReducer(FOLLOW_REQUEST, null, initialState)(state, action)
+			return createReducer(
+				FOLLOW_REQUEST,
+				{
+					me: {
+						...state.me,
+						Followings: [
+							...state.me.Followings,
+							{ userId: action.data.userId, nickname: action.data.nickname },
+						],
+					},
+				},
+				initialState,
+			)(state, action)
 		case UNFOLLOW_REQUEST:
 		case UNFOLLOW_SUCCESS:
 		case UNFOLLOW_FAILURE:
-			return createReducer(UNFOLLOW_REQUEST, null, initialState)(state, action)
+			return createReducer(
+				UNFOLLOW_REQUEST,
+				{
+					me: {
+						...state.me,
+						Followings: state.me.Followings.filter(
+							(following) => following.userId !== action.data.userId,
+						),
+					},
+				},
+				initialState,
+			)(state, action)
 		case ADD_POST_TO_ME:
 			return {
 				...state,
