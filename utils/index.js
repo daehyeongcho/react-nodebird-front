@@ -28,7 +28,6 @@ export const createReducer = (typeRequest, data, initialState) => {
 	return (state = initialState, action) => {
 		switch (action.type) {
 			case typeRequest: // ADD_POST_REQUEST
-				console.log(`reducer ${type}`)
 				return {
 					...state,
 					[loading]: true, // ADD_POST를 요청했고 응답 기다리는 중
@@ -60,12 +59,10 @@ export const createReducer = (typeRequest, data, initialState) => {
  * - API를 비롯한 비동기 로직들은 모두 여기서 처리된다.
  */
 export const createSaga = (typeRequest, api) => {
-	console.log(api)
 	const type = typeRequest.replace('_REQUEST', '')
 	const [typeSuccess, typeFailure] = [`${type}_SUCCESS`, `${type}_FAILURE`]
 	return function* saga(action) {
 		try {
-			console.log(`saga ${typeRequest}`)
 			// const result = yield call(api, action.data)
 			yield delay(1000)
 			const postId = action.data.postId ? action.data.postId : nanoid()

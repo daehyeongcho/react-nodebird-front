@@ -1,0 +1,15 @@
+.form {
+	margin: 10px 0 20px;
+}
+
+.twit_btn {
+	float: right;
+}
+
+.img_group {
+	display: inline-block;
+}
+
+.img_group img {
+	width: 200px;
+}

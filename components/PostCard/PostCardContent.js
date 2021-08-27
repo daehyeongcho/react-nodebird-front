@@ -10,8 +10,6 @@ import PropTypes from 'prop-types'
  * - 트윗 본문에 들어있는 해시태그를 분리하고 각각에 링크를 부여함.
  */
 const PostCardContent = ({ postData }) => {
-	console.log('postData', postData)
-
 	return (
 		<div>
 			{/* 해시태그 분리를 위한 정규식 */}

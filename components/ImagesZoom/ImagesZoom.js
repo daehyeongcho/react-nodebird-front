@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import Slick from 'react-slick'
+import { CloseOutlined } from '@ant-design/icons'
 
-import { Overlay, CloseBtn, Global, Header, ImageWrapper, Indicator, SlickWrapper } from './styles'
 import useKeypress from '../../hooks/useKeypress'
+import styles from './ImagesZoom.module.css'
 
 /** ImagesZoom
  * - 이미지 눌렀을 때 확대된 상태로 슬라이더로 보여줌
@@ -13,36 +14,38 @@ const ImagesZoom = ({ images, onClose }) => {
 	useKeypress(27, onClose) // Esc 눌렀을 때 슬라이더 종료
 
 	return (
-		<Overlay>
-			<Global /> {/* antd 양식 덮어씌움 */}
-			<Header>
+		<div className={styles.overlay}>
+			<header className={styles.header}>
 				<h1>상세 이미지</h1>
-				<CloseBtn onClick={onClose}>X</CloseBtn>
-			</Header>
+				{/* 종료 버튼 */}
+				<CloseOutlined className={styles.close_button} onClick={onClose} content={'X'} />
+			</header>
 			<div>
-				<SlickWrapper>
+				{/* 이미지 슬라이더 */}
+				<div className={styles.slick}>
 					<Slick
 						initialSlide={0}
-						beforeChange={(slide) => setCurrentSlide(slide + 1)}
+						beforeChange={(slide, newSlide) => setCurrentSlide(newSlide)}
 						infinite
 						arrows={false}
 						slidesToShow={1}
 						slidesToScroll={1}
 					>
 						{images.map((v) => (
-							<ImageWrapper key={v.src}>
+							<div className={styles.image} key={v.src}>
 								<img src={v.src} alt={v.src} />
-							</ImageWrapper>
+							</div>
 						))}
 					</Slick>
-					<Indicator>
+					{/* 현재 이미지 번호 / 총 이미지 숫자 */}
+					<div className={styles.indicator}>
 						<div>
-							{(currentSlide % images.length) + 1} / {images.length}
+							{currentSlide + 1} / {images.length}
 						</div>
-					</Indicator>
-				</SlickWrapper>
+					</div>
+				</div>
 			</div>
-		</Overlay>
+		</div>
 	)
 }
 

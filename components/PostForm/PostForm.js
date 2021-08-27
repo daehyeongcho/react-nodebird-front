@@ -2,8 +2,9 @@ import React, { useCallback, useEffect, useRef } from 'react'
 import { Button, Form, Input } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { addPostRequest } from '../actions/post'
-import { useInput } from '../hooks/useInputs'
+import { addPostRequest } from '../../actions/post'
+import { useInput } from '../../hooks/useInputs'
+import styles from './PostForm.module.css'
 
 /** PostForm
  * - 트윗 작성을 위한 폼
@@ -36,19 +37,20 @@ const PostForm = () => {
 	}, [imageInput.current])
 
 	return (
-		<Form style={{ margin: '10px 0 20px' }} encType='multipart/form-data' onFinish={onSubmit}>
+		<Form className={styles.form} encType='multipart/form-data' onFinish={onSubmit}>
 			<Input.TextArea
 				value={text}
 				onChange={onChangeText}
 				maxLength={140}
 				placeholder='어떤 신기한 일이 있었나요?'
+				required
 			/>
 			<div>
 				<input type='file' multiple hidden ref={imageInput} />
 				<Button onClick={onClickImageUpload}>이미지 업로드</Button>
 				<Button
 					type='primary'
-					style={{ float: 'right' }}
+					className={styles.twit_btn}
 					htmlType='submit'
 					loading={addPostLoading}
 				>
@@ -56,9 +58,9 @@ const PostForm = () => {
 				</Button>
 			</div>
 			<div>
-				{imagePaths.map((v) => (
-					<div key={v} style={{ display: 'inline-block' }}>
-						<img src={v} style={{ width: '200px' }} alt={v} />
+				{imagePaths.map((imagePath) => (
+					<div key={imagePath} className={styles.img_group}>
+						<img src={imagePath} alt={imagePath} />
 						<div>
 							<Button>제거</Button>
 						</div>

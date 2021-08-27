@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, Avatar, Button } from 'antd'
 
-import { logoutRequest } from '../actions/user'
+import { logoutRequest } from '../../actions/user'
 
 /** UserProfile
  * - 로그인 성공 시 보여줄 유저의 대략적인 정보(트윗 수, 팔로잉 수, 팔로워 수)

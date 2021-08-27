@@ -1,0 +1,10 @@
+.half_image {
+	display: inline-block;
+	width: 50%;
+}
+.load_more {
+	display: inline-block;
+	width: 50%;
+	text-align: center;
+	vertical-align: middle;
+}

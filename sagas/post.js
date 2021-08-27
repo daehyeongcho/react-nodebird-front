@@ -42,7 +42,6 @@ function* removePost(action) {
 	try {
 		// const result = yield call(API.removeCommentAPI)
 		yield delay(1000)
-		console.log('action.data', action.data)
 		yield put({
 			type: REMOVE_POST_SUCCESS,
 			data: action.data,

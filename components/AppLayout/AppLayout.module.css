@@ -1,0 +1,19 @@
+/** antd 스타일 덮어씌우기 위한 global style
+ * - gutter 적용 시 최하단에 슬라이더 나타나는 문제 해결을 위함.
+ */
+.app_layout :global(.ant-row) {
+	margin-right: 0 !important;
+	margin-left: 0 !important;
+}
+
+.app_layout :global(.ant-col:first-child) {
+	padding-left: 0 !important;
+}
+
+.app_layout :global(.ant-col:last-child) {
+	padding-right: 0 !important;
+}
+
+.input_search {
+	vertical-align: middle;
+}

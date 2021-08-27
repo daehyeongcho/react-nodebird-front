@@ -1,7 +1,10 @@
+/** postCSS 도입하기 전 styled component로 작성한 코드.
+ * React Nodebird 강의는 styled component로 되어 있기 때문에
+ * 비교를 위해 이 파일 하나만 남겨둠.
+ */
+
 import styled, { createGlobalStyle } from 'styled-components'
 import { CloseOutlined } from '@ant-design/icons'
-
-/* styled component 부분이 너무 많아지면 보기 안좋아서 별도의 파일로 분리함. */
 
 export const Overlay = styled.div`
 	position: fixed;

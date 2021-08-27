@@ -11,11 +11,12 @@ import {
 } from '@ant-design/icons'
 import { Card, Button, Popover, Avatar, List, Comment } from 'antd'
 
-import PostImages from './PostImages' // 트윗에 첨부된 이미지를 보여주는 폼
-import CommentForm from './CommentForm' // 댓글 작성 폼
+import PostImages from '../PostImages/PostImages' // 트윗에 첨부된 이미지를 보여주는 폼
+import CommentForm from '../CommentForm/CommentForm' // 댓글 작성 폼
 import PostCardContent from './PostCardContent' // 본문에 있는 해시태그 처리
-import FollowButton from './FollowButton' // 팔로우/언팔로우 버튼
-import { removePostRequest } from '../actions/post'
+import FollowButton from '../FollowButton/FollowButton' // 팔로우/언팔로우 버튼
+import { removePostRequest } from '../../actions/post'
+import styles from './PostCard.module.css'
 
 /** PostCard
  * - 트윗 하나를 렌더링하기 위한 컴포넌트
@@ -38,12 +39,25 @@ const PostCard = ({ post }) => {
 
 	/* 삭제 버튼 누를 시 REMOVE_POST_REQUEST 요청 보냄 */
 	const onRemovePost = useCallback(() => {
-		console.log('removePostRequest', post.postId)
 		dispatch(removePostRequest({ postId: post.postId }))
 	}, [])
 
+	/* post.Comments list 렌더링 */
+	const renderComment = useCallback(
+		(item) => (
+			<li>
+				<Comment
+					author={item.User.nickname}
+					avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+					content={item.content}
+				/>
+			</li>
+		),
+		[],
+	)
+
 	return (
-		<div style={{ marginBottom: 20 }}>
+		<div className={styles.post_card}>
 			<Card
 				cover={post.Images[0] && <PostImages images={post.Images} />}
 				actions={[
@@ -95,15 +109,7 @@ const PostCard = ({ post }) => {
 						header={`${post.Comments.length}개의 댓글`}
 						itemLayout='horizontal'
 						dataSource={post.Comments}
-						renderItem={(item) => (
-							<li>
-								<Comment
-									author={item.User.nickname}
-									avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
-									content={item.content}
-								/>
-							</li>
-						)}
+						renderItem={renderComment}
 					/>
 				</div>
 			)}

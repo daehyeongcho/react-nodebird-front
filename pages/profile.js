@@ -2,9 +2,9 @@ import React from 'react'
 import Head from 'next/head'
 import { useSelector } from 'react-redux'
 
-import AppLayout from '../components/AppLayout'
-import FollowList from '../components/FollowList'
-import NicknameEditForm from '../components/NicknameEditForm'
+import AppLayout from '../components/AppLayout/AppLayout'
+import FollowList from '../components/FollowList/FollowList'
+import NicknameEditForm from '../components/NicknameEditForm/NicknameEditForm'
 
 /** 프로필 페이지
  * - 로그인 되어 있으면 닉네임 변경 폼과 팔로잉, 팔로우 목록을 보여준다.

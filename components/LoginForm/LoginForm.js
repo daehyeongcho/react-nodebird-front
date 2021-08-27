@@ -2,20 +2,10 @@ import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
 import { Button, Form, Input } from 'antd'
-import styled from 'styled-components'
 
-import useInputs from '../hooks/useInputs'
-import { loginRequest } from '../actions/user'
-
-/* 로그인 버튼, 회원가입 버튼 스타일 컴포넌트 */
-const ButtonWrapper = styled.div`
-	margin-top: 10px;
-`
-
-/* 로그인 폼 스타일 컴포넌트 */
-const FormWrapper = styled(Form)`
-	padding: 10px;
-`
+import useInputs from '../../hooks/useInputs'
+import { loginRequest } from '../../actions/user'
+import styles from './LoginForm.module.css'
 
 /** 로그인 폼
  * - 이메일과 비밀번호를 사용자로부터 받은 다음 이메일 양식을 체크하고 로그인
@@ -39,7 +29,7 @@ const LoginForm = () => {
 
 	return (
 		<>
-			<FormWrapper onFinish={onSubmitForm}>
+			<Form className={styles.form} onFinish={onSubmitForm}>
 				<div>
 					<label htmlFor='email'>이메일</label>
 					<br />
@@ -56,7 +46,7 @@ const LoginForm = () => {
 						required
 					/>
 				</div>
-				<ButtonWrapper>
+				<div className={styles.btn_group}>
 					{/* 로그인 버튼, 회원가입 버튼 공통 */}
 					<Button type='primary' htmlType='submit' loading={loginLoading}>
 						로그인
@@ -66,8 +56,8 @@ const LoginForm = () => {
 							<Button>회원가입</Button>
 						</a>
 					</Link>
-				</ButtonWrapper>
-			</FormWrapper>
+				</div>
+			</Form>
 			<div>abcd</div>
 		</>
 	)

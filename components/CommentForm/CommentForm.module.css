@@ -1,0 +1,14 @@
+.button {
+	position: absolute;
+	right: 0px;
+	bottom: -40px;
+	z-index: 1;
+}
+
+/* 로딩 버튼도 같은 방향으로 설정해줘야 함 */
+.loading :global(.ant-btn-loading) {
+	position: absolute;
+	right: 0px;
+	bottom: -40px;
+	z-index: 1;
+}

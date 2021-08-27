@@ -3,24 +3,22 @@ import faker from 'faker'
 
 import { createReducer } from '../utils'
 import {
-	ADD_POST_REQUEST,
-	ADD_POST_SUCCESS,
-	ADD_POST_FAILURE,
-	REMOVE_POST_REQUEST,
-	REMOVE_POST_SUCCESS,
-	REMOVE_POST_FAILURE,
-	ADD_COMMENT_REQUEST,
-	ADD_COMMENT_SUCCESS,
-	ADD_COMMENT_FAILURE,
+	ADD_POST_REQUEST, // 트윗 작성 요청 액션
+	ADD_POST_SUCCESS, // 트윗 작성 성공 액션
+	ADD_POST_FAILURE, // 트윗 작성 실패 액션
+	REMOVE_POST_REQUEST, // 트윗 삭제 요청 액션
+	REMOVE_POST_SUCCESS, // 트윗 삭제 성공 액션
+	REMOVE_POST_FAILURE, // 트윗 삭제 실패 액션
+	ADD_COMMENT_REQUEST, // 댓글 작성 요청 액션
+	ADD_COMMENT_SUCCESS, // 댓글 작성 성공 액션
+	ADD_COMMENT_FAILURE, // 댓글 작성 실패 액션
 } from '../actions/post'
 
-/** post 상태 관리
- * - 홈 화면에 띄워줄 mainPosts 목록 및 이미지 업로드 경로,
- * - 트윗 작성 및 댓글 작성 비동기 요청에 따른 상태들 관리
- */
+/** post state에 들어있는 property들 */
 export const initialState = {
 	/* 서버 쪽에서 데이터를 어떤 식으로 보낼 건지 미리 물어봐야 함 */
 	mainPosts: [
+		// 홈 화면에서 띄워 줄 글 목록
 		{
 			postId: nanoid(),
 			User: {
@@ -63,12 +61,15 @@ export const initialState = {
 		},
 	],
 	imagePaths: [], // 이미지 업로드 시 경로
-	addPostLoading: false,
-	addPostDone: false,
-	addPostError: null,
-	addCommentLoading: false,
-	addCommentDone: false,
-	addCommentError: null,
+	addPostLoading: false, // 트윗 작성 시도 중
+	addPostDone: false, // 트윗 작성 완료
+	addPostError: null, // 트윗 작성 에러
+	removePostLoading: false, // 트윗 삭제 시도 중
+	removePostDone: false, // 트윗 삭제 완료
+	removePostError: null, // 트윗 삭제 에러
+	addCommentLoading: false, // 댓글 작성 시도 중
+	addCommentDone: false, // 댓글 작성 완료
+	addCommentError: null, // 댓글 작성 에러
 }
 
 /* 더미데이터 */
@@ -111,7 +112,7 @@ const dummyComment = ({ commentId, content, User }) => ({
 	User,
 })
 
-/* 리듀서: 이전 상태를 액션을 통해 다음 상태로 만들어 내는 함수 */
+/** POST, COMMENT 관련 요청들을 처리한다. */
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
 		case ADD_POST_REQUEST:

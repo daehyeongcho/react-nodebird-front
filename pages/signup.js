@@ -4,16 +4,13 @@ import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Form, Input, Checkbox, Button } from 'antd'
-import styled from 'styled-components'
 
-import AppLayout from '../components/AppLayout'
+import AppLayout from '../components/AppLayout/AppLayout'
 import useInputs from '../hooks/useInputs'
 import { signupRequest } from '../actions/user'
+import styles from './signup.module.css'
 
 /* 빨간색 에러메시지를 위한 스타일드 컴포넌트 */
-const ErrorMessage = styled.div`
-	color: red;
-`
 
 /* 회원가입 정보 입력 받는 부분이 공통적인 부분이 많아서 분리. */
 const SubForm = ({ labelText, name, value, onChange, type = null, content = null }) => (
@@ -105,7 +102,9 @@ const Signup = () => {
 						type='password'
 						content={
 							passwordError && (
-								<ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
+								<div className={styles.error_message}>
+									비밀번호가 일치하지 않습니다.
+								</div>
 							)
 						}
 					/>

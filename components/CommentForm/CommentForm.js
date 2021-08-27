@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { Input, Form, Button } from 'antd'
 
-import { useInput } from '../hooks/useInputs'
-import { addCommentRequest } from '../actions/post'
+import { useInput } from '../../hooks/useInputs'
+import { addCommentRequest } from '../../actions/post'
+import styles from './CommentForm.module.css'
 
 /* 댓글 작성 폼 */
 const CommentForm = ({ post }) => {
@@ -23,7 +24,6 @@ const CommentForm = ({ post }) => {
 
 	/* 댓글작성 버튼 누를 때 ADD_COMMENT_REQUEST 요청 보냄 */
 	const onSubmit = useCallback(() => {
-		console.log('callback', post.postId, commentText)
 		dispatch(
 			addCommentRequest({
 				content: commentText,
@@ -36,15 +36,22 @@ const CommentForm = ({ post }) => {
 	return (
 		<Form onFinish={onSubmit}>
 			<Form.Item>
-				<Input.TextArea value={commentText} onChange={onChangeCommentText} rows={4} />
-				<Button
-					style={{ position: 'absolute', right: 0, bottom: -40, zIndex: 1 }}
-					type='primary'
-					htmlType='submit'
-					loading={addCommentLoading}
-				>
-					댓글달기
-				</Button>
+				<Input.TextArea
+					value={commentText}
+					onChange={onChangeCommentText}
+					rows={4}
+					required
+				/>
+				<div className={styles.loading}>
+					<Button
+						className={styles.button}
+						type='primary'
+						htmlType='submit'
+						loading={addCommentLoading}
+					>
+						댓글달기
+					</Button>
+				</div>
 			</Form.Item>
 		</Form>
 	)

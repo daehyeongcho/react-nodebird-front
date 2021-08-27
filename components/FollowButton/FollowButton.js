@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { Button } from 'antd'
 
-import { followRequest, unfollowRequest } from '../actions/user'
+import { followRequest, unfollowRequest } from '../../actions/user'
 
 /* 팔로우/언팔로우 버튼 */
 const FollowButton = ({ post }) => {

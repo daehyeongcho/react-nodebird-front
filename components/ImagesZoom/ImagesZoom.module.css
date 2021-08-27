@@ -1,0 +1,77 @@
+/* styled component의 가독성 문제 때문에 postCSS 도입 */
+
+.overlay {
+	position: fixed;
+	z-index: 5000;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+/** ant design과 slick을 동시에 사용하면 css가 깨져서 
+ * 이렇게 css를 덮어씌워줘야 한다.
+ */
+.overlay :global(.slick-slide) {
+	display: inline-block;
+}
+
+.overlay :global(.antd-card-cover) {
+	transform: none !important;
+}
+
+.header {
+	height: 44px;
+	background: white;
+	position: relative;
+	padding: 0;
+	text-align: center;
+}
+
+.header h1 {
+	margin: 0;
+	font-size: 17px;
+	color: #333;
+	line-height: 44px;
+}
+
+.close_button {
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding: 15px;
+	line-height: 14px;
+	cursor: pointer;
+}
+
+.slick {
+	height: calc(100% - 44px);
+	background: #090909;
+}
+
+.image {
+	padding: 32px;
+	text-align: center;
+}
+
+.image img {
+	margin: 0 auto;
+	max-width: 100%;
+	max-height: 750px;
+}
+
+.indicator {
+	text-align: center;
+}
+
+.indicator > div {
+	width: 75px;
+	height: 30px;
+	line-height: 30px;
+	border-radius: 15px;
+	background: #313131;
+	display: inline-block;
+	text-align: center;
+	color: white;
+	font-size: 15px;
+}
