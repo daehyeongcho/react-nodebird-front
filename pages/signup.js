@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
+import Router from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Form, Input, Checkbox, Button } from 'antd'
@@ -27,8 +28,12 @@ SubForm.propTypes = {
 	name: PropTypes.string.isRequired, // <Input name>
 	value: PropTypes.string.isRequired, // <Input value>
 	onChange: PropTypes.func.isRequired, // <Input onChange>
-	type: PropTypes.string.isRequired, // <Input type>. 기본값은 null
-	content: PropTypes.node.isRequired, // 입력 창 밑에 들어갈 부분
+	type: PropTypes.string, // <Input type>. 기본값은 null
+	content: PropTypes.node, // 입력 창 밑에 들어갈 부분
+}
+SubForm.defaultProps = {
+	type: null,
+	content: null,
 }
 
 /** 회원가입 페이지
@@ -37,7 +42,7 @@ SubForm.propTypes = {
  */
 const Signup = () => {
 	const dispatch = useDispatch()
-	const { signupLoading } = useSelector((state) => state.user) // 회원가입 진행 중
+	const { signupLoading, signupDone, signupError } = useSelector((state) => state.user) // 회원가입 진행 중, 회원가입 완료
 	const [inputs, onChange] = useInputs({ email: '', password: '', nickname: '' }) // email, password, nickname을 useState로 선언
 	const { email, password, nickname } = inputs
 	const [passwordCheck, setPasswordCheck] = useState('') // 비밀번호 확인
@@ -62,9 +67,20 @@ const Signup = () => {
 
 	/* 가입하기 버튼 눌렀을 때 */
 	const onSubmit = useCallback(() => {
-		console.log(email, nickname, password)
 		dispatch(signupRequest({ email, password, nickname })) // SIGNUP_REQUEST 요청 보냄
-	}, [])
+	}, [email, nickname, password])
+
+	useEffect(() => {
+		/* 회원가입 성공하면 메인 페이지로 */
+		if (signupDone) {
+			Router.push('/')
+		}
+
+		/* 회원가입 실패하면 팝업 메시지 */
+		if (signupError) {
+			alert(signupError) // eslint-disable-line no-alert
+		}
+	}, [signupError])
 
 	return (
 		<>

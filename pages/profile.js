@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Head from 'next/head'
+import Router from 'next/router'
 import { useSelector } from 'react-redux'
 
 import AppLayout from '../components/AppLayout/AppLayout'
@@ -11,6 +12,12 @@ import NicknameEditForm from '../components/NicknameEditForm/NicknameEditForm'
  */
 const Profile = () => {
 	const { me } = useSelector((state) => state.user) // 현재 로그인 되어있는 유저
+
+	useEffect(() => {
+		if (!(me && me.id)) {
+			Router.push('/') // 내 정보가 없으면 메인 페이지로
+		}
+	})
 
 	return (
 		<>

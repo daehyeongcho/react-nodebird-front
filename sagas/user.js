@@ -1,4 +1,4 @@
-import { all, delay, fork, put, takeLatest } from 'redux-saga/effects'
+import { all, delay, fork, put, takeLatest, call } from 'redux-saga/effects'
 
 import {
 	LOGIN_REQUEST,
@@ -17,7 +17,7 @@ import {
 	UNFOLLOW_SUCCESS,
 	UNFOLLOW_FAILURE,
 } from '../actions/user'
-// import * as API from '../api/user'
+import * as API from '../api/user'
 
 /* LOGIN_REQUEST 액션 처리 */
 function* login(action) {
@@ -53,10 +53,10 @@ function* logout() {
 }
 
 /* SIGNUP_REQUEST 액션 처리 */
-function* signup() {
+function* signup(action) {
 	try {
-		// const result = yield call(API.signupAPI)
-		yield delay(1000)
+		const result = yield call(API.signupAPI, action.data)
+		console.log(result)
 		yield put({
 			type: SIGNUP_SUCCESS,
 		})
