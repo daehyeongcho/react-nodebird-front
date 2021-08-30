@@ -20,14 +20,14 @@ function* addPost(action) {
 	try {
 		// const result = yield call(API.addPostAPI, action.data)
 		yield delay(1000)
-		const postId = nanoid()
+		const id = nanoid()
 		yield put({
 			type: ADD_POST_SUCCESS,
-			data: { postId, ...action.data },
+			data: { id, ...action.data },
 		})
 		yield put({
 			type: ADD_POST_TO_ME,
-			data: { postId },
+			data: { id },
 		})
 	} catch (err) {
 		yield put({
@@ -63,10 +63,10 @@ function* addComment(action) {
 	try {
 		// const result = yield call(API.addCommentAPI, action.data)
 		yield delay(1000)
-		const commentId = nanoid()
+		const id = nanoid()
 		yield put({
 			type: ADD_COMMENT_SUCCESS,
-			data: { commentId, ...action.data },
+			data: { id, ...action.data },
 		})
 	} catch (err) {
 		yield put({

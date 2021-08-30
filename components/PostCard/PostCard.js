@@ -26,7 +26,7 @@ import styles from './PostCard.module.css'
 const PostCard = ({ post }) => {
 	const dispatch = useDispatch()
 	const { removePostLoading } = useSelector((state) => state.post) // 트윗 삭제 중 state
-	const userId = useSelector((state) => state.user.me?.userId) // 현재 로그인 되어있는 사용자 userId
+	const id = useSelector((state) => state.user.me?.id) // 현재 로그인 되어있는 사용자 id
 	const [liked, setLiked] = useState(false) // 좋아요 버튼 누를 시 true
 	const [commentFormOpened, setCommentFormOpened] = useState(false) // 댓글 버튼 누를 때 true
 
@@ -39,7 +39,7 @@ const PostCard = ({ post }) => {
 
 	/* 삭제 버튼 누를 시 REMOVE_POST_REQUEST 요청 보냄 */
 	const onRemovePost = useCallback(() => {
-		dispatch(removePostRequest({ postId: post.postId }))
+		dispatch(removePostRequest({ id: post.id }))
 	}, [])
 
 	/* post.Comments list 렌더링 */
@@ -72,7 +72,7 @@ const PostCard = ({ post }) => {
 						key='more'
 						content={
 							<Button.Group>
-								{userId && post.User.userId === userId ? (
+								{id && post.User.id === id ? (
 									<>
 										<Button>수정</Button>
 										<Button
@@ -92,7 +92,7 @@ const PostCard = ({ post }) => {
 						<EllipsisOutlined />
 					</Popover>,
 				]}
-				extra={userId && post.User.userId !== userId ? <FollowButton post={post} /> : null} // 로그인 되어있고 post작성자가 본인이 아니면 팔로우버튼 보여줌
+				extra={id && post.User.id !== id ? <FollowButton post={post} /> : null} // 로그인 되어있고 post작성자가 본인이 아니면 팔로우버튼 보여줌
 			>
 				<Card.Meta
 					avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
@@ -104,7 +104,7 @@ const PostCard = ({ post }) => {
 			{/* 댓글 버튼 누르면 댓글 창 보여줌 */}
 			{commentFormOpened && (
 				<div>
-					{userId && <CommentForm post={post} />}
+					{id && <CommentForm post={post} />}
 					<List
 						header={`${post.Comments.length}개의 댓글`}
 						itemLayout='horizontal'
@@ -119,7 +119,7 @@ const PostCard = ({ post }) => {
 
 PostCard.propTypes = {
 	post: PropTypes.shape({
-		postId: PropTypes.string,
+		id: PropTypes.string,
 		User: PropTypes.object,
 		content: PropTypes.string,
 		createdAt: PropTypes.object,

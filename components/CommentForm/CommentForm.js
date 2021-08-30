@@ -27,11 +27,11 @@ const CommentForm = ({ post }) => {
 		dispatch(
 			addCommentRequest({
 				content: commentText,
-				postId: post.postId,
-				User: { userId: me.userId, nickname: me.nickname },
+				id: post.id,
+				User: { id: me.id, nickname: me.nickname },
 			}),
 		)
-	}, [addCommentRequest, commentText, post.postId])
+	}, [addCommentRequest, commentText, post.id])
 
 	return (
 		<Form onFinish={onSubmit}>

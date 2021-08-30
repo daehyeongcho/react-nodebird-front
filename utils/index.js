@@ -1,7 +1,7 @@
-import { nanoid } from 'nanoid'
-import { delay, put } from 'redux-saga/effects'
+// import { nanoid } from 'nanoid'
+// import { delay, put } from 'redux-saga/effects'
 
-import { ADD_POST_TO_ME } from '../actions/user'
+// import { ADD_POST_TO_ME } from '../actions/user'
 
 /** underscore 형태의 string을 camelCase로 변형
  * - ex. ADD_POST -> addPost
@@ -58,29 +58,29 @@ export const createReducer = (typeRequest, data, initialState) => {
 /** _REQUEST, _SUCCESS, _FAILURE 액션 처리하는 사가 생성
  * - API를 비롯한 비동기 로직들은 모두 여기서 처리된다.
  */
-export const createSaga = (typeRequest, api) => {
-	const type = typeRequest.replace('_REQUEST', '')
-	const [typeSuccess, typeFailure] = [`${type}_SUCCESS`, `${type}_FAILURE`]
-	return function* saga(action) {
-		try {
-			// const result = yield call(api, action.data)
-			yield delay(1000)
-			const postId = action.data.postId ? action.data.postId : nanoid()
-			yield put({
-				type: typeSuccess,
-				data: { ...action.data, postId },
-			})
-			if (type === 'ADD_POST') {
-				yield put({
-					type: ADD_POST_TO_ME,
-					data: { postId },
-				})
-			}
-		} catch (err) {
-			yield put({
-				type: typeFailure,
-				error: err.response.data,
-			})
-		}
-	}
-}
+// export const createSaga = (typeRequest, api) => {
+// 	const type = typeRequest.replace('_REQUEST', '')
+// 	const [typeSuccess, typeFailure] = [`${type}_SUCCESS`, `${type}_FAILURE`]
+// 	return function* saga(action) {
+// 		try {
+// 			// const result = yield call(api, action.data)
+// 			yield delay(1000)
+// 			const id = action.data.id ? action.data.id : nanoid()
+// 			yield put({
+// 				type: typeSuccess,
+// 				data: { ...action.data, id },
+// 			})
+// 			if (type === 'ADD_POST') {
+// 				yield put({
+// 					type: ADD_POST_TO_ME,
+// 					data: { id },
+// 				})
+// 			}
+// 		} catch (err) {
+// 			yield put({
+// 				type: typeFailure,
+// 				error: err.response.data,
+// 			})
+// 		}
+// 	}
+// }

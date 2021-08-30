@@ -20,9 +20,9 @@ export const initialState = {
 	mainPosts: [
 		// 홈 화면에서 띄워 줄 글 목록
 		{
-			postId: nanoid(),
+			id: nanoid(),
 			User: {
-				userId: nanoid(),
+				id: nanoid(),
 				nickname: 'fosel',
 			},
 			content: '첫 번째 게시글 #해시태그 #빅테크',
@@ -42,17 +42,17 @@ export const initialState = {
 			],
 			Comments: [
 				{
-					commentId: nanoid(),
+					id: nanoid(),
 					User: {
-						userId: nanoid(),
+						id: nanoid(),
 						nickname: 'nero',
 					},
 					content: '꿈의 기업들',
 				},
 				{
-					commentId: nanoid(),
+					id: nanoid(),
 					User: {
-						userId: nanoid(),
+						id: nanoid(),
 						nickname: 'randy',
 					},
 					content: '빅테크 기업들',
@@ -77,9 +77,9 @@ initialState.mainPosts = initialState.mainPosts.concat(
 	Array(20)
 		.fill()
 		.map(() => ({
-			postId: nanoid(),
+			id: nanoid(),
 			User: {
-				userId: nanoid(),
+				id: nanoid(),
 				nickname: faker.name.findName(),
 			},
 			content: faker.lorem.paragraph(),
@@ -97,8 +97,8 @@ initialState.mainPosts = initialState.mainPosts.concat(
 )
 
 /* 새 트윗 작성 */
-const dummyPost = ({ postId, content, User }) => ({
-	postId,
+const dummyPost = ({ id, content, User }) => ({
+	id,
 	content,
 	User,
 	Images: [],
@@ -106,8 +106,8 @@ const dummyPost = ({ postId, content, User }) => ({
 })
 
 /* 새 댓글 작성 */
-const dummyComment = ({ commentId, content, User }) => ({
-	commentId,
+const dummyComment = ({ id, content, User }) => ({
+	id,
 	content,
 	User,
 })
@@ -127,25 +127,25 @@ const reducer = (state = initialState, action) => {
 		case REMOVE_POST_REQUEST:
 		case REMOVE_POST_SUCCESS:
 		case REMOVE_POST_FAILURE:
-			/* mainPosts에서 action.data.postId랑 같은 post 삭제 */
+			/* mainPosts에서 action.data.id랑 같은 post 삭제 */
 			return createReducer(
 				REMOVE_POST_REQUEST,
 				{
-					mainPosts: state.mainPosts.filter((post) => post.postId !== action.data.postId),
+					mainPosts: state.mainPosts.filter((post) => post.id !== action.data.id),
 				},
 				initialState,
 			)(state, action)
 		case ADD_COMMENT_REQUEST:
 		case ADD_COMMENT_SUCCESS:
 		case ADD_COMMENT_FAILURE:
-			/** mainPosts에서 action.data.postId와 같은 post를 찾아서
+			/** mainPosts에서 action.data.id와 같은 post를 찾아서
 			 * 그 Comments에 새로운 댓글 추가
 			 */
 			return createReducer(
 				ADD_COMMENT_REQUEST,
 				{
 					mainPosts: state.mainPosts.map((post) =>
-						post.postId === action.data.postId
+						post.id === action.data.id
 							? {
 									...post,
 									Comments: [dummyComment(action.data), ...post.Comments],

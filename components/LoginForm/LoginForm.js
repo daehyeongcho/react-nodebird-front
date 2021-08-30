@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
 import { Button, Form, Input } from 'antd'
@@ -12,7 +12,7 @@ import styles from './LoginForm.module.css'
  */
 const LoginForm = () => {
 	const dispatch = useDispatch()
-	const { loginLoading } = useSelector((state) => state.user) // 로그인 중 state
+	const { loginLoading, loginError } = useSelector((state) => state.user) // 로그인 중 state
 	const [inputs, onChange] = useInputs({
 		/* 이메일, 비밀번호 입력 state */
 		email: '',
@@ -26,6 +26,13 @@ const LoginForm = () => {
 		dispatch(loginRequest({ email, password }))
 		/* antDesign에서 Form의 onFinish에는 e.preventDefault()가 적용되어있다. */
 	}, [email, password])
+
+	/* 로그인 실패 메시지 전달 */
+	useEffect(() => {
+		if (loginError) {
+			alert(loginError) // eslint-disable-line no-alert
+		}
+	}, [loginError])
 
 	return (
 		<>
@@ -58,7 +65,6 @@ const LoginForm = () => {
 					</Link>
 				</div>
 			</Form>
-			<div>abcd</div>
 		</>
 	)
 }

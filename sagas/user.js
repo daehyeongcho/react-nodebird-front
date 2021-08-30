@@ -22,11 +22,10 @@ import * as API from '../api/user'
 /* LOGIN_REQUEST 액션 처리 */
 function* login(action) {
 	try {
-		// const result = yield call(API.loginAPI, action.data)
-		yield delay(1000)
+		const result = yield call(API.loginAPI, action.data)
 		yield put({
 			type: LOGIN_SUCCESS,
-			data: action.data,
+			data: result.data,
 		})
 	} catch (err) {
 		yield put({
@@ -39,8 +38,8 @@ function* login(action) {
 /* LOGOUT_REQUEST 액션 처리 */
 function* logout() {
 	try {
-		// const result = yield call(API.logoutAPI)
-		yield delay(1000)
+		const result = yield call(API.logoutAPI)
+		console.log(result)
 		yield put({
 			type: LOGOUT_SUCCESS,
 		})

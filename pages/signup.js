@@ -42,7 +42,7 @@ SubForm.defaultProps = {
  */
 const Signup = () => {
 	const dispatch = useDispatch()
-	const { signupLoading, signupDone, signupError } = useSelector((state) => state.user) // 회원가입 진행 중, 회원가입 완료
+	const { signupLoading, signupDone, signupError, me } = useSelector((state) => state.user) // redux 상태 불러옴
 	const [inputs, onChange] = useInputs({ email: '', password: '', nickname: '' }) // email, password, nickname을 useState로 선언
 	const { email, password, nickname } = inputs
 	const [passwordCheck, setPasswordCheck] = useState('') // 비밀번호 확인
@@ -80,7 +80,12 @@ const Signup = () => {
 		if (signupError) {
 			alert(signupError) // eslint-disable-line no-alert
 		}
-	}, [signupError])
+
+		/* 로그인 성공하면 메인 페이지로 */
+		if (me && me.id) {
+			Router.push('/') // 내 정보가 없으면 메인 페이지로
+		}
+	}, [signupDone, signupError, me && me.id])
 
 	return (
 		<>

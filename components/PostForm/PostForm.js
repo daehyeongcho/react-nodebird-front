@@ -26,9 +26,7 @@ const PostForm = () => {
 
 	/* 트윗하기 버튼 누를 시 ADD_POST_REQUEST 요청 보냄 */
 	const onSubmit = useCallback(() => {
-		dispatch(
-			addPostRequest({ User: { userId: me.userId, nickname: me.nickname }, content: text }),
-		)
+		dispatch(addPostRequest({ User: { id: me.id, nickname: me.nickname }, content: text }))
 	}, [text])
 
 	/* 이미지 업로드 대화상자 띄움 */

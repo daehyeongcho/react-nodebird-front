@@ -1,4 +1,4 @@
-import { nanoid } from 'nanoid'
+// import { nanoid } from 'nanoid'
 
 import { createReducer } from '../utils'
 
@@ -46,20 +46,20 @@ export const initialState = {
 }
 
 /* 더미 유저 데이터 */
-const dummyUser = (data) => ({
-	...data,
-	nickname: '랜디',
-	userId: nanoid(),
-	Posts: [],
-	Followings: ['제로초', '바보', '노드버드오피셜', '태리', '드림'].map((nickname) => ({
-		userId: nanoid(),
-		nickname,
-	})),
-	Followers: ['긴토키', '용사'].map((nickname) => ({
-		userId: nanoid(),
-		nickname,
-	})),
-})
+// const dummyUser = (data) => ({
+// 	...data,
+// 	nickname: '랜디',
+// 	userId: nanoid(),
+// 	Posts: [],
+// 	Followings: ['제로초', '바보', '노드버드오피셜', '태리', '드림'].map((nickname) => ({
+// 		userId: nanoid(),
+// 		nickname,
+// 	})),
+// 	Followers: ['긴토키', '용사'].map((nickname) => ({
+// 		userId: nanoid(),
+// 		nickname,
+// 	})),
+// })
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
@@ -67,11 +67,7 @@ const reducer = (state = initialState, action) => {
 		case LOGIN_SUCCESS:
 		case LOGIN_FAILURE:
 			/* user.me에 dummyUser 추가 */
-			return createReducer(
-				LOGIN_REQUEST,
-				{ me: dummyUser(action.data) },
-				initialState,
-			)(state, action)
+			return createReducer(LOGIN_REQUEST, { me: action.data }, initialState)(state, action)
 		case LOGOUT_REQUEST:
 		case LOGOUT_SUCCESS:
 		case LOGOUT_FAILURE:
@@ -92,7 +88,7 @@ const reducer = (state = initialState, action) => {
 						...state.me,
 						Followings: [
 							...state.me.Followings,
-							{ userId: action.data.userId, nickname: action.data.nickname },
+							{ id: action.data.id, nickname: action.data.nickname },
 						],
 					},
 				},
@@ -108,7 +104,7 @@ const reducer = (state = initialState, action) => {
 					me: {
 						...state.me,
 						Followings: state.me.Followings.filter(
-							(following) => following.userId !== action.data.userId,
+							(following) => following.id !== action.data.id,
 						),
 					},
 				},
@@ -118,7 +114,7 @@ const reducer = (state = initialState, action) => {
 			/* 댓글 작성 성공 시 user.me.Posts에 추가 */
 			return {
 				...state,
-				me: { ...state.me, Posts: [{ postId: action.data.postId }, ...state.me.Posts] },
+				me: { ...state.me, Posts: [{ id: action.data.id }, ...state.me.Posts] },
 			}
 		case REMOVE_POST_OF_ME:
 			/* 댓글 삭제 성공 시 user.me.Posts에서 삭제 */
@@ -126,7 +122,7 @@ const reducer = (state = initialState, action) => {
 				...state,
 				me: {
 					...state.me,
-					Posts: state.me.Posts.filter((post) => post.postId !== action.data.postId),
+					Posts: state.me.Posts.filter((post) => post.id !== action.data.id),
 				},
 			}
 		default:

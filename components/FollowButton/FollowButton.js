@@ -10,13 +10,12 @@ import { followRequest, unfollowRequest } from '../../actions/user'
 const FollowButton = ({ post }) => {
 	const dispatch = useDispatch()
 	const { me, followLoading, unfollowLoading } = useSelector((state) => state.user) // 현재 로그인되어있는 사용자정보 및 팔로우, 언팔로우 대기 정보
-	const isFollowing = // post의 User가 me의 팔로우 목록에 있는지 확인
-		me && me.Followings.find((following) => following.userId === post.User.userId)
+	const isFollowing = me && me.Followings.find((following) => following.id === post.User.id) // post의 User가 me의 팔로우 목록에 있는지 확인
 	const onClickButton = useCallback(() => {
 		if (isFollowing) {
-			dispatch(unfollowRequest({ userId: post.User.userId })) // 팔로워이면 버튼 클릭 시 언팔로우 요청
+			dispatch(unfollowRequest({ id: post.User.id })) // 팔로워이면 버튼 클릭 시 언팔로우 요청
 		} else {
-			dispatch(followRequest({ userId: post.User.userId, nickname: post.User.nickname })) // 팔로워가 아니면 버튼 클릭 시 팔로우 요청
+			dispatch(followRequest({ id: post.User.id, nickname: post.User.nickname })) // 팔로워가 아니면 버튼 클릭 시 팔로우 요청
 		}
 	}, [isFollowing])
 
@@ -29,7 +28,7 @@ const FollowButton = ({ post }) => {
 
 FollowButton.propTypes = {
 	post: PropTypes.shape({
-		postId: PropTypes.string, // post의 아이디
+		id: PropTypes.string, // post의 아이디
 		User: PropTypes.object, // post의 글쓴이
 		content: PropTypes.string, // post 내용
 		createdAt: PropTypes.object, // post가 언
