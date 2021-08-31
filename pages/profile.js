@@ -14,10 +14,10 @@ const Profile = () => {
 	const { me } = useSelector((state) => state.user) // 현재 로그인 되어있는 유저
 
 	useEffect(() => {
-		if (!(me && me.id)) {
+		if (!me?.email) {
 			Router.push('/') // 내 정보가 없으면 메인 페이지로
 		}
-	})
+	}, [me?.email])
 
 	return (
 		<>

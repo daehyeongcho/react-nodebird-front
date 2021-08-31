@@ -43,11 +43,23 @@ SubForm.defaultProps = {
 const Signup = () => {
 	const dispatch = useDispatch()
 	const { signupLoading, signupDone, signupError, me } = useSelector((state) => state.user) // redux 상태 불러옴
-	const [inputs, onChange] = useInputs({ email: '', password: '', nickname: '' }) // email, password, nickname을 useState로 선언
-	const { email, password, nickname } = inputs
+	const [inputs, onChange] = useInputs({ email: '', nickname: '' }) // email, nickname을 useState로 선언
+	const { email, nickname } = inputs
+	const [password, setPassword] = useState('') // 비밀번호
 	const [passwordCheck, setPasswordCheck] = useState('') // 비밀번호 확인
 	const [passwordError, setPasswordError] = useState(false) // 비밀번호와 비밀번호 확인이 서로 다르면 true
 	const [term, setTerm] = useState(false) // 약관에 동의하면 true
+
+	/** 비밀번호 부분이 바뀔 때마다 password state에 넣어주고,
+	 * 비밀번호와 비밀번호 확인이 서로 같은지 체크한다.
+	 */
+	const onChangePassword = useCallback(
+		(e) => {
+			setPassword(e.target.value)
+			setPasswordError(e.target.value !== passwordCheck)
+		},
+		[passwordCheck],
+	)
 
 	/** 비밀번호 확인 부분이 바뀔 때마다 passwordCheck state에 넣어주고,
 	 * 비밀번호와 비밀번호 확인이 서로 같은지 체크한다.
@@ -80,12 +92,14 @@ const Signup = () => {
 		if (signupError) {
 			alert(signupError) // eslint-disable-line no-alert
 		}
+	}, [signupDone, signupError])
 
+	useEffect(() => {
 		/* 로그인 성공하면 메인 페이지로 */
-		if (me && me.id) {
+		if (me?.email) {
 			Router.push('/') // 내 정보가 없으면 메인 페이지로
 		}
-	}, [signupDone, signupError, me && me.id])
+	}, [me?.email])
 
 	return (
 		<>
@@ -112,7 +126,7 @@ const Signup = () => {
 						labelText='비밀번호'
 						name='password'
 						value={password}
-						onChange={onChange}
+						onChange={onChangePassword}
 						type='password'
 					/>
 					<SubForm
@@ -122,6 +136,7 @@ const Signup = () => {
 						onChange={onChangePasswordCheck}
 						type='password'
 						content={
+							passwordCheck &&
 							passwordError && (
 								<div className={styles.error_message}>
 									비밀번호가 일치하지 않습니다.

@@ -39,7 +39,7 @@ const PostImages = ({ images }) => {
 			<>
 				{images.map((image) => (
 					<img
-						key={image.imageId}
+						key={image.id}
 						role='presentation'
 						className={styles.half_image}
 						src={image.src}

@@ -28,7 +28,7 @@ const CommentForm = ({ post }) => {
 			addCommentRequest({
 				content: commentText,
 				id: post.id,
-				User: { id: me.id, nickname: me.nickname },
+				User: { email: me.email, nickname: me.nickname },
 			}),
 		)
 	}, [addCommentRequest, commentText, post.id])

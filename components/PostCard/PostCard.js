@@ -26,7 +26,7 @@ import styles from './PostCard.module.css'
 const PostCard = ({ post }) => {
 	const dispatch = useDispatch()
 	const { removePostLoading } = useSelector((state) => state.post) // 트윗 삭제 중 state
-	const id = useSelector((state) => state.user.me?.id) // 현재 로그인 되어있는 사용자 id
+	const email = useSelector((state) => state.user.me?.email) // 현재 로그인 되어있는 사용자 email
 	const [liked, setLiked] = useState(false) // 좋아요 버튼 누를 시 true
 	const [commentFormOpened, setCommentFormOpened] = useState(false) // 댓글 버튼 누를 때 true
 
@@ -72,7 +72,7 @@ const PostCard = ({ post }) => {
 						key='more'
 						content={
 							<Button.Group>
-								{id && post.User.id === id ? (
+								{email && post.User.email === email ? (
 									<>
 										<Button>수정</Button>
 										<Button
@@ -92,7 +92,7 @@ const PostCard = ({ post }) => {
 						<EllipsisOutlined />
 					</Popover>,
 				]}
-				extra={id && post.User.id !== id ? <FollowButton post={post} /> : null} // 로그인 되어있고 post작성자가 본인이 아니면 팔로우버튼 보여줌
+				extra={email && post.User.email !== email ? <FollowButton post={post} /> : null} // 로그인 되어있고 post작성자가 본인이 아니면 팔로우버튼 보여줌
 			>
 				<Card.Meta
 					avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
@@ -104,7 +104,7 @@ const PostCard = ({ post }) => {
 			{/* 댓글 버튼 누르면 댓글 창 보여줌 */}
 			{commentFormOpened && (
 				<div>
-					{id && <CommentForm post={post} />}
+					{email && <CommentForm post={post} />}
 					<List
 						header={`${post.Comments.length}개의 댓글`}
 						itemLayout='horizontal'

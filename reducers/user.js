@@ -88,7 +88,7 @@ const reducer = (state = initialState, action) => {
 						...state.me,
 						Followings: [
 							...state.me.Followings,
-							{ id: action.data.id, nickname: action.data.nickname },
+							{ email: action.data.email, nickname: action.data.nickname },
 						],
 					},
 				},
@@ -104,7 +104,7 @@ const reducer = (state = initialState, action) => {
 					me: {
 						...state.me,
 						Followings: state.me.Followings.filter(
-							(following) => following.id !== action.data.id,
+							(following) => following.email !== action.data.email,
 						),
 					},
 				},

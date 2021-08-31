@@ -18,7 +18,7 @@ const ImagesZoom = ({ images, onClose }) => {
 			<header className={styles.header}>
 				<h1>상세 이미지</h1>
 				{/* 종료 버튼 */}
-				<CloseOutlined className={styles.close_button} onClick={onClose} content={'X'} />
+				<CloseOutlined className={styles.close_button} onClick={onClose} content='X' />
 			</header>
 			<div>
 				{/* 이미지 슬라이더 */}

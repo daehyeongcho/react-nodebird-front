@@ -22,21 +22,21 @@ export const initialState = {
 		{
 			id: nanoid(),
 			User: {
-				id: nanoid(),
-				nickname: 'fosel',
+				email: faker.internet.email(),
+				nickname: 'Randy',
 			},
 			content: '첫 번째 게시글 #해시태그 #빅테크',
 			Images: [
 				{
-					imageId: nanoid(),
+					id: nanoid(),
 					src: 'https://www.google.co.kr/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png',
 				},
 				{
-					imageId: nanoid(),
+					id: nanoid(),
 					src: 'http://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4OAgf?ver=6a31',
 				},
 				{
-					imageId: nanoid(),
+					id: nanoid(),
 					src: 'https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg',
 				},
 			],
@@ -44,7 +44,7 @@ export const initialState = {
 				{
 					id: nanoid(),
 					User: {
-						id: nanoid(),
+						email: faker.internet.email(),
 						nickname: 'nero',
 					},
 					content: '꿈의 기업들',
@@ -52,7 +52,7 @@ export const initialState = {
 				{
 					id: nanoid(),
 					User: {
-						id: nanoid(),
+						email: faker.internet.email(),
 						nickname: 'randy',
 					},
 					content: '빅테크 기업들',
@@ -79,7 +79,7 @@ initialState.mainPosts = initialState.mainPosts.concat(
 		.map(() => ({
 			id: nanoid(),
 			User: {
-				id: nanoid(),
+				email: faker.internet.email(),
 				nickname: faker.name.findName(),
 			},
 			content: faker.lorem.paragraph(),
@@ -87,7 +87,7 @@ initialState.mainPosts = initialState.mainPosts.concat(
 			Comments: [
 				{
 					User: {
-						id: nanoid(),
+						email: faker.internet.email(),
 						nickname: faker.name.findName(),
 					},
 					content: faker.lorem.sentence(),
