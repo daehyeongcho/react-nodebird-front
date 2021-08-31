@@ -1,5 +1,4 @@
-import { nanoid } from 'nanoid'
-import { all, delay, fork, put, takeLatest } from 'redux-saga/effects'
+import { all, delay, fork, put, takeLatest, call } from 'redux-saga/effects'
 
 import {
 	ADD_POST_REQUEST,
@@ -13,21 +12,19 @@ import {
 	ADD_COMMENT_FAILURE,
 } from '../actions/post'
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../actions/user'
-// import * as API from '../api/post'
+import * as API from '../api/post'
 
 /* 트윗 작성 요청 처리 */
 function* addPost(action) {
 	try {
-		// const result = yield call(API.addPostAPI, action.data)
-		yield delay(1000)
-		const id = nanoid()
+		const result = yield call(API.addPostAPI, action.data)
 		yield put({
 			type: ADD_POST_SUCCESS,
-			data: { id, ...action.data },
+			data: result.data,
 		})
 		yield put({
 			type: ADD_POST_TO_ME,
-			data: { id },
+			data: { id: result.data.id },
 		})
 	} catch (err) {
 		yield put({
@@ -61,12 +58,10 @@ function* removePost(action) {
 /* 댓글 작성 요청 처리 */
 function* addComment(action) {
 	try {
-		// const result = yield call(API.addCommentAPI, action.data)
-		yield delay(1000)
-		const id = nanoid()
+		const result = yield call(API.addCommentAPI, action.data)
 		yield put({
 			type: ADD_COMMENT_SUCCESS,
-			data: { id, ...action.data },
+			data: result.data,
 		})
 	} catch (err) {
 		yield put({

@@ -1,7 +1,11 @@
 import { all, fork } from 'redux-saga/effects'
+import axios from 'axios'
 
 import postSaga from './post'
 import userSaga from './user'
+
+axios.defaults.baseURL = 'http://localhost:3065' // axios 요청 앞에 항상 이 baseURL을 붙인다.
+axios.defaults.withCredentials = true // 쿠키 허용
 
 /**
  * fork: 비동기 함수 호출 - 논블로킹

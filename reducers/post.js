@@ -96,22 +96,6 @@ initialState.mainPosts = initialState.mainPosts.concat(
 		})),
 )
 
-/* 새 트윗 작성 */
-const dummyPost = ({ id, content, User }) => ({
-	id,
-	content,
-	User,
-	Images: [],
-	Comments: [],
-})
-
-/* 새 댓글 작성 */
-const dummyComment = ({ id, content, User }) => ({
-	id,
-	content,
-	User,
-})
-
 /** POST, COMMENT 관련 요청들을 처리한다. */
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
@@ -121,7 +105,7 @@ const reducer = (state = initialState, action) => {
 			/* mainPosts에 dummyPost(action.data) 추가 */
 			return createReducer(
 				ADD_POST_REQUEST,
-				{ mainPosts: [dummyPost(action.data), ...state.mainPosts] },
+				{ mainPosts: [action.data, ...state.mainPosts] },
 				initialState,
 			)(state, action)
 		case REMOVE_POST_REQUEST:
@@ -145,10 +129,10 @@ const reducer = (state = initialState, action) => {
 				ADD_COMMENT_REQUEST,
 				{
 					mainPosts: state.mainPosts.map((post) =>
-						post.id === action.data.id
+						post.id === action.data.PostId
 							? {
 									...post,
-									Comments: [dummyComment(action.data), ...post.Comments],
+									Comments: [action.data, ...post.Comments],
 							  }
 							: post,
 					),

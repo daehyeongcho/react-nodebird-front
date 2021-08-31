@@ -27,7 +27,7 @@ const CommentForm = ({ post }) => {
 		dispatch(
 			addCommentRequest({
 				content: commentText,
-				id: post.id,
+				postId: post.id,
 				User: { email: me.email, nickname: me.nickname },
 			}),
 		)
