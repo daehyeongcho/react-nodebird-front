@@ -4,6 +4,9 @@ import { createReducer } from '../utils'
 
 /* 액션 목록 */
 import {
+	LOAD_MY_INFO_REQUEST, // 로그인 유저 정보 불러오기 요청 액션
+	LOAD_MY_INFO_SUCCESS, // 로그인 유저 정보 불러오기 성공 액션
+	LOAD_MY_INFO_FAILURE, // 로그인 유저 정보 불러오기 실패 액션
 	LOGIN_REQUEST, // 로그인 요청 액션
 	LOGIN_SUCCESS, // 로그인 성공 액션
 	LOGIN_FAILURE, // 로그인 실패 액션
@@ -25,9 +28,9 @@ import {
 
 /** user state 안에 들어있는 property들 */
 export const initialState = {
-	loginLoading: false, // 로그인 시도 중
-	loginDone: false, // 로그인 완료
-	loginError: null, // 로그인 에러
+	loadMyInfoLoading: false, // 로그인 유저 정보 불러오기 시도 중
+	loadMyInfoDone: false, // 로그인 유저 정보 불러오기 완료
+	loadMyInfoError: null, // 로그인 유저 정보 불러오기 에러
 	logoutLoading: false, // 로그아웃 시도 중
 	logoutDone: false, // 로그아웃 완료
 	logoutError: null, // 로그아웃 에러
@@ -45,28 +48,21 @@ export const initialState = {
 	loginData: {}, // 로그인 폼에 입력한 정보
 }
 
-/* 더미 유저 데이터 */
-// const dummyUser = (data) => ({
-// 	...data,
-// 	nickname: '랜디',
-// 	userId: nanoid(),
-// 	Posts: [],
-// 	Followings: ['제로초', '바보', '노드버드오피셜', '태리', '드림'].map((nickname) => ({
-// 		userId: nanoid(),
-// 		nickname,
-// 	})),
-// 	Followers: ['긴토키', '용사'].map((nickname) => ({
-// 		userId: nanoid(),
-// 		nickname,
-// 	})),
-// })
-
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
+		case LOAD_MY_INFO_REQUEST:
+		case LOAD_MY_INFO_SUCCESS:
+		case LOAD_MY_INFO_FAILURE:
+			/* user.me에 로그인 된 유저 정보 추가 */
+			return createReducer(
+				LOAD_MY_INFO_REQUEST,
+				{ me: action.data },
+				initialState,
+			)(state, action)
 		case LOGIN_REQUEST:
 		case LOGIN_SUCCESS:
 		case LOGIN_FAILURE:
-			/* user.me에 dummyUser 추가 */
+			/* user.me에 {email, password} 추가 */
 			return createReducer(LOGIN_REQUEST, { me: action.data }, initialState)(state, action)
 		case LOGOUT_REQUEST:
 		case LOGOUT_SUCCESS:

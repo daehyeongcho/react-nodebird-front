@@ -1,4 +1,8 @@
 /** action type */
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST'
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS'
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE'
+
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_FAILURE = 'LOGIN_FAILURE'
@@ -27,6 +31,9 @@ export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME'
  *   즉석에서 디스패치해도 상관 없다.
  * - success, failure 액션은 saga가 알아서 호출해줌
  */
+export const loadMyInfoRequest = () => ({
+	type: LOAD_MY_INFO_REQUEST,
+})
 export const loginRequest = (data) => ({
 	type: LOGIN_REQUEST,
 	data,

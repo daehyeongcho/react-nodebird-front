@@ -1,6 +1,9 @@
 import { all, delay, fork, put, takeLatest, call } from 'redux-saga/effects'
 
 import {
+	LOAD_MY_INFO_REQUEST,
+	LOAD_MY_INFO_SUCCESS,
+	LOAD_MY_INFO_FAILURE,
 	LOGIN_REQUEST,
 	LOGIN_SUCCESS,
 	LOGIN_FAILURE,
@@ -18,6 +21,21 @@ import {
 	UNFOLLOW_FAILURE,
 } from '../actions/user'
 import * as API from '../api/user'
+
+function* loadMyInfo() {
+	try {
+		const result = yield call(API.loadMyInfoAPI)
+		yield put({
+			type: LOAD_MY_INFO_SUCCESS,
+			data: result.data,
+		})
+	} catch (err) {
+		yield put({
+			type: LOAD_MY_INFO_FAILURE,
+			error: err.response.data,
+		})
+	}
+}
 
 /* LOGIN_REQUEST 액션 처리 */
 function* login(action) {
@@ -102,6 +120,9 @@ function* unfollow(action) {
 }
 
 /* 리스너 */
+function* watchLoadMyInfo() {
+	yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo)
+}
 function* watchLogin() {
 	yield takeLatest(LOGIN_REQUEST, login)
 }
@@ -120,6 +141,7 @@ function* watchUnfollow() {
 
 export default function* userSaga() {
 	yield all([
+		fork(watchLoadMyInfo),
 		fork(watchLogin),
 		fork(watchLogout),
 		fork(watchSignUp),

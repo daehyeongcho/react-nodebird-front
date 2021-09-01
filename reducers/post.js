@@ -3,6 +3,9 @@ import faker from 'faker'
 
 import { createReducer } from '../utils'
 import {
+	LOAD_POSTS_REQUEST, // 트윗들 불러오기 요청 액션
+	LOAD_POSTS_SUCCESS, // 트윗들 불러오기 성공 액션
+	LOAD_POSTS_FAILURE, // 트윗들 불러오기 실패 액션
 	ADD_POST_REQUEST, // 트윗 작성 요청 액션
 	ADD_POST_SUCCESS, // 트윗 작성 성공 액션
 	ADD_POST_FAILURE, // 트윗 작성 실패 액션
@@ -99,6 +102,10 @@ initialState.mainPosts = initialState.mainPosts.concat(
 /** POST, COMMENT 관련 요청들을 처리한다. */
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
+		case LOAD_POSTS_REQUEST:
+		case LOAD_POSTS_SUCCESS:
+		case LOAD_POSTS_FAILURE:
+			return createReducer(LOAD_POSTS_REQUEST, null, initialState)(state, action)
 		case ADD_POST_REQUEST:
 		case ADD_POST_SUCCESS:
 		case ADD_POST_FAILURE:
