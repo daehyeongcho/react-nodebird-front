@@ -9,6 +9,12 @@ import {
 	REMOVE_POST_REQUEST, // 트윗 삭제 요청 액션
 	REMOVE_POST_SUCCESS, // 트윗 삭제 성공 액션
 	REMOVE_POST_FAILURE, // 트윗 삭제 실패 액션
+	LIKE_POST_REQUEST, // 좋아요 요청 액션
+	LIKE_POST_SUCCESS, // 좋아요 성공 액션
+	LIKE_POST_FAILURE, // 좋아요 실패 액션
+	UNLIKE_POST_REQUEST, // 좋아요 해제 요청 액션
+	UNLIKE_POST_SUCCESS, // 좋아요 해제 성공 액션
+	UNLIKE_POST_FAILURE, // 좋아요 해제 실패 액션
 	ADD_COMMENT_REQUEST, // 댓글 작성 요청 액션
 	ADD_COMMENT_SUCCESS, // 댓글 작성 성공 액션
 	ADD_COMMENT_FAILURE, // 댓글 작성 실패 액션
@@ -25,6 +31,12 @@ export const initialState = {
 	removePostLoading: false, // 트윗 삭제 시도 중
 	removePostDone: false, // 트윗 삭제 완료
 	removePostError: null, // 트윗 삭제 에러
+	likePostLoading: false, // 좋아요 시도 중
+	likePostDone: false, // 좋아요 완료
+	likePostError: null, // 좋아요 에러
+	unlikePostLoading: false, // 좋아요 해제 시도 중
+	unlikePostDone: false, // 좋아요 해제 완료
+	unlikePostError: null, // 좋아요 해제 에러
 	addCommentLoading: false, // 댓글 작성 시도 중
 	addCommentDone: false, // 댓글 작성 완료
 	addCommentError: null, // 댓글 작성 에러
@@ -61,12 +73,48 @@ const reducer = (state = initialState, action) => {
 				},
 				initialState,
 			)(state, action)
+		case LIKE_POST_REQUEST:
+		case LIKE_POST_SUCCESS:
+		case LIKE_POST_FAILURE:
+			/* mainPosts에서 action.data.PostId랑 같은 id의 post를 찾아서  Likers에 action.data.UserEmail 넣어줌 */
+			return createReducer(
+				LIKE_POST_REQUEST,
+				{
+					mainPosts: state.mainPosts.map((post) =>
+						post.id === action.data.PostId
+							? {
+									...post,
+									Likers: [{ email: action.data.UserEmail }, ...post.Likers],
+							  }
+							: post,
+					),
+				},
+				initialState,
+			)(state, action)
+		case UNLIKE_POST_REQUEST:
+		case UNLIKE_POST_SUCCESS:
+		case UNLIKE_POST_FAILURE:
+			/* mainPosts에서 action.data.PostId랑 같은 id의 post를 찾아서 Likers에서 action.data.UserEmail에 해당하는 유저 지워줌 */
+			return createReducer(
+				UNLIKE_POST_REQUEST,
+				{
+					mainPosts: state.mainPosts.map((post) =>
+						post.id === action.data.PostId
+							? {
+									...post,
+									Likers: post.Likers.filter(
+										(liker) => liker.email !== action.data.UserEmail,
+									),
+							  }
+							: post,
+					),
+				},
+				initialState,
+			)(state, action)
 		case ADD_COMMENT_REQUEST:
 		case ADD_COMMENT_SUCCESS:
 		case ADD_COMMENT_FAILURE:
-			/** mainPosts에서 action.data.PostId와 같은 post를 찾아서
-			 * 그 Comments에 새로운 댓글 추가
-			 */
+			/* mainPosts에서 action.data.PostId와 같은 post를 찾아서 그 Comments에 새로운 댓글 추가 */
 			return createReducer(
 				ADD_COMMENT_REQUEST,
 				{

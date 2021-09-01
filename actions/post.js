@@ -11,6 +11,14 @@ export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST'
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS'
 export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE'
 
+export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST'
+export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS'
+export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE'
+
+export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST'
+export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS'
+export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE'
+
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST'
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS'
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE'
@@ -25,6 +33,14 @@ export const addPostRequest = (data) => ({
 })
 export const removePostRequest = (data) => ({
 	type: REMOVE_POST_REQUEST,
+	data,
+})
+export const likePostRequest = (data) => ({
+	type: LIKE_POST_REQUEST,
+	data,
+})
+export const unlikePostRequest = (data) => ({
+	type: UNLIKE_POST_REQUEST,
 	data,
 })
 export const addCommentRequest = (data) => ({

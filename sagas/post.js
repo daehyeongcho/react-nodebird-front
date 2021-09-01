@@ -10,6 +10,12 @@ import {
 	REMOVE_POST_REQUEST,
 	REMOVE_POST_SUCCESS,
 	REMOVE_POST_FAILURE,
+	LIKE_POST_REQUEST,
+	LIKE_POST_SUCCESS,
+	LIKE_POST_FAILURE,
+	UNLIKE_POST_REQUEST,
+	UNLIKE_POST_SUCCESS,
+	UNLIKE_POST_FAILURE,
 	ADD_COMMENT_REQUEST,
 	ADD_COMMENT_SUCCESS,
 	ADD_COMMENT_FAILURE,
@@ -77,6 +83,40 @@ function* removePost(action) {
 	}
 }
 
+/* 좋아요 요청 처리 */
+function* likePost(action) {
+	try {
+		const result = yield call(API.likePostAPI, action.data)
+		yield put({
+			type: LIKE_POST_SUCCESS,
+			data: result.data,
+		})
+	} catch (err) {
+		console.error(err)
+		yield put({
+			type: LIKE_POST_FAILURE,
+			error: err.response.data,
+		})
+	}
+}
+
+/* 좋아요 해제 요청 처리 */
+function* unlikePost(action) {
+	try {
+		const result = yield call(API.unlikePostAPI, action.data)
+		yield put({
+			type: UNLIKE_POST_SUCCESS,
+			data: result.data,
+		})
+	} catch (err) {
+		console.error(err)
+		yield put({
+			type: UNLIKE_POST_FAILURE,
+			error: err.response.data,
+		})
+	}
+}
+
 /* 댓글 작성 요청 처리 */
 function* addComment(action) {
 	try {
@@ -104,6 +144,12 @@ function* watchAddPost() {
 function* watchRemovePost() {
 	yield takeLatest(REMOVE_POST_REQUEST, removePost)
 }
+function* watchLikePost() {
+	yield takeLatest(LIKE_POST_REQUEST, likePost)
+}
+function* watchUnlikePost() {
+	yield takeLatest(UNLIKE_POST_REQUEST, unlikePost)
+}
 function* watchAddComment() {
 	yield takeLatest(ADD_COMMENT_REQUEST, addComment)
 }
@@ -113,6 +159,8 @@ export default function* postSaga() {
 		fork(watchLoadPosts),
 		fork(watchAddPost),
 		fork(watchRemovePost),
+		fork(watchLikePost),
+		fork(watchUnlikePost),
 		fork(watchAddComment),
 	])
 }

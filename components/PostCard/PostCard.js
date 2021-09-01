@@ -15,7 +15,7 @@ import PostImages from '../PostImages/PostImages' // 트윗에 첨부된 이미�
 import CommentForm from '../CommentForm/CommentForm' // 댓글 작성 폼
 import PostCardContent from './PostCardContent' // 본문에 있는 해시태그 처리
 import FollowButton from '../FollowButton/FollowButton' // 팔로우/언팔로우 버튼
-import { removePostRequest } from '../../actions/post'
+import { likePostRequest, unlikePostRequest, removePostRequest } from '../../actions/post'
 import styles from './PostCard.module.css'
 
 /** PostCard
@@ -27,12 +27,15 @@ const PostCard = ({ post }) => {
 	const dispatch = useDispatch()
 	const { removePostLoading } = useSelector((state) => state.post) // 트윗 삭제 중 state
 	const email = useSelector((state) => state.user.me?.email) // 현재 로그인 되어있는 사용자 email
-	const [liked, setLiked] = useState(false) // 좋아요 버튼 누를 시 true
 	const [commentFormOpened, setCommentFormOpened] = useState(false) // 댓글 버튼 누를 때 true
 
-	const onToggleLike = useCallback(() => {
-		setLiked((prev) => !prev)
+	const onLike = useCallback(() => {
+		dispatch(likePostRequest({ id: post.id }))
 	}, [])
+	const onUnlike = useCallback(() => {
+		dispatch(unlikePostRequest({ id: post.id }))
+	}, [])
+
 	const onToggleComment = useCallback(() => {
 		setCommentFormOpened((prev) => !prev)
 	}, [])
@@ -56,6 +59,8 @@ const PostCard = ({ post }) => {
 		[],
 	)
 
+	const liked = post.Likers.find((liker) => liker.email === email) // 로그인한 유저가 좋아요 명단에 있는지 체크
+
 	return (
 		<div className={styles.post_card}>
 			<Card
@@ -63,9 +68,9 @@ const PostCard = ({ post }) => {
 				actions={[
 					<RetweetOutlined key='retweet' />,
 					liked ? (
-						<HeartTwoTone twoToneColor='#eb2f96' key='heart' onClick={onToggleLike} />
+						<HeartTwoTone twoToneColor='#eb2f96' key='heart' onClick={onUnlike} />
 					) : (
-						<HeartOutlined key='heart' onClick={onToggleLike} />
+						<HeartOutlined key='heart' onClick={onLike} />
 					),
 					<MessageOutlined key='comment' onClick={onToggleComment} />,
 					<Popover
@@ -125,6 +130,7 @@ PostCard.propTypes = {
 		createdAt: PropTypes.string,
 		Comments: PropTypes.arrayOf(PropTypes.object),
 		Images: PropTypes.arrayOf(PropTypes.object),
+		Likers: PropTypes.arrayOf(PropTypes.object),
 	}).isRequired,
 }
 
