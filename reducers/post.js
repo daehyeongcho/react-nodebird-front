@@ -1,6 +1,3 @@
-import { nanoid } from 'nanoid'
-import faker from 'faker'
-
 import { createReducer } from '../utils'
 import {
 	LOAD_POSTS_REQUEST, // 트윗들 불러오기 요청 액션
@@ -20,49 +17,7 @@ import {
 /** post state에 들어있는 property들 */
 export const initialState = {
 	/* 서버 쪽에서 데이터를 어떤 식으로 보낼 건지 미리 물어봐야 함 */
-	mainPosts: [
-		// 홈 화면에서 띄워 줄 글 목록
-		{
-			id: nanoid(),
-			User: {
-				email: faker.internet.email(),
-				nickname: 'Randy',
-			},
-			content: '첫 번째 게시글 #해시태그 #빅테크',
-			Images: [
-				{
-					id: nanoid(),
-					src: 'https://www.google.co.kr/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png',
-				},
-				{
-					id: nanoid(),
-					src: 'http://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4OAgf?ver=6a31',
-				},
-				{
-					id: nanoid(),
-					src: 'https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg',
-				},
-			],
-			Comments: [
-				{
-					id: nanoid(),
-					User: {
-						email: faker.internet.email(),
-						nickname: 'nero',
-					},
-					content: '꿈의 기업들',
-				},
-				{
-					id: nanoid(),
-					User: {
-						email: faker.internet.email(),
-						nickname: 'randy',
-					},
-					content: '빅테크 기업들',
-				},
-			],
-		},
-	],
+	mainPosts: [],
 	imagePaths: [], // 이미지 업로드 시 경로
 	addPostLoading: false, // 트윗 작성 시도 중
 	addPostDone: false, // 트윗 작성 완료
@@ -75,37 +30,17 @@ export const initialState = {
 	addCommentError: null, // 댓글 작성 에러
 }
 
-/* 더미데이터 */
-initialState.mainPosts = initialState.mainPosts.concat(
-	Array(20)
-		.fill()
-		.map(() => ({
-			id: nanoid(),
-			User: {
-				email: faker.internet.email(),
-				nickname: faker.name.findName(),
-			},
-			content: faker.lorem.paragraph(),
-			Images: [],
-			Comments: [
-				{
-					User: {
-						email: faker.internet.email(),
-						nickname: faker.name.findName(),
-					},
-					content: faker.lorem.sentence(),
-				},
-			],
-		})),
-)
-
 /** POST, COMMENT 관련 요청들을 처리한다. */
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
 		case LOAD_POSTS_REQUEST:
 		case LOAD_POSTS_SUCCESS:
 		case LOAD_POSTS_FAILURE:
-			return createReducer(LOAD_POSTS_REQUEST, null, initialState)(state, action)
+			return createReducer(
+				LOAD_POSTS_REQUEST,
+				{ mainPosts: action.data },
+				initialState,
+			)(state, action)
 		case ADD_POST_REQUEST:
 		case ADD_POST_SUCCESS:
 		case ADD_POST_FAILURE:
@@ -129,7 +64,7 @@ const reducer = (state = initialState, action) => {
 		case ADD_COMMENT_REQUEST:
 		case ADD_COMMENT_SUCCESS:
 		case ADD_COMMENT_FAILURE:
-			/** mainPosts에서 action.data.id와 같은 post를 찾아서
+			/** mainPosts에서 action.data.PostId와 같은 post를 찾아서
 			 * 그 Comments에 새로운 댓글 추가
 			 */
 			return createReducer(

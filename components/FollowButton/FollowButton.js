@@ -28,10 +28,10 @@ const FollowButton = ({ post }) => {
 
 FollowButton.propTypes = {
 	post: PropTypes.shape({
-		id: PropTypes.string, // post의 아이디
+		id: PropTypes.number, // post의 아이디
 		User: PropTypes.object, // post의 글쓴이
 		content: PropTypes.string, // post 내용
-		createdAt: PropTypes.object, // post가 언
+		createdAt: PropTypes.string, // post가 언제 생겼는지
 		Comments: PropTypes.arrayOf(PropTypes.object),
 		Images: PropTypes.arrayOf(PropTypes.object),
 	}).isRequired,

@@ -12,7 +12,7 @@ import { loadPostsRequest } from '../actions/post'
  */
 const Home = () => {
 	const dispatch = useDispatch()
-	const { loginDone } = useSelector((state) => state.user) // 로그인 완료
+	const { me } = useSelector((state) => state.user) // 로그인 완료
 	const { mainPosts } = useSelector((state) => state.post) // 메인페이지 포스트 목록
 
 	useEffect(() => {
@@ -23,7 +23,7 @@ const Home = () => {
 	return (
 		<>
 			<AppLayout>
-				{loginDone && <PostForm />}
+				{me && <PostForm />}
 				{mainPosts.map((post) => (
 					<PostCard key={post.id} post={post} />
 				))}
