@@ -15,6 +15,10 @@ export const SIGNUP_REQUEST = 'SIGNUP_REQUEST'
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
 export const SIGNUP_FAILURE = 'SIGNUP_FAILURE'
 
+export const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST'
+export const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS'
+export const CHANGE_NICKNAME_FAILURE = 'CHANGE_NICKNAME_FAILURE'
+
 export const FOLLOW_REQUEST = 'FOLLOW_REQUEST'
 export const FOLLOW_SUCCESS = 'FOLLOW_SUCCESS'
 export const FOLLOW_FAILURE = 'FOLLOW_FAILURE'
@@ -43,6 +47,10 @@ export const logoutRequest = () => ({
 })
 export const signupRequest = (data) => ({
 	type: SIGNUP_REQUEST,
+	data,
+})
+export const changeNicknameRequest = (data) => ({
+	type: CHANGE_NICKNAME_REQUEST,
 	data,
 })
 export const followRequest = (data) => ({

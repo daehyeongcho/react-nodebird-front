@@ -1,4 +1,4 @@
-import { all, delay, fork, put, takeLatest, call } from 'redux-saga/effects'
+import { all, fork, put, takeLatest, call } from 'redux-saga/effects'
 
 import {
 	LOAD_POSTS_REQUEST,
@@ -64,15 +64,14 @@ function* addPost(action) {
 /* 트윗 삭제 요청 처리 */
 function* removePost(action) {
 	try {
-		// const result = yield call(API.removeCommentAPI)
-		yield delay(1000)
+		const result = yield call(API.removePostAPI, action.data)
 		yield put({
 			type: REMOVE_POST_SUCCESS,
-			data: action.data,
+			data: result.data,
 		})
 		yield put({
 			type: REMOVE_POST_OF_ME,
-			data: action.data,
+			data: { id: result.data.id },
 		})
 	} catch (err) {
 		console.error(err)

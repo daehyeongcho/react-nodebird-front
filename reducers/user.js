@@ -16,6 +16,9 @@ import {
 	SIGNUP_REQUEST, // 회원가입 요청 액션
 	SIGNUP_SUCCESS, // 회원가입 성공 액션
 	SIGNUP_FAILURE, // 회원가입 실패 액션
+	CHANGE_NICKNAME_REQUEST, // 회원가입 요청 액션
+	CHANGE_NICKNAME_SUCCESS, // 회원가입 성공 액션
+	CHANGE_NICKNAME_FAILURE, // 회원가입 실패 액션
 	FOLLOW_REQUEST, // 팔로우 요청 액션
 	FOLLOW_SUCCESS, // 팔로우 성공 액션
 	FOLLOW_FAILURE, // 팔로우 실패 액션
@@ -37,6 +40,9 @@ export const initialState = {
 	signupLoading: false, // 회원가입 시도 중
 	signupDone: false, // 회원가입 완료
 	signupError: null, // 회원가입 에러
+	changeNicknameLoading: false, // 회원가입 시도 중
+	changeNicknameDone: false, // 회원가입 완료
+	changeNicknameError: null, // 회원가입 에러
 	followLoading: false, // 팔로우 시도 중
 	followDone: false, // 팔로우 완료
 	followError: null, // 팔로우 에러
@@ -73,6 +79,20 @@ const reducer = (state = initialState, action) => {
 		case SIGNUP_SUCCESS:
 		case SIGNUP_FAILURE:
 			return createReducer(SIGNUP_REQUEST, null, initialState)(state, action)
+		case CHANGE_NICKNAME_REQUEST:
+		case CHANGE_NICKNAME_SUCCESS:
+		case CHANGE_NICKNAME_FAILURE:
+			/* user.me.nickname 변경 */
+			return createReducer(
+				CHANGE_NICKNAME_REQUEST,
+				{
+					me: {
+						...state.me,
+						nickname: action.data.nickname,
+					},
+				},
+				initialState,
+			)(state, action)
 		case FOLLOW_REQUEST:
 		case FOLLOW_SUCCESS:
 		case FOLLOW_FAILURE:

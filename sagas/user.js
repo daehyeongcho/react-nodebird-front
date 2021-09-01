@@ -13,6 +13,9 @@ import {
 	SIGNUP_REQUEST,
 	SIGNUP_SUCCESS,
 	SIGNUP_FAILURE,
+	CHANGE_NICKNAME_REQUEST,
+	CHANGE_NICKNAME_SUCCESS,
+	CHANGE_NICKNAME_FAILURE,
 	FOLLOW_REQUEST,
 	FOLLOW_SUCCESS,
 	FOLLOW_FAILURE,
@@ -72,14 +75,28 @@ function* logout() {
 /* SIGNUP_REQUEST 액션 처리 */
 function* signup(action) {
 	try {
-		const result = yield call(API.signupAPI, action.data)
-		console.log(result)
+		yield call(API.signupAPI, action.data)
 		yield put({
 			type: SIGNUP_SUCCESS,
 		})
 	} catch (err) {
 		yield put({
 			type: SIGNUP_FAILURE,
+			error: err.response.data,
+		})
+	}
+}
+
+function* changeNickname(action) {
+	try {
+		const result = yield call(API.changeNicknameAPI, action.data)
+		yield put({
+			type: CHANGE_NICKNAME_SUCCESS,
+			data: result.data,
+		})
+	} catch (err) {
+		yield put({
+			type: CHANGE_NICKNAME_FAILURE,
 			error: err.response.data,
 		})
 	}
@@ -132,6 +149,9 @@ function* watchLogout() {
 function* watchSignUp() {
 	yield takeLatest(SIGNUP_REQUEST, signup)
 }
+function* watchChangeNickname() {
+	yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname)
+}
 function* watchFollow() {
 	yield takeLatest(FOLLOW_REQUEST, follow)
 }
@@ -145,6 +165,7 @@ export default function* userSaga() {
 		fork(watchLogin),
 		fork(watchLogout),
 		fork(watchSignUp),
+		fork(watchChangeNickname),
 		fork(watchFollow),
 		fork(watchUnfollow),
 	])
