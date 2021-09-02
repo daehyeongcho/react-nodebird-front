@@ -13,7 +13,6 @@ import styles from './PostForm.module.css'
 const PostForm = () => {
 	const dispatch = useDispatch()
 	const { imagePaths, addPostDone, addPostLoading } = useSelector((state) => state.post) // 현재 트윗의 이미지 경로 및 작성완료 state
-	const { me } = useSelector((state) => state.user) // 현재 로그인 되어있는 유저
 	const [text, onChangeText, resetText] = useInput('') // 트윗 작성 폼의 본문 state
 	const imageInput = useRef() // 이미지 업로드 대화상자
 
