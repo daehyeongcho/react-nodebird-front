@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react'
 import { Button, Form, Input } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { addPostRequest } from '../../actions/post'
+import { addPostRequest, uploadImagesRequest, removeImage } from '../../actions/post'
 import { useInput } from '../../hooks/useInputs'
 import styles from './PostForm.module.css'
 
@@ -26,15 +26,41 @@ const PostForm = () => {
 
 	/* 트윗하기 버튼 누를 시 ADD_POST_REQUEST 요청 보냄 */
 	const onSubmit = useCallback(() => {
-		dispatch(
-			addPostRequest({ User: { email: me.email, nickname: me.nickname }, content: text }),
-		)
+		if (!text || !text.trim()) {
+			alert('게시글을 작성하세요.') // eslint-disable-line no-alert
+			return
+		}
+
+		const formData = new FormData()
+		imagePaths.forEach((imagePath) => {
+			formData.append('image', imagePath)
+		})
+		formData.append('content', text)
+		dispatch(addPostRequest(formData))
 	}, [text])
 
 	/* 이미지 업로드 대화상자 띄움 */
 	const onClickImageUpload = useCallback(() => {
 		imageInput.current.click()
 	}, [imageInput.current])
+
+	const onChangeImages = useCallback((e) => {
+		console.log('images', e.target.files)
+		const imageFormData = new FormData()
+
+		/* e.target.files이 array가 아니라 유사배열객체이기 때문 */
+		Array.prototype.forEach.call(e.target.files, (file) => {
+			imageFormData.append('image', file)
+		})
+		dispatch(uploadImagesRequest(imageFormData))
+	}, [])
+
+	const onRemoveImage = useCallback(
+		(index) => () => {
+			dispatch(removeImage({ index }))
+		},
+		[],
+	)
 
 	return (
 		<Form className={styles.form} encType='multipart/form-data' onFinish={onSubmit}>
@@ -46,7 +72,14 @@ const PostForm = () => {
 				required
 			/>
 			<div>
-				<input type='file' multiple hidden ref={imageInput} />
+				<input
+					type='file'
+					name='image'
+					multiple
+					hidden
+					ref={imageInput}
+					onChange={onChangeImages}
+				/>
 				<Button onClick={onClickImageUpload}>이미지 업로드</Button>
 				<Button
 					type='primary'
@@ -58,11 +91,11 @@ const PostForm = () => {
 				</Button>
 			</div>
 			<div>
-				{imagePaths.map((imagePath) => (
+				{imagePaths.map((imagePath, index) => (
 					<div key={imagePath} className={styles.img_group}>
 						<img src={imagePath} alt={imagePath} />
 						<div>
-							<Button>제거</Button>
+							<Button onClick={onRemoveImage(index)}>제거</Button>
 						</div>
 					</div>
 				))}

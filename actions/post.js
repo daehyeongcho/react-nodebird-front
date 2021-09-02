@@ -11,6 +11,10 @@ export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST'
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS'
 export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE'
 
+export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST'
+export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS'
+export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE'
+
 export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST'
 export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS'
 export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE'
@@ -22,6 +26,8 @@ export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE'
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST'
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS'
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE'
+
+export const REMOVE_IMAGE = 'REMOVE_IMAGE'
 
 /** action creator */
 export const loadPostsRequest = () => ({
@@ -35,6 +41,10 @@ export const removePostRequest = (data) => ({
 	type: REMOVE_POST_REQUEST,
 	data,
 })
+export const uploadImagesRequest = (data) => ({
+	type: UPLOAD_IMAGES_REQUEST,
+	data,
+})
 export const likePostRequest = (data) => ({
 	type: LIKE_POST_REQUEST,
 	data,
@@ -45,5 +55,9 @@ export const unlikePostRequest = (data) => ({
 })
 export const addCommentRequest = (data) => ({
 	type: ADD_COMMENT_REQUEST,
+	data,
+})
+export const removeImage = (data) => ({
+	type: REMOVE_IMAGE,
 	data,
 })

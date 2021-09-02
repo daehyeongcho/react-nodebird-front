@@ -17,7 +17,7 @@ const FollowList = ({ header, data }) => {
 
 	const onCancel = useCallback(
 		(email) => () => {
-			if (header.substr(0, 3) === '팔로잉') {
+			if (header.startsWith('팔로잉')) {
 				dispatch(unfollowRequest({ email }))
 			} else {
 				dispatch(removeFollowerRequest({ email }))

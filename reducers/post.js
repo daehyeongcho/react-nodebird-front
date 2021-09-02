@@ -9,6 +9,9 @@ import {
 	REMOVE_POST_REQUEST, // 트윗 삭제 요청 액션
 	REMOVE_POST_SUCCESS, // 트윗 삭제 성공 액션
 	REMOVE_POST_FAILURE, // 트윗 삭제 실패 액션
+	UPLOAD_IMAGES_REQUEST, // 이미지 업로드 요청 액션
+	UPLOAD_IMAGES_SUCCESS, // 이미지 업로드 성공 액션
+	UPLOAD_IMAGES_FAILURE, // 이미지 업로드 실패 액션
 	LIKE_POST_REQUEST, // 좋아요 요청 액션
 	LIKE_POST_SUCCESS, // 좋아요 성공 액션
 	LIKE_POST_FAILURE, // 좋아요 실패 액션
@@ -17,7 +20,8 @@ import {
 	UNLIKE_POST_FAILURE, // 좋아요 해제 실패 액션
 	ADD_COMMENT_REQUEST, // 댓글 작성 요청 액션
 	ADD_COMMENT_SUCCESS, // 댓글 작성 성공 액션
-	ADD_COMMENT_FAILURE, // 댓글 작성 실패 액션
+	ADD_COMMENT_FAILURE,
+	REMOVE_IMAGE, // 이미지 삭제 액션
 } from '../actions/post'
 
 /** post state에 들어있는 property들 */
@@ -31,6 +35,9 @@ export const initialState = {
 	removePostLoading: false, // 트윗 삭제 시도 중
 	removePostDone: false, // 트윗 삭제 완료
 	removePostError: null, // 트윗 삭제 에러
+	uploadImagesLoading: false, // 트윗 삭제 시도 중
+	uploadImagesDone: false, // 트윗 삭제 완료
+	uploadImagesError: null, // 트윗 삭제 에러
 	likePostLoading: false, // 좋아요 시도 중
 	likePostDone: false, // 좋아요 완료
 	likePostError: null, // 좋아요 에러
@@ -59,7 +66,10 @@ const reducer = (state = initialState, action) => {
 			/* mainPosts에 dummyPost(action.data) 추가 */
 			return createReducer(
 				ADD_POST_REQUEST,
-				{ mainPosts: [action.data, ...state.mainPosts] },
+				{
+					mainPosts: [action.data, ...state.mainPosts],
+					imagePaths: [],
+				},
 				initialState,
 			)(state, action)
 		case REMOVE_POST_REQUEST:
@@ -70,6 +80,17 @@ const reducer = (state = initialState, action) => {
 				REMOVE_POST_REQUEST,
 				{
 					mainPosts: state.mainPosts.filter((post) => post.id !== action.data.id),
+				},
+				initialState,
+			)(state, action)
+		case UPLOAD_IMAGES_REQUEST:
+		case UPLOAD_IMAGES_SUCCESS:
+		case UPLOAD_IMAGES_FAILURE:
+			/* */
+			return createReducer(
+				UPLOAD_IMAGES_REQUEST,
+				{
+					imagePaths: action.data,
 				},
 				initialState,
 			)(state, action)
@@ -129,6 +150,11 @@ const reducer = (state = initialState, action) => {
 				},
 				initialState,
 			)(state, action)
+		case REMOVE_IMAGE: // 동기액션이라 action type이 하나면 된다.
+			return {
+				...state,
+				imagePaths: state.imagePaths.filter((v, index) => index !== action.data.index),
+			}
 		default:
 			return state
 	}
