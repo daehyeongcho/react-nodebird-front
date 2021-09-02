@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react'
 import Head from 'next/head'
 import Router from 'next/router'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import AppLayout from '../components/AppLayout/AppLayout'
 import FollowList from '../components/FollowList/FollowList'
 import NicknameEditForm from '../components/NicknameEditForm/NicknameEditForm'
+import { loadFollowersRequest, loadFollowingsRequest } from '../actions/user'
 
 /** 프로필 페이지
  * - 로그인 되어 있으면 닉네임 변경 폼과 팔로잉, 팔로우 목록을 보여준다.
  */
 const Profile = () => {
+	const dispatch = useDispatch()
 	const { me } = useSelector((state) => state.user) // 현재 로그인 되어있는 유저
 
 	useEffect(() => {
@@ -18,6 +20,11 @@ const Profile = () => {
 			Router.push('/') // 내 정보가 없으면 메인 페이지로
 		}
 	}, [me?.email])
+
+	useEffect(() => {
+		dispatch(loadFollowersRequest())
+		dispatch(loadFollowingsRequest())
+	}, [])
 
 	return (
 		<>

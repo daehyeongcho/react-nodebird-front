@@ -25,6 +25,15 @@ import {
 	UNFOLLOW_REQUEST, // 언팔로우 요청 액션
 	UNFOLLOW_SUCCESS, // 언팔로우 성공 액션
 	UNFOLLOW_FAILURE, // 언팔로우 실패 액션
+	REMOVE_FOLLOWER_REQUEST, // 팔로워 차단 요청 액션
+	REMOVE_FOLLOWER_SUCCESS, // 팔로워 차단 성공 액션
+	REMOVE_FOLLOWER_FAILURE, // 팔로워 차단 실패 액션
+	LOAD_FOLLOWERS_REQUEST, // 팔로워 불러오기 요청 액션
+	LOAD_FOLLOWERS_SUCCESS, // 팔로워 불러오기 성공 액션
+	LOAD_FOLLOWERS_FAILURE, // 팔로워 불러오기 실패 액션
+	LOAD_FOLLOWINGS_REQUEST, // 팔로잉 불러오기 요청 액션
+	LOAD_FOLLOWINGS_SUCCESS, // 팔로잉 불러오기 성공 액션
+	LOAD_FOLLOWINGS_FAILURE, // 팔로잉 불러오기 실패 액션
 	ADD_POST_TO_ME, // 새 글 쓰고 user.me.Posts에 추가하는 액션
 	REMOVE_POST_OF_ME, // 글 지우고 user.me.Posts에서 지우는 액션
 } from '../actions/user'
@@ -49,6 +58,15 @@ export const initialState = {
 	unfollowLoading: false, // 언팔로우 시도 중
 	unfollowDone: false, // 언팔로우 완료
 	unfollowError: null, // 언팔로우 에러
+	removeFollowerLoading: false, // 팔로워 차단 시도 중
+	removeFollowerDone: false, // 팔로워 차단 완료
+	removeFollowerError: null, // 팔로워 차단 에러
+	loadFollowersLoading: false, // 팔로워 불러오기 시도 중
+	loadFollowersDone: false, // 팔로워 불러오기 완료
+	loadFollowersError: null, // 팔로워 불러오기 에러
+	loadFollowingsLoading: false, // 팔로잉 불러오기 시도 중
+	loadFollowingsDone: false, // 팔로잉 불러오기 완료
+	loadFollowingsError: null, // 팔로잉 불러오기 에러
 	me: null, // 로그인 되어있는 유저 정보
 	signUpData: {}, // 회원가입 폼에 입력한 정보
 	loginData: {}, // 로그인 폼에 입력한 정보
@@ -122,6 +140,48 @@ const reducer = (state = initialState, action) => {
 						Followings: state.me.Followings.filter(
 							(following) => following.email !== action.data.email,
 						),
+					},
+				},
+				initialState,
+			)(state, action)
+		case REMOVE_FOLLOWER_REQUEST:
+		case REMOVE_FOLLOWER_SUCCESS:
+		case REMOVE_FOLLOWER_FAILURE:
+			/* user.me.Followers에서 팔로워 삭제 */
+			return createReducer(
+				REMOVE_FOLLOWER_REQUEST,
+				{
+					me: {
+						...state.me,
+						Followers: state.me.Followers.filter(
+							(follower) => follower.email !== action.data.email,
+						),
+					},
+				},
+				initialState,
+			)(state, action)
+		case LOAD_FOLLOWERS_REQUEST:
+		case LOAD_FOLLOWERS_SUCCESS:
+		case LOAD_FOLLOWERS_FAILURE:
+			return createReducer(
+				LOAD_FOLLOWERS_REQUEST,
+				{
+					me: {
+						...state.me,
+						Followers: action.data,
+					},
+				},
+				initialState,
+			)(state, action)
+		case LOAD_FOLLOWINGS_REQUEST:
+		case LOAD_FOLLOWINGS_SUCCESS:
+		case LOAD_FOLLOWINGS_FAILURE:
+			return createReducer(
+				LOAD_FOLLOWINGS_REQUEST,
+				{
+					me: {
+						...state.me,
+						Followings: action.data,
 					},
 				},
 				initialState,

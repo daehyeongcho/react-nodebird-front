@@ -1,8 +1,10 @@
 import React, { useMemo, useCallback } from 'react'
 import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
 import { List, Button, Card } from 'antd'
 import { StopOutlined } from '@ant-design/icons'
 
+import { unfollowRequest, removeFollowerRequest } from '../../actions/user'
 import styles from './FollowList.module.css'
 
 /** 팔로잉/팔로워 목록 컴포넌트
@@ -10,13 +12,25 @@ import styles from './FollowList.module.css'
  * 받아와서 antd List 컴포넌트로 렌더링함
  */
 const FollowList = ({ header, data }) => {
+	const dispatch = useDispatch()
 	const grid = useMemo(() => ({ gutter: 4, xs: 2, md: 3 }), [])
+
+	const onCancel = useCallback(
+		(email) => () => {
+			if (header.substr(0, 3) === '팔로잉') {
+				dispatch(unfollowRequest({ email }))
+			} else {
+				dispatch(removeFollowerRequest({ email }))
+			}
+		},
+		[],
+	)
 
 	/* data list 렌더링 */
 	const renderFollow = useCallback(
 		(item) => (
 			<List.Item className={styles.list_item}>
-				<Card actions={[<StopOutlined key='stop' />]}>
+				<Card actions={[<StopOutlined key='stop' onClick={onCancel(item.email)} />]}>
 					<Card.Meta description={item.nickname} />
 				</Card>
 			</List.Item>
