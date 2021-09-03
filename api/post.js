@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const loadPostsAPI = () => axios.get('/posts')
+export const loadPostsAPI = (data) => axios.get(`/posts?lastId=${data?.lastId || 0}`)
 export const addPostAPI = (data) => axios.post('/post', data)
 export const removePostAPI = (data) => axios.delete(`/post/${data.id}`)
 export const uploadImagesAPI = (data) => axios.post(`/post/images`, data)

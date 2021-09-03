@@ -34,8 +34,9 @@ export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE'
 export const REMOVE_IMAGE = 'REMOVE_IMAGE'
 
 /** action creator */
-export const loadPostsRequest = () => ({
+export const loadPostsRequest = (data) => ({
 	type: LOAD_POSTS_REQUEST,
+	data,
 })
 export const addPostRequest = (data) => ({
 	type: ADD_POST_REQUEST,

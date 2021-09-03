@@ -13,7 +13,9 @@ import { loadPostsRequest } from '../actions/post'
 const Home = () => {
 	const dispatch = useDispatch()
 	const { me } = useSelector((state) => state.user) // 로그인 완료
-	const { mainPosts, retweetError } = useSelector((state) => state.post) // 메인페이지 포스트 목록
+	const { mainPosts, hasMorePosts, loadPostsLoading, retweetError } = useSelector(
+		(state) => state.post,
+	)
 
 	/* 리트윗 에러가 나면 alert. */
 	useEffect(() => {
@@ -26,6 +28,26 @@ const Home = () => {
 		dispatch(loadMyInfoRequest()) // 로그인 된 사용자 정보 불러옴
 		dispatch(loadPostsRequest()) // 모든 글들 불러옴
 	}, [])
+
+	/* 스크롤 */
+	useEffect(() => {
+		function onScroll() {
+			if (
+				window.pageYOffset + document.documentElement.clientHeight >
+				document.documentElement.scrollHeight - 300 // 스크롤 끝까지 다내리면
+			) {
+				if (hasMorePosts && !loadPostsLoading) {
+					const lastId = mainPosts[mainPosts.length - 1]?.id || 0
+					console.log('lastId', lastId)
+					dispatch(loadPostsRequest({ lastId }))
+				}
+			}
+		}
+		window.addEventListener('scroll', onScroll)
+		return () => {
+			window.removeEventListener('scroll', onScroll)
+		}
+	}, [hasMorePosts, loadPostsLoading, mainPosts])
 
 	return (
 		<>

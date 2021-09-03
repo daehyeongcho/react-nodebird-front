@@ -32,6 +32,7 @@ export const initialState = {
 	/* 서버 쪽에서 데이터를 어떤 식으로 보낼 건지 미리 물어봐야 함 */
 	mainPosts: [],
 	imagePaths: [], // 이미지 업로드 시 경로
+	hasMorePosts: true, // 더 불러올 트윗이 있는지
 	addPostLoading: false, // 트윗 작성 시도 중
 	addPostDone: false, // 트윗 작성 완료
 	addPostError: null, // 트윗 작성 에러
@@ -63,7 +64,15 @@ const reducer = (state = initialState, action) => {
 		case LOAD_POSTS_FAILURE:
 			return createReducer(
 				LOAD_POSTS_REQUEST,
-				{ mainPosts: action.data },
+				{
+					mainPosts: [
+						...state.mainPosts,
+						...(Array.isArray(action.data) ? action.data : []),
+					],
+					hasMorePosts: Array.isArray(action.data)
+						? action.data.length === 10
+						: state.hasMorePosts, // 불러온 글이 10개가 안되면 더이상 불러올게 없다고 판단
+				},
 				initialState,
 			)(state, action)
 		case ADD_POST_REQUEST:

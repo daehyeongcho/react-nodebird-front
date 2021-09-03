@@ -1,4 +1,4 @@
-import { all, fork, put, takeLatest, call } from 'redux-saga/effects'
+import { all, fork, put, takeLatest, call, throttle } from 'redux-saga/effects'
 
 import {
 	LOAD_POSTS_REQUEST,
@@ -30,9 +30,9 @@ import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../actions/user'
 import * as API from '../api/post'
 
 /* 트윗 불러오기 요청 처리 */
-function* loadPosts() {
+function* loadPosts(action) {
 	try {
-		const result = yield call(API.loadPostsAPI)
+		const result = yield call(API.loadPostsAPI, action.data)
 		yield put({
 			type: LOAD_POSTS_SUCCESS,
 			data: result.data,
@@ -175,7 +175,7 @@ function* addComment(action) {
 
 /* 요청 리스너 */
 function* watchLoadPosts() {
-	yield takeLatest(LOAD_POSTS_REQUEST, loadPosts)
+	yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts)
 }
 function* watchAddPost() {
 	yield takeLatest(ADD_POST_REQUEST, addPost)
