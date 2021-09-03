@@ -13,7 +13,14 @@ import { loadPostsRequest } from '../actions/post'
 const Home = () => {
 	const dispatch = useDispatch()
 	const { me } = useSelector((state) => state.user) // 로그인 완료
-	const { mainPosts } = useSelector((state) => state.post) // 메인페이지 포스트 목록
+	const { mainPosts, retweetError } = useSelector((state) => state.post) // 메인페이지 포스트 목록
+
+	/* 리트윗 에러가 나면 alert. */
+	useEffect(() => {
+		if (retweetError) {
+			alert(retweetError) // eslint-disable-line no-alert
+		}
+	}, [retweetError])
 
 	useEffect(() => {
 		dispatch(loadMyInfoRequest()) // 로그인 된 사용자 정보 불러옴

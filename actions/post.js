@@ -23,6 +23,10 @@ export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST'
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS'
 export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE'
 
+export const RETWEET_REQUEST = 'RETWEET_REQUEST'
+export const RETWEET_SUCCESS = 'RETWEET_SUCCESS'
+export const RETWEET_FAILURE = 'RETWEET_FAILURE'
+
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST'
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS'
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE'
@@ -51,6 +55,10 @@ export const likePostRequest = (data) => ({
 })
 export const unlikePostRequest = (data) => ({
 	type: UNLIKE_POST_REQUEST,
+	data,
+})
+export const retweetRequest = (data) => ({
+	type: RETWEET_REQUEST,
 	data,
 })
 export const addCommentRequest = (data) => ({

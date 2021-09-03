@@ -18,6 +18,9 @@ import {
 	UNLIKE_POST_REQUEST, // 좋아요 해제 요청 액션
 	UNLIKE_POST_SUCCESS, // 좋아요 해제 성공 액션
 	UNLIKE_POST_FAILURE, // 좋아요 해제 실패 액션
+	RETWEET_REQUEST, // 리트윗 요청 액션
+	RETWEET_SUCCESS, // 리트윗 성공 액션
+	RETWEET_FAILURE, // 리트윗 실패 액션
 	ADD_COMMENT_REQUEST, // 댓글 작성 요청 액션
 	ADD_COMMENT_SUCCESS, // 댓글 작성 성공 액션
 	ADD_COMMENT_FAILURE,
@@ -44,6 +47,9 @@ export const initialState = {
 	unlikePostLoading: false, // 좋아요 해제 시도 중
 	unlikePostDone: false, // 좋아요 해제 완료
 	unlikePostError: null, // 좋아요 해제 에러
+	retweetLoading: false, // 리트윗 시도 중
+	retweetDone: false, // 리트윗 완료
+	retweetError: null, // 리트윗 에러
 	addCommentLoading: false, // 댓글 작성 시도 중
 	addCommentDone: false, // 댓글 작성 완료
 	addCommentError: null, // 댓글 작성 에러
@@ -129,6 +135,16 @@ const reducer = (state = initialState, action) => {
 							  }
 							: post,
 					),
+				},
+				initialState,
+			)(state, action)
+		case RETWEET_REQUEST:
+		case RETWEET_SUCCESS:
+		case RETWEET_FAILURE:
+			return createReducer(
+				RETWEET_REQUEST,
+				{
+					mainPosts: [action.data, ...state.mainPosts],
 				},
 				initialState,
 			)(state, action)

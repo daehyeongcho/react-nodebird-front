@@ -19,6 +19,9 @@ import {
 	UNLIKE_POST_REQUEST,
 	UNLIKE_POST_SUCCESS,
 	UNLIKE_POST_FAILURE,
+	RETWEET_REQUEST,
+	RETWEET_SUCCESS,
+	RETWEET_FAILURE,
 	ADD_COMMENT_REQUEST,
 	ADD_COMMENT_SUCCESS,
 	ADD_COMMENT_FAILURE,
@@ -136,6 +139,23 @@ function* unlikePost(action) {
 	}
 }
 
+/* 리트윗 요청 처리 */
+function* retweet(action) {
+	try {
+		const result = yield call(API.retweetAPI, action.data)
+		yield put({
+			type: RETWEET_SUCCESS,
+			data: result.data,
+		})
+	} catch (err) {
+		console.error(err)
+		yield put({
+			type: RETWEET_FAILURE,
+			error: err.response.data,
+		})
+	}
+}
+
 /* 댓글 작성 요청 처리 */
 function* addComment(action) {
 	try {
@@ -172,6 +192,9 @@ function* watchLikePost() {
 function* watchUnlikePost() {
 	yield takeLatest(UNLIKE_POST_REQUEST, unlikePost)
 }
+function* watchRetweet() {
+	yield takeLatest(RETWEET_REQUEST, retweet)
+}
 function* watchAddComment() {
 	yield takeLatest(ADD_COMMENT_REQUEST, addComment)
 }
@@ -184,6 +207,7 @@ export default function* postSaga() {
 		fork(watchUploadImages),
 		fork(watchLikePost),
 		fork(watchUnlikePost),
+		fork(watchRetweet),
 		fork(watchAddComment),
 	])
 }
