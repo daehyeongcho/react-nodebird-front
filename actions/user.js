@@ -3,6 +3,10 @@ export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST'
 export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS'
 export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE'
 
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST'
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS'
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE'
+
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_FAILURE = 'LOGIN_FAILURE'
@@ -49,6 +53,10 @@ export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME'
  */
 export const loadMyInfoRequest = () => ({
 	type: LOAD_MY_INFO_REQUEST,
+})
+export const loadUserRequest = (data) => ({
+	type: LOAD_USER_REQUEST,
+	data,
 })
 export const loginRequest = (data) => ({
 	type: LOGIN_REQUEST,

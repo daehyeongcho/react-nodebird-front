@@ -7,6 +7,9 @@ import {
 	LOAD_MY_INFO_REQUEST, // 로그인 유저 정보 불러오기 요청 액션
 	LOAD_MY_INFO_SUCCESS, // 로그인 유저 정보 불러오기 성공 액션
 	LOAD_MY_INFO_FAILURE, // 로그인 유저 정보 불러오기 실패 액션
+	LOAD_USER_REQUEST, // 유저 정보 불러오기 요청 액션
+	LOAD_USER_SUCCESS, // 유저 정보 불러오기 성공 액션
+	LOAD_USER_FAILURE, // 유저 정보 불러오기 실패 액션
 	LOGIN_REQUEST, // 로그인 요청 액션
 	LOGIN_SUCCESS, // 로그인 성공 액션
 	LOGIN_FAILURE, // 로그인 실패 액션
@@ -43,6 +46,9 @@ export const initialState = {
 	loadMyInfoLoading: false, // 로그인 유저 정보 불러오기 시도 중
 	loadMyInfoDone: false, // 로그인 유저 정보 불러오기 완료
 	loadMyInfoError: null, // 로그인 유저 정보 불러오기 에러
+	loadUserLoading: false, // 로그인 유저 정보 불러오기 시도 중
+	loadUserDone: false, // 로그인 유저 정보 불러오기 완료
+	loadUserError: null, // 로그인 유저 정보 불러오기 에러
 	logoutLoading: false, // 로그아웃 시도 중
 	logoutDone: false, // 로그아웃 완료
 	logoutError: null, // 로그아웃 에러
@@ -68,8 +74,7 @@ export const initialState = {
 	loadFollowingsDone: false, // 팔로잉 불러오기 완료
 	loadFollowingsError: null, // 팔로잉 불러오기 에러
 	me: null, // 로그인 되어있는 유저 정보
-	signUpData: {}, // 회원가입 폼에 입력한 정보
-	loginData: {}, // 로그인 폼에 입력한 정보
+	userInfo: null, // 불러올 사용자 정보
 }
 
 const reducer = (state = initialState, action) => {
@@ -81,6 +86,17 @@ const reducer = (state = initialState, action) => {
 			return createReducer(
 				LOAD_MY_INFO_REQUEST,
 				{ me: action.data },
+				initialState,
+			)(state, action)
+		case LOAD_USER_REQUEST:
+		case LOAD_USER_SUCCESS:
+		case LOAD_USER_FAILURE:
+			/* user.userInfo에 사용자 정보 추가 */
+			return createReducer(
+				LOAD_USER_REQUEST,
+				{
+					userInfo: action.data,
+				},
 				initialState,
 			)(state, action)
 		case LOGIN_REQUEST:

@@ -4,6 +4,9 @@ import {
 	LOAD_MY_INFO_REQUEST,
 	LOAD_MY_INFO_SUCCESS,
 	LOAD_MY_INFO_FAILURE,
+	LOAD_USER_REQUEST,
+	LOAD_USER_SUCCESS,
+	LOAD_USER_FAILURE,
 	LOGIN_REQUEST,
 	LOGIN_SUCCESS,
 	LOGIN_FAILURE,
@@ -33,8 +36,25 @@ import {
 	LOAD_FOLLOWINGS_FAILURE,
 } from '../actions/user'
 import * as API from '../api/user'
+import { camelize } from '../utils'
 
-function* loadMyInfo() {
+const requestActionTypes = [
+	LOAD_MY_INFO_REQUEST,
+	LOAD_USER_REQUEST,
+	LOGIN_REQUEST,
+	LOGOUT_REQUEST,
+	SIGNUP_REQUEST,
+	CHANGE_NICKNAME_REQUEST,
+	FOLLOW_REQUEST,
+	UNFOLLOW_REQUEST,
+	REMOVE_FOLLOWER_REQUEST,
+	LOAD_FOLLOWERS_REQUEST,
+	LOAD_FOLLOWINGS_REQUEST,
+]
+const workers = {}
+
+/* LOAD_MY_INFO_REQUEST 액션 처리 */
+workers.loadMyInfo = function* loadMyInfo() {
 	try {
 		const result = yield call(API.loadMyInfoAPI)
 		yield put({
@@ -49,8 +69,24 @@ function* loadMyInfo() {
 	}
 }
 
+/* LOAD_USER_REQUEST 액션 처리 */
+workers.loadUser = function* loadUser(action) {
+	try {
+		const result = yield call(API.loadUserAPI, action.data)
+		yield put({
+			type: LOAD_USER_SUCCESS,
+			data: result.data,
+		})
+	} catch (err) {
+		yield put({
+			type: LOAD_USER_FAILURE,
+			error: err.response.data,
+		})
+	}
+}
+
 /* LOGIN_REQUEST 액션 처리 */
-function* login(action) {
+workers.login = function* login(action) {
 	try {
 		const result = yield call(API.loginAPI, action.data)
 		yield put({
@@ -66,7 +102,7 @@ function* login(action) {
 }
 
 /* LOGOUT_REQUEST 액션 처리 */
-function* logout() {
+workers.logout = function* logout() {
 	try {
 		const result = yield call(API.logoutAPI)
 		console.log(result)
@@ -82,7 +118,7 @@ function* logout() {
 }
 
 /* SIGNUP_REQUEST 액션 처리 */
-function* signup(action) {
+workers.signup = function* signup(action) {
 	try {
 		yield call(API.signupAPI, action.data)
 		yield put({
@@ -96,7 +132,8 @@ function* signup(action) {
 	}
 }
 
-function* changeNickname(action) {
+/* CHANGE_NICKNAME_SUCCESS 액션 처리 */
+workers.changeNickname = function* changeNickname(action) {
 	try {
 		const result = yield call(API.changeNicknameAPI, action.data)
 		yield put({
@@ -112,7 +149,7 @@ function* changeNickname(action) {
 }
 
 /* FOLLOW_REQUEST 액션 처리 */
-function* follow(action) {
+workers.follow = function* follow(action) {
 	try {
 		const result = yield call(API.followAPI, action.data)
 		yield put({
@@ -128,7 +165,7 @@ function* follow(action) {
 }
 
 /* UNFOLLOW_REQUEST 액션 처리 */
-function* unfollow(action) {
+workers.unfollow = function* unfollow(action) {
 	try {
 		const result = yield call(API.unfollowAPI, action.data)
 		yield put({
@@ -144,7 +181,7 @@ function* unfollow(action) {
 }
 
 /* REMOVE_FOLLOWER_REQUEST 액션 처리 */
-function* removeFollower(action) {
+workers.removeFollower = function* removeFollower(action) {
 	try {
 		const result = yield call(API.removeFollowerAPI, action.data)
 		yield put({
@@ -160,7 +197,7 @@ function* removeFollower(action) {
 }
 
 /* LOAD_FOLLOWERS_REQUEST 액션 처리 */
-function* loadFollowers(action) {
+workers.loadFollowers = function* loadFollowers(action) {
 	try {
 		const result = yield call(API.loadFollowersAPI, action.data)
 		yield put({
@@ -176,7 +213,7 @@ function* loadFollowers(action) {
 }
 
 /* LOAD_FOLLOWINGS_REQUEST 액션 처리 */
-function* loadFollowings(action) {
+workers.loadFollowings = function* loadFollowings(action) {
 	try {
 		const result = yield call(API.loadFollowingsAPI, action.data)
 		yield put({
@@ -191,49 +228,22 @@ function* loadFollowings(action) {
 	}
 }
 
-/* 리스너 */
-function* watchLoadMyInfo() {
-	yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo)
-}
-function* watchLogin() {
-	yield takeLatest(LOGIN_REQUEST, login)
-}
-function* watchLogout() {
-	yield takeLatest(LOGOUT_REQUEST, logout)
-}
-function* watchSignUp() {
-	yield takeLatest(SIGNUP_REQUEST, signup)
-}
-function* watchChangeNickname() {
-	yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname)
-}
-function* watchFollow() {
-	yield takeLatest(FOLLOW_REQUEST, follow)
-}
-function* watchUnfollow() {
-	yield takeLatest(UNFOLLOW_REQUEST, unfollow)
-}
-function* watchRemoveFollower() {
-	yield takeLatest(REMOVE_FOLLOWER_REQUEST, removeFollower)
-}
-function* watchLoadFollowers() {
-	yield takeLatest(LOAD_FOLLOWERS_REQUEST, loadFollowers)
-}
-function* watchLoadFollowings() {
-	yield takeLatest(LOAD_FOLLOWINGS_REQUEST, loadFollowings)
-}
+/** watcher : 리스너 같은 역할
+ * function* watchLoadMyInfo() {
+ *   yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo)
+ * }
+ * 형태의 generator 일괄 생성
+ */
+const watchers = {}
+requestActionTypes.forEach((REQUEST) => {
+	const type = REQUEST.replace('_REQUEST', '')
+	const workerName = camelize(type)
+	watchers[workerName] = function* watcher() {
+		yield takeLatest(REQUEST, workers[workerName])
+	}
+})
 
+/* watcher들 일괄적으로 fork함 */
 export default function* userSaga() {
-	yield all([
-		fork(watchLoadMyInfo),
-		fork(watchLogin),
-		fork(watchLogout),
-		fork(watchSignUp),
-		fork(watchChangeNickname),
-		fork(watchFollow),
-		fork(watchUnfollow),
-		fork(watchRemoveFollower),
-		fork(watchLoadFollowers),
-		fork(watchLoadFollowings),
-	])
+	yield all(Object.values(watchers).map((watcher) => fork(watcher)))
 }

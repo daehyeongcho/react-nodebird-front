@@ -3,12 +3,15 @@ import PropTypes from 'prop-types'
 import Head from 'next/head'
 import Router from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
+import { END } from 'redux-saga'
+import axios from 'axios'
 
 import { Form, Input, Checkbox, Button } from 'antd'
 
 import AppLayout from '../components/AppLayout/AppLayout'
 import useInputs from '../hooks/useInputs'
-import { signupRequest } from '../actions/user'
+import { signupRequest, loadMyInfoRequest } from '../actions/user'
+import wrapper from '../store/configureStore'
 import styles from './signup.module.css'
 
 /* 빨간색 에러메시지를 위한 스타일드 컴포넌트 */
@@ -95,9 +98,8 @@ const Signup = () => {
 	}, [signupDone, signupError])
 
 	useEffect(() => {
-		/* 로그인 성공하면 메인 페이지로 */
 		if (me?.email) {
-			Router.push('/') // 내 정보가 없으면 메인 페이지로
+			Router.push('/') // 로그인 정보가 존재하면 메인 페이지로
 		}
 	}, [me?.email])
 
@@ -164,5 +166,19 @@ const Signup = () => {
 		</>
 	)
 }
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+	console.log(req.headers)
+	const cookie = req ? req.headers.cookie : ''
+	axios.defaults.headers.Cookie = '' // 서버에서 공유하는 쿠키를 우선 비워주고
+	if (req && cookie) {
+		axios.defaults.headers.Cookie = cookie // 쿠키로 요청이 올때만 (로그인할 때만) 서버에서 쿠키 보냄.
+	}
+
+	store.dispatch(loadMyInfoRequest()) // 로그인 된 유저 정보 불러옴
+
+	store.dispatch(END) // REQUEST -> SUCCESS 될 때까지 기다려줌.
+	await store.sagaTask.toPromise()
+})
 
 export default Signup
