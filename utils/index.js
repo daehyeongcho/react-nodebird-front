@@ -8,50 +8,31 @@
  */
 export const camelize = (str) => str.toLowerCase().replace(/_([a-z])/g, (g) => g[1].toUpperCase())
 
-/** createReducer
- * - _REQUEST, _SUCCESS, _FAILURE 액션 처리하는 리듀서 생성
- * - ex. 패러미터로 typeRequest에 ADD_POST_REQUEST와 post업데이트를 위한 data가 들어오면
- * - createReducer는 ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE 액션에 대해
- * - addPostLoading, addPostDone, addPostError를 적절히 조작하고,
- * - 나머지 값 변경은 data를 통해 해 줌.
+/** reducerWithRequestAndFailure
+ * - _REQUEST, _FAILURE 액션 처리
  */
-export const createReducer = (typeRequest, data, initialState) => {
-	const type = typeRequest.replace('_REQUEST', '') // ADD_POST
-	const [typeSuccess, typeFailure] = [`${type}_SUCCESS`, `${type}_FAILURE`] // ADD_POST_SUCCESS, ADD_POST_FAILURE
+export const reducerWithRequestAndFailure = (action, draft) => {
+	const type = action.type.slice(0, -8) // ADD_POST
+	const [REQUEST, FAILURE] = [`${type}_REQUEST`, `${type}_FAILURE`] // ADD_POST_REQUEST, ADD_POST_FAILURE
 	const [loading, done, error] = [
 		`${camelize(type)}Loading`, // addPostLoading
 		`${camelize(type)}Done`, // addPostDone
 		`${camelize(type)}Error`, // addPostError
 	]
 
-	/* (state, action) => state 형태의 리듀서 함수를 return한다. */
-	return (state = initialState, action) => {
-		switch (action.type) {
-			case typeRequest: // ADD_POST_REQUEST
-				return {
-					...state,
-					[loading]: true, // ADD_POST를 요청했고 응답 기다리는 중
-					[done]: false, // 완료 안됨
-					[error]: null, // 에러 없음
-				}
-			case typeSuccess: // ADD_POST_SUCCESS
-				return {
-					...state,
-					[loading]: false,
-					[done]: true, // ADD_POST 완료
-					[error]: null,
-					...data, // state에 업데이트 될 내용들
-				}
-			case typeFailure: // ADD_POST_FAILURE
-				return {
-					...state,
-					[loading]: false,
-					[done]: false,
-					[error]: action.error,
-				}
-			default:
-				return state
-		}
+	switch (action.type) {
+		case REQUEST: // ADD_POST_REQUEST
+			draft[loading] = true // ADD_POST를 요청했고 응답 기다리는 중
+			draft[done] = false // 완료 안됨
+			draft[error] = null // 에러 없음
+			break
+		case FAILURE: // ADD_POST_FAILURE
+			draft[loading] = false
+			draft[done] = false
+			draft[error] = action.error
+			break
+		default:
+			break
 	}
 }
 

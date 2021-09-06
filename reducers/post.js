@@ -1,32 +1,16 @@
-import { createReducer } from '../utils'
+import produce from '../utils/produce'
+
+import { reducerWithRequestAndFailure } from '../utils'
 import {
-	LOAD_POSTS_REQUEST, // 트윗들 불러오기 요청 액션
 	LOAD_POSTS_SUCCESS, // 트윗들 불러오기 성공 액션
-	LOAD_POSTS_FAILURE, // 트윗들 불러오기 실패 액션
-	LOAD_POST_REQUEST, // 원하는 트윗 불러오기 요청 액션
 	LOAD_POST_SUCCESS, // 원하는 트윗 불러오기 성공 액션
-	LOAD_POST_FAILURE, // 원하는 트윗 불러오기 실패 액션
-	ADD_POST_REQUEST, // 트윗 작성 요청 액션
 	ADD_POST_SUCCESS, // 트윗 작성 성공 액션
-	ADD_POST_FAILURE, // 트윗 작성 실패 액션
-	REMOVE_POST_REQUEST, // 트윗 삭제 요청 액션
 	REMOVE_POST_SUCCESS, // 트윗 삭제 성공 액션
-	REMOVE_POST_FAILURE, // 트윗 삭제 실패 액션
-	UPLOAD_IMAGES_REQUEST, // 이미지 업로드 요청 액션
 	UPLOAD_IMAGES_SUCCESS, // 이미지 업로드 성공 액션
-	UPLOAD_IMAGES_FAILURE, // 이미지 업로드 실패 액션
-	LIKE_POST_REQUEST, // 좋아요 요청 액션
 	LIKE_POST_SUCCESS, // 좋아요 성공 액션
-	LIKE_POST_FAILURE, // 좋아요 실패 액션
-	UNLIKE_POST_REQUEST, // 좋아요 해제 요청 액션
 	UNLIKE_POST_SUCCESS, // 좋아요 해제 성공 액션
-	UNLIKE_POST_FAILURE, // 좋아요 해제 실패 액션
-	RETWEET_REQUEST, // 리트윗 요청 액션
 	RETWEET_SUCCESS, // 리트윗 성공 액션
-	RETWEET_FAILURE, // 리트윗 실패 액션
-	ADD_COMMENT_REQUEST, // 댓글 작성 요청 액션
 	ADD_COMMENT_SUCCESS, // 댓글 작성 성공 액션
-	ADD_COMMENT_FAILURE,
 	REMOVE_IMAGE, // 이미지 삭제 액션
 } from '../actions/post'
 
@@ -67,146 +51,73 @@ export const initialState = {
 }
 
 /** POST, COMMENT 관련 요청들을 처리한다. */
-const reducer = (state = initialState, action) => {
-	switch (action.type) {
-		case LOAD_POSTS_REQUEST:
-		case LOAD_POSTS_SUCCESS:
-		case LOAD_POSTS_FAILURE:
-			/** mainPosts에 action.data 추가
-			 * action.data가 array or null이기 때문에 spread 하기 전에 검사
-			 */
-			return createReducer(
-				LOAD_POSTS_REQUEST,
-				{
-					mainPosts: [
-						...state.mainPosts,
-						...(Array.isArray(action.data) ? action.data : []),
-					],
-					hasMorePosts: Array.isArray(action.data)
-						? action.data.length === 10
-						: state.hasMorePosts, // 불러온 글이 10개가 안되면 더이상 불러올게 없다고 판단
-				},
-				initialState,
-			)(state, action)
-		/* singlePost에 action.data 추가 */
-		case LOAD_POST_REQUEST:
-		case LOAD_POST_SUCCESS:
-		case LOAD_POST_FAILURE:
-			return createReducer(
-				LOAD_POST_REQUEST,
-				{
-					singlePost: action.data,
-				},
-				initialState,
-			)(state, action)
-		case ADD_POST_REQUEST:
-		case ADD_POST_SUCCESS:
-		case ADD_POST_FAILURE:
-			/* mainPosts에 action.data 추가 */
-			return createReducer(
-				ADD_POST_REQUEST,
-				{
-					mainPosts: [action.data, ...state.mainPosts],
-					imagePaths: [],
-				},
-				initialState,
-			)(state, action)
-		case REMOVE_POST_REQUEST:
-		case REMOVE_POST_SUCCESS:
-		case REMOVE_POST_FAILURE:
-			/* mainPosts에서 action.data.id랑 같은 post 삭제 */
-			return createReducer(
-				REMOVE_POST_REQUEST,
-				{
-					mainPosts: state.mainPosts.filter((post) => post.id !== action.data.id),
-				},
-				initialState,
-			)(state, action)
-		case UPLOAD_IMAGES_REQUEST:
-		case UPLOAD_IMAGES_SUCCESS:
-		case UPLOAD_IMAGES_FAILURE:
-			/* */
-			return createReducer(
-				UPLOAD_IMAGES_REQUEST,
-				{
-					imagePaths: action.data,
-				},
-				initialState,
-			)(state, action)
-		case LIKE_POST_REQUEST:
-		case LIKE_POST_SUCCESS:
-		case LIKE_POST_FAILURE:
-			/* mainPosts에서 action.data.PostId랑 같은 id의 post를 찾아서  Likers에 action.data.UserEmail 넣어줌 */
-			return createReducer(
-				LIKE_POST_REQUEST,
-				{
-					mainPosts: state.mainPosts.map((post) =>
-						post.id === action.data.PostId
-							? {
-									...post,
-									Likers: [{ email: action.data.UserEmail }, ...post.Likers],
-							  }
-							: post,
-					),
-				},
-				initialState,
-			)(state, action)
-		case UNLIKE_POST_REQUEST:
-		case UNLIKE_POST_SUCCESS:
-		case UNLIKE_POST_FAILURE:
-			/* mainPosts에서 action.data.PostId랑 같은 id의 post를 찾아서 Likers에서 action.data.UserEmail에 해당하는 유저 지워줌 */
-			return createReducer(
-				UNLIKE_POST_REQUEST,
-				{
-					mainPosts: state.mainPosts.map((post) =>
-						post.id === action.data.PostId
-							? {
-									...post,
-									Likers: post.Likers.filter(
-										(liker) => liker.email !== action.data.UserEmail,
-									),
-							  }
-							: post,
-					),
-				},
-				initialState,
-			)(state, action)
-		case RETWEET_REQUEST:
-		case RETWEET_SUCCESS:
-		case RETWEET_FAILURE:
-			return createReducer(
-				RETWEET_REQUEST,
-				{
-					mainPosts: [action.data, ...state.mainPosts],
-				},
-				initialState,
-			)(state, action)
-		case ADD_COMMENT_REQUEST:
-		case ADD_COMMENT_SUCCESS:
-		case ADD_COMMENT_FAILURE:
-			/* mainPosts에서 action.data.PostId와 같은 post를 찾아서 그 Comments에 새로운 댓글 추가 */
-			return createReducer(
-				ADD_COMMENT_REQUEST,
-				{
-					mainPosts: state.mainPosts.map((post) =>
-						post.id === action.data.PostId
-							? {
-									...post,
-									Comments: [action.data, ...post.Comments],
-							  }
-							: post,
-					),
-				},
-				initialState,
-			)(state, action)
-		case REMOVE_IMAGE: // 동기액션이라 action type이 하나면 된다.
-			return {
-				...state,
-				imagePaths: state.imagePaths.filter((v, index) => index !== action.data.index),
+const reducer = (state = initialState, action) =>
+	produce(state, (draft) => {
+		switch (action.type) {
+			case LOAD_POSTS_SUCCESS: // mainPosts에 action.data 추가
+				draft.loadPostsLoading = false
+				draft.loadPostsDone = true
+				draft.mainPosts = draft.mainPosts.concat(action.data)
+				draft.hasMorePosts = action.data.length === 10 // 불러온 글이 10개가 안되면 더 이상 불러올게 없다고 판단
+				break
+			case LOAD_POST_SUCCESS: // singlePost에 action.data 추가
+				draft.loadPostLoading = false
+				draft.loadPostDone = true
+				draft.singlePost = action.data
+				break
+			case ADD_POST_SUCCESS: // mainPosts 앞에 action.data 추가
+				draft.addPostLoading = false
+				draft.addPostDone = true
+				draft.mainPosts.unshift(action.data)
+				draft.imagePaths = []
+				break
+			case REMOVE_POST_SUCCESS: // mainPosts에서 action.data.id랑 같은 post 삭제
+				draft.removePostLoading = false
+				draft.removePostDone = true
+				draft.mainPosts = draft.mainPosts.filter((post) => post.id !== action.data.id)
+				break
+			case UPLOAD_IMAGES_SUCCESS:
+				draft.uploadImagesLoading = false
+				draft.uploadImagesDone = true
+				draft.imagePaths = action.data
+				break
+			case LIKE_POST_SUCCESS: {
+				/* mainPosts에서 action.data.PostId랑 같은 id의 post를 찾아서 Likers에 action.data.UserEmail 넣어줌 */
+				draft.likePostLoading = false
+				draft.likePostDone = true
+				const post = draft.mainPosts.find((post) => post.id === action.data.PostId)
+				post.Likers.push({ email: action.data.UserEmail })
+				break
 			}
-		default:
-			return state
-	}
-}
+			case UNLIKE_POST_SUCCESS: {
+				draft.unlikePostLoading = false
+				draft.unlikePostDone = true
+				const post = draft.mainPosts.find((post) => post.id === action.data.PostId)
+				post.Likers = post.Likers.filter((liker) => liker.email !== action.data.UserEmail)
+				break
+			}
+			case RETWEET_SUCCESS:
+				draft.retweetLoading = false
+				draft.retweetDone = true
+				draft.mainPosts.unshift(action.data)
+				break
+			case ADD_COMMENT_SUCCESS: {
+				/* mainPosts에서 action.data.PostId와 같은 post를 찾아서 그 Comments에 새로운 댓글 추가 */
+				draft.addCommentLoading = false
+				draft.addCommentDone = true
+				const post = draft.mainPosts.find((post) => post.id === action.data.PostId)
+				post.Comments.unshift(action.data)
+				break
+			}
+			case REMOVE_IMAGE: // 동기액션이라 action type이 하나면 된다.
+				draft.imagePaths = draft.imagePaths.filter(
+					(image, index) => index !== action.data.index,
+				)
+				break
+			default:
+				reducerWithRequestAndFailure(action, draft)
+				break
+		}
+	})
 
 export default reducer
