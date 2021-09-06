@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { END } from 'redux-saga'
+import axios from 'axios'
 
 import wrapper from '../store/configureStore'
 import { loadMyInfoRequest } from '../actions/user'
@@ -61,7 +62,13 @@ const Home = () => {
 
 /* 여기에 넣어두면 Home보다 먼저 실행됨(SSR) */
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-	console.log(store)
+	console.log(req.headers)
+	const cookie = req ? req.headers.cookie : ''
+	axios.defaults.headers.Cookie = '' // 서버에서 공유하는 쿠키를 우선 비워주고
+	if (req && cookie) {
+		axios.defaults.headers.Cookie = cookie // 쿠키로 요청이 올때만 (로그인할 때만) 서버에서 쿠키 보냄.
+	}
+
 	store.dispatch(loadMyInfoRequest()) // 로그인 된 유저 정보 불러옴
 	store.dispatch(loadPostsRequest()) // 트윗 목록 불러옴
 
