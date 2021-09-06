@@ -3,6 +3,9 @@ import {
 	LOAD_POSTS_REQUEST, // 트윗들 불러오기 요청 액션
 	LOAD_POSTS_SUCCESS, // 트윗들 불러오기 성공 액션
 	LOAD_POSTS_FAILURE, // 트윗들 불러오기 실패 액션
+	LOAD_POST_REQUEST, // 원하는 트윗 불러오기 요청 액션
+	LOAD_POST_SUCCESS, // 원하는 트윗 불러오기 성공 액션
+	LOAD_POST_FAILURE, // 원하는 트윗 불러오기 실패 액션
 	ADD_POST_REQUEST, // 트윗 작성 요청 액션
 	ADD_POST_SUCCESS, // 트윗 작성 성공 액션
 	ADD_POST_FAILURE, // 트윗 작성 실패 액션
@@ -31,8 +34,15 @@ import {
 export const initialState = {
 	/* 서버 쪽에서 데이터를 어떤 식으로 보낼 건지 미리 물어봐야 함 */
 	mainPosts: [],
+	singlePost: null, // 트윗 하나만 불러올 때
 	imagePaths: [], // 이미지 업로드 시 경로
 	hasMorePosts: true, // 더 불러올 트윗이 있는지
+	loadPostsLoading: false, // 트윗들 불러오기 시도 중
+	loadPostsDone: false, // 트윗들 불러오기 완료
+	loadPostsError: null, // 트윗들 불러오기 에러
+	loadPostLoading: false, // 원하는 트윗 불러오기 시도 중
+	loadPostDone: false, // 원하는 트윗 불러오기 완료
+	loadPostError: null, // 원하는 트윗 불러오기 에러
 	addPostLoading: false, // 트윗 작성 시도 중
 	addPostDone: false, // 트윗 작성 완료
 	addPostError: null, // 트윗 작성 에러
@@ -62,6 +72,9 @@ const reducer = (state = initialState, action) => {
 		case LOAD_POSTS_REQUEST:
 		case LOAD_POSTS_SUCCESS:
 		case LOAD_POSTS_FAILURE:
+			/** mainPosts에 action.data 추가
+			 * action.data가 array or null이기 때문에 spread 하기 전에 검사
+			 */
 			return createReducer(
 				LOAD_POSTS_REQUEST,
 				{
@@ -75,10 +88,21 @@ const reducer = (state = initialState, action) => {
 				},
 				initialState,
 			)(state, action)
+		/* singlePost에 action.data 추가 */
+		case LOAD_POST_REQUEST:
+		case LOAD_POST_SUCCESS:
+		case LOAD_POST_FAILURE:
+			return createReducer(
+				LOAD_POST_REQUEST,
+				{
+					singlePost: action.data,
+				},
+				initialState,
+			)(state, action)
 		case ADD_POST_REQUEST:
 		case ADD_POST_SUCCESS:
 		case ADD_POST_FAILURE:
-			/* mainPosts에 dummyPost(action.data) 추가 */
+			/* mainPosts에 action.data 추가 */
 			return createReducer(
 				ADD_POST_REQUEST,
 				{
