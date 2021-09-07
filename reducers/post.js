@@ -3,6 +3,8 @@ import produce from '../utils/produce'
 import { reducerWithRequestAndFailure } from '../utils'
 import {
 	LOAD_POSTS_SUCCESS, // 트윗들 불러오기 성공 액션
+	LOAD_USER_POSTS_SUCCESS, // 특정 유저의 트윗들 불러오기 성공 액션
+	LOAD_HASHTAG_POSTS_SUCCESS, // 특정 해쉬태그를 가진 트윗들 불러오기 성공 액션
 	LOAD_POST_SUCCESS, // 원하는 트윗 불러오기 성공 액션
 	ADD_POST_SUCCESS, // 트윗 작성 성공 액션
 	REMOVE_POST_SUCCESS, // 트윗 삭제 성공 액션
@@ -24,6 +26,12 @@ export const initialState = {
 	loadPostsLoading: false, // 트윗들 불러오기 시도 중
 	loadPostsDone: false, // 트윗들 불러오기 완료
 	loadPostsError: null, // 트윗들 불러오기 에러
+	loadUserPostsLoading: false, // 특정 유저의 트윗들 불러오기 시도 중
+	loadUserPostsDone: false, // 특정 유저의 트윗들 불러오기 완료
+	loadUserPostsError: null, // 특정 유저의 트윗들 불러오기 에러
+	loadHashtagPostsLoading: false, // 특정 해쉬태그를 가진 트윗들 불러오기 시도 중
+	loadHashtagPostsDone: false, // 특정 해쉬태그를 가진 트윗들 불러오기 완료
+	loadHashtagPostsError: null, // 특정 해쉬태그를 가진 트윗들 불러오기 에러
 	loadPostLoading: false, // 원하는 트윗 불러오기 시도 중
 	loadPostDone: false, // 원하는 트윗 불러오기 완료
 	loadPostError: null, // 원하는 트윗 불러오기 에러
@@ -60,6 +68,18 @@ const reducer = (state = initialState, action) =>
 				draft.mainPosts = draft.mainPosts.concat(action.data)
 				draft.hasMorePosts = action.data.length === 10 // 불러온 글이 10개가 안되면 더 이상 불러올게 없다고 판단
 				break
+			case LOAD_USER_POSTS_SUCCESS: // mainPosts에 action.data 추가
+				draft.loadUserPostsLoading = false
+				draft.loadUserPostsDone = true
+				draft.mainPosts = draft.mainPosts.concat(action.data)
+				draft.hasMorePosts = action.data.length === 10 // 불러온 글이 10개가 안되면 더 이상 불러올게 없다고 판단
+				break
+			case LOAD_HASHTAG_POSTS_SUCCESS: // mainPosts에 action.data 추가
+				draft.loadHashtagPostsLoading = false
+				draft.loadHashtagPostsDone = true
+				draft.mainPosts = draft.mainPosts.concat(action.data)
+				draft.hasMorePosts = action.data.length === 10 // 불러온 글이 10개가 안되면 더 이상 불러올게 없다고 판단
+				break
 			case LOAD_POST_SUCCESS: // singlePost에 action.data 추가
 				draft.loadPostLoading = false
 				draft.loadPostDone = true
@@ -74,7 +94,7 @@ const reducer = (state = initialState, action) =>
 			case REMOVE_POST_SUCCESS: // mainPosts에서 action.data.id랑 같은 post 삭제
 				draft.removePostLoading = false
 				draft.removePostDone = true
-				draft.mainPosts = draft.mainPosts.filter((post) => post.id !== action.data.id)
+				draft.mainPosts = draft.mainPosts.filter((v) => v.id !== action.data.id)
 				break
 			case UPLOAD_IMAGES_SUCCESS:
 				draft.uploadImagesLoading = false
@@ -85,15 +105,15 @@ const reducer = (state = initialState, action) =>
 				/* mainPosts에서 action.data.PostId랑 같은 id의 post를 찾아서 Likers에 action.data.UserEmail 넣어줌 */
 				draft.likePostLoading = false
 				draft.likePostDone = true
-				const post = draft.mainPosts.find((post) => post.id === action.data.PostId)
+				const post = draft.mainPosts.find((v) => v.id === action.data.PostId)
 				post.Likers.push({ email: action.data.UserEmail })
 				break
 			}
 			case UNLIKE_POST_SUCCESS: {
 				draft.unlikePostLoading = false
 				draft.unlikePostDone = true
-				const post = draft.mainPosts.find((post) => post.id === action.data.PostId)
-				post.Likers = post.Likers.filter((liker) => liker.email !== action.data.UserEmail)
+				const post = draft.mainPosts.find((v) => v.id === action.data.PostId)
+				post.Likers = post.Likers.filter((v) => v.email !== action.data.UserEmail)
 				break
 			}
 			case RETWEET_SUCCESS:
@@ -105,13 +125,13 @@ const reducer = (state = initialState, action) =>
 				/* mainPosts에서 action.data.PostId와 같은 post를 찾아서 그 Comments에 새로운 댓글 추가 */
 				draft.addCommentLoading = false
 				draft.addCommentDone = true
-				const post = draft.mainPosts.find((post) => post.id === action.data.PostId)
+				const post = draft.mainPosts.find((v) => v.id === action.data.PostId)
 				post.Comments.unshift(action.data)
 				break
 			}
 			case REMOVE_IMAGE: // 동기액션이라 action type이 하나면 된다.
 				draft.imagePaths = draft.imagePaths.filter(
-					(image, index) => index !== action.data.index,
+					(v, index) => index !== action.data.index,
 				)
 				break
 			default:

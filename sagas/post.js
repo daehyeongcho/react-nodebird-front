@@ -4,6 +4,12 @@ import {
 	LOAD_POSTS_REQUEST,
 	LOAD_POSTS_SUCCESS,
 	LOAD_POSTS_FAILURE,
+	LOAD_USER_POSTS_REQUEST,
+	LOAD_USER_POSTS_SUCCESS,
+	LOAD_USER_POSTS_FAILURE,
+	LOAD_HASHTAG_POSTS_REQUEST,
+	LOAD_HASHTAG_POSTS_SUCCESS,
+	LOAD_HASHTAG_POSTS_FAILURE,
 	LOAD_POST_REQUEST,
 	LOAD_POST_SUCCESS,
 	LOAD_POST_FAILURE,
@@ -35,6 +41,8 @@ import { camelize } from '../utils'
 
 const requestActionTypes = [
 	LOAD_POSTS_REQUEST,
+	LOAD_USER_POSTS_REQUEST,
+	LOAD_HASHTAG_POSTS_REQUEST,
 	LOAD_POST_REQUEST,
 	ADD_POST_REQUEST,
 	REMOVE_POST_REQUEST,
@@ -47,7 +55,7 @@ const requestActionTypes = [
 
 const workers = {}
 
-/* 트윗 불러오기 요청 처리 */
+/* 트윗들 불러오기 요청 처리 */
 workers.loadPosts = function* loadPosts(action) {
 	try {
 		const result = yield call(API.loadPostsAPI, action.data)
@@ -59,6 +67,40 @@ workers.loadPosts = function* loadPosts(action) {
 		console.error(err)
 		yield put({
 			type: LOAD_POSTS_FAILURE,
+			error: err.response.data,
+		})
+	}
+}
+
+/* 특정 유저의 트윗들 불러오기 요청 처리 */
+workers.loadUserPosts = function* loadUserPosts(action) {
+	try {
+		const result = yield call(API.loadUserPostsAPI, action.data)
+		yield put({
+			type: LOAD_USER_POSTS_SUCCESS,
+			data: result.data,
+		})
+	} catch (err) {
+		console.error(err)
+		yield put({
+			type: LOAD_USER_POSTS_FAILURE,
+			error: err.response.data,
+		})
+	}
+}
+
+/* 특정 해쉬태그를 가진 트윗들 불러오기 요청 처리 */
+workers.loadHashtagPosts = function* loadHashtagPosts(action) {
+	try {
+		const result = yield call(API.loadHashtagPostsAPI, action.data)
+		yield put({
+			type: LOAD_HASHTAG_POSTS_SUCCESS,
+			data: result.data,
+		})
+	} catch (err) {
+		console.error(err)
+		yield put({
+			type: LOAD_HASHTAG_POSTS_FAILURE,
 			error: err.response.data,
 		})
 	}
@@ -224,8 +266,14 @@ requestActionTypes.forEach((REQUEST) => {
 })
 
 /* takeLatest 외에 다른 effect 쓰고 싶으면 재정의해주면 됨 */
-watchers.watchLoadPosts = function* watchLoadPosts() {
+watchers.loadPosts = function* watcher() {
 	yield throttle(5000, LOAD_POSTS_REQUEST, workers.loadPosts)
+}
+watchers.loadUserPosts = function* watcher() {
+	yield throttle(5000, LOAD_USER_POSTS_REQUEST, workers.loadUserPosts)
+}
+watchers.loadHashtagPosts = function* watcher() {
+	yield throttle(5000, LOAD_HASHTAG_POSTS_REQUEST, workers.loadHashtagPosts)
 }
 
 /* watcher들 일괄적으로 fork함 */

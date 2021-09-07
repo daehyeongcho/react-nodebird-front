@@ -3,6 +3,14 @@ export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST'
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS'
 export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE'
 
+export const LOAD_USER_POSTS_REQUEST = 'LOAD_USER_POSTS_REQUEST'
+export const LOAD_USER_POSTS_SUCCESS = 'LOAD_USER_POSTS_SUCCESS'
+export const LOAD_USER_POSTS_FAILURE = 'LOAD_USER_POSTS_FAILURE'
+
+export const LOAD_HASHTAG_POSTS_REQUEST = 'LOAD_HASHTAG_POSTS_REQUEST'
+export const LOAD_HASHTAG_POSTS_SUCCESS = 'LOAD_HASHTAG_POSTS_SUCCESS'
+export const LOAD_HASHTAG_POSTS_FAILURE = 'LOAD_HASHTAG_POSTS_FAILURE'
+
 export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST'
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS'
 export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE'
@@ -40,6 +48,14 @@ export const REMOVE_IMAGE = 'REMOVE_IMAGE'
 /** action creator */
 export const loadPostsRequest = (data) => ({
 	type: LOAD_POSTS_REQUEST,
+	data,
+})
+export const loadUserPostsRequest = (data) => ({
+	type: LOAD_USER_POSTS_REQUEST,
+	data,
+})
+export const loadHashtagPostsRequest = (data) => ({
+	type: LOAD_HASHTAG_POSTS_REQUEST,
 	data,
 })
 export const loadPostRequest = (data) => ({

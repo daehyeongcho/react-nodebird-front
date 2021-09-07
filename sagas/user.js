@@ -104,8 +104,7 @@ workers.login = function* login(action) {
 /* LOGOUT_REQUEST 액션 처리 */
 workers.logout = function* logout() {
 	try {
-		const result = yield call(API.logoutAPI)
-		console.log(result)
+		yield call(API.logoutAPI)
 		yield put({
 			type: LOGOUT_SUCCESS,
 		})
