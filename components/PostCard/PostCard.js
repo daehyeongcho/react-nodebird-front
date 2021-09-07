@@ -2,6 +2,7 @@
 import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
+import dayjs from 'dayjs'
 
 import {
 	EllipsisOutlined,
@@ -23,7 +24,9 @@ import {
 	retweetRequest,
 } from '../../actions/post'
 import styles from './PostCard.module.css'
-import LinkedAvatar from '../_common/LinkedAvatar'
+import LinkedAvatar from '../common/LinkedAvatar'
+
+dayjs.locale('ko')
 
 /** PostCard
  * - 트윗 하나를 렌더링하기 위한 컴포넌트
@@ -96,18 +99,21 @@ const PostCard = ({ post }) => {
 			<Card
 				cover={post.Images && post.Images[0] && <PostImages images={post.Images} />}
 				actions={[
-					<RetweetOutlined
+					<RetweetOutlined // 리트윗 버튼
 						style={{ color: retweeted ? '#08c' : 'none' }}
 						key='retweet'
 						onClick={onRetweet}
 					/>,
-					liked ? (
+					liked ? ( // 좋아요 버튼
 						<HeartTwoTone twoToneColor='#eb2f96' key='heart' onClick={onUnlike} />
 					) : (
 						<HeartOutlined key='heart' onClick={onLike} />
 					),
-					<MessageOutlined key='comment' onClick={onToggleComment} />,
-					<Popover
+					<MessageOutlined // 댓글 열기 버튼
+						key='comment'
+						onClick={onToggleComment}
+					/>,
+					<Popover // 수정/삭제 버튼
 						key='more'
 						content={
 							<Button.Group>
@@ -145,6 +151,9 @@ const PostCard = ({ post }) => {
 							post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />
 						}
 					>
+						<div style={{ float: 'right' }}>
+							{dayjs(post.createdAt).format('YYYY.MM.DD')}
+						</div>
 						<Card.Meta
 							avatar={<LinkedAvatar user={post.Retweet.User} />}
 							title={post.Retweet.User.nickname}
@@ -152,11 +161,16 @@ const PostCard = ({ post }) => {
 						/>
 					</Card>
 				) : (
-					<Card.Meta
-						avatar={<LinkedAvatar user={post.User} />}
-						title={post.User.nickname}
-						description={<PostCardContent postData={post.content} />}
-					/>
+					<>
+						<div style={{ float: 'right' }}>
+							{dayjs(post.createdAt).format('YYYY.MM.DD')}
+						</div>
+						<Card.Meta
+							avatar={<LinkedAvatar user={post.User} />}
+							title={post.User.nickname}
+							description={<PostCardContent postData={post.content} />}
+						/>
+					</>
 				)}
 			</Card>
 

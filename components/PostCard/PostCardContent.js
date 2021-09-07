@@ -9,22 +9,20 @@ import PropTypes from 'prop-types'
 /** PostCardContent
  * - 트윗 본문에 들어있는 해시태그를 분리하고 각각에 링크를 부여함.
  */
-const PostCardContent = ({ postData }) => {
-	return (
-		<div>
-			{/* 해시태그 분리를 위한 정규식 */}
-			{postData.split(/(#[^\s#]+)/g).map((v, index) =>
-				v.match(/(#[^\s#]+)/g) ? (
-					<Link href={`/hashtag/${v.slice(1)}`} key={index}>
-						<a>{v}</a>
-					</Link>
-				) : (
-					v
-				),
-			)}
-		</div>
-	)
-}
+const PostCardContent = ({ postData }) => (
+	<div>
+		{/* 해시태그 분리를 위한 정규식 */}
+		{postData.split(/(#[^\s#]+)/g).map((v, index) =>
+			v.match(/(#[^\s#]+)/g) ? (
+				<Link href={`/hashtag/${v.slice(1)}`} key={index}>
+					<a>{v}</a>
+				</Link>
+			) : (
+				v
+			),
+		)}
+	</div>
+)
 
 PostCardContent.propTypes = {
 	postData: PropTypes.string.isRequired, // 트윗 본문

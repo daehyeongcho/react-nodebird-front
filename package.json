@@ -4,14 +4,17 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"dev": "next"
+		"dev": "next",
+		"build": "cross-env ANALYZE=true NODE_ENV=production next build"
 	},
 	"author": "fosel",
 	"license": "ISC",
 	"dependencies": {
 		"@ant-design/icons": "^4.6.3",
+		"@next/bundle-analyzer": "^11.1.2",
 		"antd": "^4.16.12",
 		"axios": "^0.21.1",
+		"dayjs": "^1.10.6",
 		"faker": "^5.5.3",
 		"immer": "^9.0.6",
 		"nanoid": "^3.1.25",
@@ -31,6 +34,7 @@
 	},
 	"devDependencies": {
 		"babel-plugin-styled-components": "^1.13.2",
+		"cross-env": "^7.0.3",
 		"eslint": "^7.32.0",
 		"eslint-config-airbnb": "^18.2.1",
 		"eslint-config-prettier": "^8.3.0",

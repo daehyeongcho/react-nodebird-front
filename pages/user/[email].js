@@ -13,7 +13,7 @@ import AppLayout from '../../components/AppLayout/AppLayout'
 import wrapper from '../../store/configureStore'
 import { loadUserPostsRequest } from '../../actions/post'
 import { loadMyInfoRequest, loadUserRequest } from '../../actions/user'
-import LinkedAvatar from '../../components/_common/LinkedAvatar'
+import LinkedAvatar from '../../components/common/LinkedAvatar'
 
 /* 특정 유저가 쓴 글들 보여주는 페이지 */
 const User = () => {

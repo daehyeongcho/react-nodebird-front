@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Card, Button } from 'antd'
 
 import { logoutRequest } from '../../actions/user'
-import LinkedAvatar from '../_common/LinkedAvatar'
+import LinkedAvatar from '../common/LinkedAvatar'
 
 /** UserProfile
  * - 로그인 성공 시 보여줄 유저의 대략적인 정보(트윗 수, 팔로잉 수, 팔로워 수)
