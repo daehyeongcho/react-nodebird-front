@@ -92,7 +92,7 @@ const reducer = (state = initialState, action) =>
 				draft.me.nickname = action.data.nickname
 				break
 			case FOLLOW_SUCCESS: // user.me.Followings에 팔로잉 추가
-				draft.followingLoading = false
+				draft.followLoading = false
 				draft.followDone = true
 				draft.me.Followings.push({
 					email: action.data.email,

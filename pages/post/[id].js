@@ -17,6 +17,10 @@ const Post = () => {
 	const { id } = router.query
 	const { singlePost } = useSelector((state) => state.post)
 
+	if (router.isFallback) {
+		return <div>로딩중...</div>
+	}
+
 	return (
 		<AppLayout>
 			{singlePost && (
@@ -40,8 +44,22 @@ const Post = () => {
 	)
 }
 
+/** dynamic routing에서 getStaticProps를 쓰려면 무조건 getStaticPaths와 같이 써야 한다.
+ * - path의 갯수가 얼마 안될때는 이렇게 미리 만들어두는 것도 괜찮음
+ */
+// export async function getStaticPaths() {
+// 	return {
+// 		paths: [
+// 			{ params: { id: '1' } },
+// 			{ params: { id: '2' } },
+// 			{ params: { id: '3' } },
+// 			{ params: { id: '4' } },
+// 		],
+// 		fallback: true, // paths에 없는건 서버로부터 불러옴.
+// 	}
+// }
+
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
-	console.log(req.headers)
 	const cookie = req ? req.headers.cookie : ''
 	axios.defaults.headers.Cookie = '' // 서버에서 공유하는 쿠키를 우선 비워주고
 	if (req && cookie) {
