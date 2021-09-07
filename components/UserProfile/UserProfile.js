@@ -1,8 +1,11 @@
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Card, Avatar, Button } from 'antd'
+import Link from 'next/link'
+
+import { Card, Button } from 'antd'
 
 import { logoutRequest } from '../../actions/user'
+import LinkedAvatar from '../_common/LinkedAvatar'
 
 /** UserProfile
  * - 로그인 성공 시 보여줄 유저의 대략적인 정보(트윗 수, 팔로잉 수, 팔로워 수)
@@ -21,23 +24,35 @@ const UserProfile = () => {
 			<Card
 				actions={[
 					<div key='twit'>
-						트윗
-						<br />
-						{me.Posts.length}
+						<Link href={`/user/${me.email}`}>
+							<a>
+								트윗
+								<br />
+								{me.Posts.length}
+							</a>
+						</Link>
 					</div>,
 					<div key='followings'>
-						팔로잉
-						<br />
-						{me.Followings.length}
+						<Link href='/profile'>
+							<a>
+								팔로잉
+								<br />
+								{me.Followings.length}
+							</a>
+						</Link>
 					</div>,
 					<div key='followers'>
-						팔로워
-						<br />
-						{me.Followers.length}
+						<Link href='/profile'>
+							<a>
+								팔로워
+								<br />
+								{me.Followers.length}
+							</a>
+						</Link>
 					</div>,
 				]}
 			>
-				<Card.Meta avatar={<Avatar>{me.nickname[0]}</Avatar>} title={me.nickname} />
+				<Card.Meta avatar={<LinkedAvatar user={me} />} title={me.nickname} />
 				<Button onClick={onLogout} loading={logoutLoading}>
 					로그아웃
 				</Button>

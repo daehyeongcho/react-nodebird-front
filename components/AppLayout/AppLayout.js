@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 import { useSelector } from 'react-redux'
+import Router from 'next/router'
 
 import { Input, Menu, Row, Col } from 'antd'
 
+import { useInput } from '../../hooks/useInputs'
 import UserProfile from '../UserProfile/UserProfile' // 왼쪽 상단에 보여 줄 사용자 프로필 폼
 import LoginForm from '../LoginForm/LoginForm' // 왼쪽 상단에 보여 줄 로그인 폼
 import styles from './AppLayout.module.css'
@@ -14,6 +16,10 @@ import styles from './AppLayout.module.css'
  */
 const AppLayout = ({ children }) => {
 	const { me } = useSelector((state) => state.user) // 현재 로그인 되어있는 유저 정보
+	const [searchInput, onChangeSearchInput] = useInput('')
+	const onSearch = useCallback(() => {
+		Router.push(`/hashtag/${searchInput}`)
+	}, [searchInput])
 
 	return (
 		<div className={styles.app_layout}>
@@ -30,7 +36,13 @@ const AppLayout = ({ children }) => {
 					</Link>
 				</Menu.Item>
 				<Menu.Item key={2}>
-					<Input.Search className={styles.input_search} enterButton />
+					<Input.Search
+						className={styles.input_search}
+						enterButton
+						value={searchInput}
+						onChange={onChangeSearchInput}
+						onSearch={onSearch}
+					/>
 				</Menu.Item>
 				<Menu.Item key={3}>
 					<Link href='/signup'>

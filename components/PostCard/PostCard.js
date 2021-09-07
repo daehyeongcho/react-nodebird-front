@@ -10,7 +10,7 @@ import {
 	MessageOutlined,
 	RetweetOutlined,
 } from '@ant-design/icons'
-import { Card, Button, Popover, Avatar, List, Comment } from 'antd'
+import { Card, Button, Popover, List, Comment } from 'antd'
 
 import PostImages from '../PostImages/PostImages' // 트윗에 첨부된 이미지를 보여주는 폼
 import CommentForm from '../CommentForm/CommentForm' // 댓글 작성 폼
@@ -23,6 +23,7 @@ import {
 	retweetRequest,
 } from '../../actions/post'
 import styles from './PostCard.module.css'
+import LinkedAvatar from '../_common/LinkedAvatar'
 
 /** PostCard
  * - 트윗 하나를 렌더링하기 위한 컴포넌트
@@ -78,7 +79,7 @@ const PostCard = ({ post }) => {
 			<li>
 				<Comment
 					author={item.User.nickname}
-					avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+					avatar={<LinkedAvatar user={post.Retweet.User} />}
 					content={item.content}
 				/>
 			</li>
@@ -145,14 +146,14 @@ const PostCard = ({ post }) => {
 						}
 					>
 						<Card.Meta
-							avatar={<Avatar>{post.Retweet.User.nickname[0]}</Avatar>}
+							avatar={<LinkedAvatar user={post.Retweet.User} />}
 							title={post.Retweet.User.nickname}
 							description={<PostCardContent postData={post.Retweet.content} />}
 						/>
 					</Card>
 				) : (
 					<Card.Meta
-						avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+						avatar={<LinkedAvatar user={post.User} />}
 						title={post.User.nickname}
 						description={<PostCardContent postData={post.content} />}
 					/>

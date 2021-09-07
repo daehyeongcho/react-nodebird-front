@@ -1,4 +1,4 @@
-/* /user/[id] */
+/* /user/[email] */
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { END } from 'redux-saga'
@@ -6,13 +6,14 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 
-import { Avatar, Card } from 'antd'
+import { Card } from 'antd'
 
 import PostCard from '../../components/PostCard/PostCard'
 import AppLayout from '../../components/AppLayout/AppLayout'
 import wrapper from '../../store/configureStore'
 import { loadUserPostsRequest } from '../../actions/post'
 import { loadMyInfoRequest, loadUserRequest } from '../../actions/user'
+import LinkedAvatar from '../../components/_common/LinkedAvatar'
 
 /* 특정 유저가 쓴 글들 보여주는 페이지 */
 const User = () => {
@@ -62,7 +63,7 @@ const User = () => {
 				<Card
 					actions={[
 						<div key='twit'>
-							트윗하기
+							트윗
 							<br />
 							{userInfo.Posts}
 						</div>,
@@ -79,7 +80,7 @@ const User = () => {
 					]}
 				>
 					<Card.Meta
-						avatar={<Avatar>{userInfo.nickname[0]}</Avatar>}
+						avatar={<LinkedAvatar user={userInfo} />}
 						title={userInfo.nickname}
 					/>
 				</Card>
