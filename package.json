@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "next",
 		"build": "cross-env ANALYZE=true NODE_ENV=production next build",
-		"start": "cross-env NODE_ENV=production next start"
+		"start": "cross-env NODE_ENV=production next start -p 80"
 	},
 	"author": "fosel",
 	"license": "ISC",
@@ -44,6 +44,7 @@
 		"eslint-plugin-jsx-a11y": "^6.4.1",
 		"eslint-plugin-react": "^7.24.0",
 		"eslint-plugin-react-hooks": "^4.2.0",
-		"import": "^0.0.6"
+		"import": "^0.0.6",
+		"pm2": "^5.1.1"
 	}
 }

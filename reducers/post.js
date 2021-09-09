@@ -99,7 +99,7 @@ const reducer = (state = initialState, action) =>
 			case UPLOAD_IMAGES_SUCCESS:
 				draft.uploadImagesLoading = false
 				draft.uploadImagesDone = true
-				draft.imagePaths = action.data
+				draft.imagePaths = draft.imagePaths.concat(action.data)
 				break
 			case LIKE_POST_SUCCESS: {
 				/* mainPosts에서 action.data.PostId랑 같은 id의 post를 찾아서 Likers에 action.data.UserEmail 넣어줌 */
