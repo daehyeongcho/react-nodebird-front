@@ -1,1 +1,1 @@
-export const backURL = 'http://ec2-3-37-195-209.ap-northeast-2.compute.amazonaws.com'
+export const backURL = process.env.NODE_ENV === 'production' ? 'https://nodebirdapi.duckdns.org' : 'http://localhost:3065'
