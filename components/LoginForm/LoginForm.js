@@ -58,7 +58,7 @@ const LoginForm = () => {
 					<Button type='primary' htmlType='submit' loading={loginLoading}>
 						로그인
 					</Button>
-					<Link href='/signup'>
+					<Link href='/signup' prefetch={false}>
 						<a>
 							<Button>회원가입</Button>
 						</a>

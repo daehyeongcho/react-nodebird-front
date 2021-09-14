@@ -14,7 +14,7 @@ const PostCardContent = ({ postData }) => (
 		{/* 해시태그 분리를 위한 정규식 */}
 		{postData.split(/(#[^\s#]+)/g).map((v, index) =>
 			v.match(/(#[^\s#]+)/g) ? (
-				<Link href={`/hashtag/${v.slice(1)}`} key={index}>
+				<Link href={`/hashtag/${v.slice(1)}`} key={index} prefetch={false}>
 					<a>{v}</a>
 				</Link>
 			) : (

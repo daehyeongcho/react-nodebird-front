@@ -6,7 +6,7 @@ import { Avatar } from 'antd'
 
 /** 썸네일에 링크가 들어간 Avatar 생성 */
 const LinkedAvatar = ({ user }) => (
-	<Link href={`/user/${user.email}`}>
+	<Link href={`/user/${user.email}`} prefetch={false}>
 		<a>
 			<Avatar>{user.nickname[0]}</Avatar>
 		</a>
