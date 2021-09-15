@@ -19,6 +19,10 @@ export const ADD_POST_REQUEST = 'ADD_POST_REQUEST'
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS'
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE'
 
+export const EDIT_POST_REQUEST = 'EDIT_POST_REQUEST'
+export const EDIT_POST_SUCCESS = 'EDIT_POST_SUCCESS'
+export const EDIT_POST_FAILURE = 'EDIT_POST_FAILURE'
+
 export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST'
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS'
 export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE'
@@ -43,6 +47,9 @@ export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST'
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS'
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE'
 
+export const OPEN_EDIT_FORM = 'OPEN_EDIT_FORM'
+export const CLOSE_EDIT_FORM = 'CLOSE_EDIT_FORM'
+
 export const REMOVE_IMAGE = 'REMOVE_IMAGE'
 
 /** action creator */
@@ -64,6 +71,11 @@ export const loadPostRequest = (data) => ({
 })
 export const addPostRequest = (data) => ({
 	type: ADD_POST_REQUEST,
+	data,
+})
+export const editPostRequest = (id, data) => ({
+	type: EDIT_POST_REQUEST,
+	id,
 	data,
 })
 export const removePostRequest = (data) => ({
@@ -89,6 +101,13 @@ export const retweetRequest = (data) => ({
 export const addCommentRequest = (data) => ({
 	type: ADD_COMMENT_REQUEST,
 	data,
+})
+export const openEditForm = (data) => ({
+	type: OPEN_EDIT_FORM,
+	data,
+})
+export const closeEditForm = () => ({
+	type: CLOSE_EDIT_FORM,
 })
 export const removeImage = (data) => ({
 	type: REMOVE_IMAGE,

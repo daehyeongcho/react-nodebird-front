@@ -7,6 +7,7 @@ export const loadHashtagPostsAPI = (data) =>
 	axios.get(`/hashtag/${encodeURIComponent(data.hashtag)}/posts?lastId=${data?.lastId || 0}`)
 export const loadPostAPI = (data) => axios.get(`/post/${data.id}`)
 export const addPostAPI = (data) => axios.post('/post', data)
+export const editPostAPI = (id, data) => axios.patch(`/post/${id}`, data)
 export const removePostAPI = (data) => axios.delete(`/post/${data.id}`)
 export const uploadImagesAPI = (data) => axios.post(`/post/images`, data)
 export const likePostAPI = (data) => axios.patch(`/post/${data.id}/like`)

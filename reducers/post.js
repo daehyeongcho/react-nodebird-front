@@ -7,13 +7,16 @@ import {
 	LOAD_HASHTAG_POSTS_SUCCESS, // 특정 해쉬태그를 가진 트윗들 불러오기 성공 액션
 	LOAD_POST_SUCCESS, // 원하는 트윗 불러오기 성공 액션
 	ADD_POST_SUCCESS, // 트윗 작성 성공 액션
+	EDIT_POST_SUCCESS, // 트윗 수정 성공 액션
 	REMOVE_POST_SUCCESS, // 트윗 삭제 성공 액션
 	UPLOAD_IMAGES_SUCCESS, // 이미지 업로드 성공 액션
 	LIKE_POST_SUCCESS, // 좋아요 성공 액션
 	UNLIKE_POST_SUCCESS, // 좋아요 해제 성공 액션
 	RETWEET_SUCCESS, // 리트윗 성공 액션
 	ADD_COMMENT_SUCCESS, // 댓글 작성 성공 액션
-	REMOVE_IMAGE, // 이미지 삭제 액션
+	OPEN_EDIT_FORM, // 수정 폼에 이미지 추가하기 액션
+	CLOSE_EDIT_FORM, // 수정 폼 닫을 때 이미지 삭제하기 액션
+	REMOVE_IMAGE, // 수정/새글 작성 폼에 이미지 삭제 액션
 } from '../actions/post'
 
 /** post state에 들어있는 property들 */
@@ -38,6 +41,9 @@ export const initialState = {
 	addPostLoading: false, // 트윗 작성 시도 중
 	addPostDone: false, // 트윗 작성 완료
 	addPostError: null, // 트윗 작성 에러
+	editPostLoading: false, // 트윗 수정 시도 중
+	editPostDone: false, // 트윗 수정 완료
+	editPostError: null, // 트윗 수정 에러
 	removePostLoading: false, // 트윗 삭제 시도 중
 	removePostDone: false, // 트윗 삭제 완료
 	removePostError: null, // 트윗 삭제 에러
@@ -91,6 +97,15 @@ const reducer = (state = initialState, action) =>
 				draft.mainPosts.unshift(action.data)
 				draft.imagePaths = []
 				break
+			case EDIT_POST_SUCCESS: {
+				// mainPosts에서 action.data.id 찾아서 action.data 대입
+				draft.editPostLoading = false
+				draft.editPostDone = true
+				const index = draft.mainPosts.findIndex((v) => v.id === action.data.id)
+				draft.mainPosts[index] = action.data
+				draft.imagePaths = []
+				break
+			}
 			case REMOVE_POST_SUCCESS: // mainPosts에서 action.data.id랑 같은 post 삭제
 				draft.removePostLoading = false
 				draft.removePostDone = true
@@ -129,7 +144,13 @@ const reducer = (state = initialState, action) =>
 				post.Comments.unshift(action.data)
 				break
 			}
-			case REMOVE_IMAGE: // 동기액션이라 action type이 하나면 된다.
+			case OPEN_EDIT_FORM: // 동기액션이라 action type이 하나면 된다.
+				draft.imagePaths = draft.imagePaths.concat(action.data)
+				break
+			case CLOSE_EDIT_FORM: // 동기액션이라 action type이 하나면 된다.
+				draft.imagePaths = []
+				break
+			case REMOVE_IMAGE:
 				draft.imagePaths = draft.imagePaths.filter(
 					(v, index) => index !== action.data.index,
 				)

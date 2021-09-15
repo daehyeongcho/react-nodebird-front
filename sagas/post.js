@@ -16,6 +16,9 @@ import {
 	ADD_POST_REQUEST,
 	ADD_POST_SUCCESS,
 	ADD_POST_FAILURE,
+	EDIT_POST_REQUEST,
+	EDIT_POST_SUCCESS,
+	EDIT_POST_FAILURE,
 	REMOVE_POST_REQUEST,
 	REMOVE_POST_SUCCESS,
 	REMOVE_POST_FAILURE,
@@ -45,6 +48,7 @@ const requestActionTypes = [
 	LOAD_HASHTAG_POSTS_REQUEST,
 	LOAD_POST_REQUEST,
 	ADD_POST_REQUEST,
+	EDIT_POST_REQUEST,
 	REMOVE_POST_REQUEST,
 	UPLOAD_IMAGES_REQUEST,
 	LIKE_POST_REQUEST,
@@ -139,6 +143,23 @@ workers.addPost = function* addPost(action) {
 		console.error(err)
 		yield put({
 			type: ADD_POST_FAILURE,
+			error: err.response.data,
+		})
+	}
+}
+
+/* 트윗 수정 요청 처리 */
+workers.editPost = function* editPost(action) {
+	try {
+		const result = yield call(API.editPostAPI, action.id, action.data)
+		yield put({
+			type: EDIT_POST_SUCCESS,
+			data: result.data,
+		})
+	} catch (err) {
+		console.error(err)
+		yield put({
+			type: EDIT_POST_FAILURE,
 			error: err.response.data,
 		})
 	}

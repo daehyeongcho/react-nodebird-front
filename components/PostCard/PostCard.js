@@ -11,7 +11,7 @@ import {
 	MessageOutlined,
 	RetweetOutlined,
 } from '@ant-design/icons'
-import { Card, Button, Popover, List, Comment } from 'antd'
+import { Card, Button, Popover, List, Comment, Input } from 'antd'
 
 import PostImages from '../PostImages/PostImages' // 트윗에 첨부된 이미지를 보여주는 폼
 import CommentForm from '../CommentForm/CommentForm' // 댓글 작성 폼
@@ -20,11 +20,16 @@ import FollowButton from '../FollowButton/FollowButton' // 팔로우/언팔로�
 import {
 	likePostRequest,
 	unlikePostRequest,
+	editPostRequest,
 	removePostRequest,
 	retweetRequest,
+	openEditForm,
+	closeEditForm,
 } from '../../actions/post'
 import styles from './PostCard.module.css'
 import LinkedAvatar from '../common/LinkedAvatar'
+import { useInput } from '../../hooks/useInputs'
+import PostForm from '../PostForm/PostForm'
 
 dayjs.locale('ko')
 
@@ -35,9 +40,10 @@ dayjs.locale('ko')
  */
 const PostCard = ({ post }) => {
 	const dispatch = useDispatch()
-	const { removePostLoading } = useSelector((state) => state.post) // 트윗 삭제 중 state
+	const { editPostLoading, removePostLoading } = useSelector((state) => state.post) // 트윗 삭제 중 state
 	const email = useSelector((state) => state.user.me?.email) // 현재 로그인 되어있는 사용자 email
 	const [commentFormOpened, setCommentFormOpened] = useState(false) // 댓글 버튼 누를 때 true
+	const [editFormOpened, setEditFormOpened] = useState(false)
 
 	const onLike = useCallback(() => {
 		if (!email) {
@@ -57,6 +63,15 @@ const PostCard = ({ post }) => {
 	const onToggleComment = useCallback(() => {
 		setCommentFormOpened((prev) => !prev)
 	}, [])
+
+	const onToggleEditForm = useCallback(() => {
+		setEditFormOpened((prev) => !prev)
+		if (!editFormOpened) {
+			dispatch(openEditForm(post.Images.map((v) => v?.src)))
+		} else {
+			dispatch(closeEditForm())
+		}
+	}, [editFormOpened, post.Images])
 
 	/* 삭제 버튼 누를 시 REMOVE_POST_REQUEST 요청 보냄 */
 	const onRemovePost = useCallback(() => {
@@ -119,7 +134,12 @@ const PostCard = ({ post }) => {
 							<Button.Group>
 								{email && post.User.email === email ? (
 									<>
-										<Button>수정</Button>
+										<Button
+											loading={editPostLoading}
+											onClick={onToggleEditForm}
+										>
+											수정
+										</Button>
 										<Button
 											type='danger'
 											loading={removePostLoading}
@@ -160,6 +180,8 @@ const PostCard = ({ post }) => {
 							description={<PostCardContent postData={post.Retweet.content} />}
 						/>
 					</Card>
+				) : editFormOpened ? (
+					<PostForm isEdit={true} post={post} onToggleEditForm={onToggleEditForm} />
 				) : (
 					<>
 						<div style={{ float: 'right' }}>
