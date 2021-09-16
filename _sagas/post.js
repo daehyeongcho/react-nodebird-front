@@ -39,6 +39,7 @@ import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../_actions/user'
 import * as API from '../api/post'
 import { camelize } from '../utils'
 
+/* watcher 일괄 생성을 위해 REQUEST 액션들만 따로 저장 */
 const requestActionTypes = [
 	LOAD_POSTS_REQUEST,
 	LOAD_USER_POSTS_REQUEST,

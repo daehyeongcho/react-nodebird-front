@@ -38,6 +38,7 @@ const AppLayout = ({ children }) => {
 				<Menu.Item key={2}>
 					<Input.Search
 						className={styles.input_search}
+						placeholder='해쉬태그 검색'
 						enterButton
 						value={searchInput}
 						onChange={onChangeSearchInput}
@@ -45,6 +46,11 @@ const AppLayout = ({ children }) => {
 					/>
 				</Menu.Item>
 				<Menu.Item key={3}>
+					<Link href='/related'>
+						<a>팔로잉 게시글</a>
+					</Link>
+				</Menu.Item>
+				<Menu.Item key={4}>
 					<Link href='/signup'>
 						<a>회원가입</a>
 					</Link>

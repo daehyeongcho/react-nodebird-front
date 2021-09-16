@@ -125,12 +125,14 @@ const PostCard = ({ post }) => {
 							<Button.Group>
 								{email && post.User.email === email ? (
 									<>
-										<Button
-											loading={editPostLoading}
-											onClick={onToggleEditForm}
-										>
-											수정
-										</Button>
+										{!post.RetweetId && (
+											<Button
+												loading={editPostLoading}
+												onClick={onToggleEditForm}
+											>
+												수정
+											</Button>
+										)}
 										<Button
 											type='danger'
 											loading={removePostLoading}
@@ -150,8 +152,9 @@ const PostCard = ({ post }) => {
 				]}
 				title={
 					post.RetweetId &&
-					post.User.email !== email &&
-					`${post.User.nickname}님이 리트윗하셨습니다.`
+					(post.User.email !== email
+						? `${post.User.nickname}님이 리트윗한 게시글`
+						: '내가 리트윗한 게시글')
 				}
 				extra={email && post.User.email !== email ? <FollowButton post={post} /> : null} // 로그인 되어있고 post작성자가 본인이 아니면 팔로우버튼 보여줌
 			>
