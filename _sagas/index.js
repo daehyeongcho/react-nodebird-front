@@ -5,10 +5,6 @@ import postSaga from './post'
 import userSaga from './user'
 import { backURL } from '../config/config'
 
-/* index에 이렇게 설정해두면 saga에서 보내는 axios 요청에 대해 설정 가능 */
-axios.defaults.baseURL = backURL // axios 요청 앞에 항상 이 baseURL을 붙인다.
-axios.defaults.withCredentials = true // 쿠키 허용
-
 /**
  * fork: 비동기 함수 호출 - 논블로킹
  * call: 동기 함수 호출 - 블로킹

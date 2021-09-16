@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { List, Button, Card } from 'antd'
 import { StopOutlined } from '@ant-design/icons'
 
-import { unfollowRequest, removeFollowerRequest } from '../../actions/user'
+import { unfollowRequest, removeFollowerRequest } from '../../_actions/user'
 import styles from './FollowList.module.css'
 
 /** 팔로잉/팔로워 목록 컴포넌트

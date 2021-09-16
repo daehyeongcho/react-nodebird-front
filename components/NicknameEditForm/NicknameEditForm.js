@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Form, Input } from 'antd'
 
 import { useInput } from '../../hooks/useInputs'
-import { changeNicknameRequest } from '../../actions/user'
+import { changeNicknameRequest } from '../../_actions/user'
 import styles from './NicknameEditForm.module.css'
 
 /* 닉네임 수정 폼 */

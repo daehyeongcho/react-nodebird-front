@@ -18,7 +18,7 @@ import {
 	LOAD_FOLLOWINGS_SUCCESS, // 팔로잉 불러오기 성공 액션
 	ADD_POST_TO_ME, // 새 글 쓰고 user.me.Posts에 추가하는 액션
 	REMOVE_POST_OF_ME, // 글 지우고 user.me.Posts에서 지우는 액션
-} from '../actions/user'
+} from '../_actions/user'
 
 /** user state 안에 들어있는 property들 */
 export const initialState = {

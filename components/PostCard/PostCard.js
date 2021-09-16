@@ -20,15 +20,11 @@ import FollowButton from '../FollowButton/FollowButton' // 팔로우/언팔로�
 import {
 	likePostRequest,
 	unlikePostRequest,
-	editPostRequest,
 	removePostRequest,
 	retweetRequest,
-	openEditForm,
-	closeEditForm,
-} from '../../actions/post'
+} from '../../_actions/post'
 import styles from './PostCard.module.css'
 import LinkedAvatar from '../common/LinkedAvatar'
-import { useInput } from '../../hooks/useInputs'
 import PostForm from '../PostForm/PostForm'
 
 dayjs.locale('ko')
@@ -66,12 +62,7 @@ const PostCard = ({ post }) => {
 
 	const onToggleEditForm = useCallback(() => {
 		setEditFormOpened((prev) => !prev)
-		if (!editFormOpened) {
-			dispatch(openEditForm(post.Images.map((v) => v?.src)))
-		} else {
-			dispatch(closeEditForm())
-		}
-	}, [editFormOpened, post.Images])
+	}, [])
 
 	/* 삭제 버튼 누를 시 REMOVE_POST_REQUEST 요청 보냄 */
 	const onRemovePost = useCallback(() => {
@@ -181,7 +172,12 @@ const PostCard = ({ post }) => {
 						/>
 					</Card>
 				) : editFormOpened ? (
-					<PostForm isEdit={true} post={post} onToggleEditForm={onToggleEditForm} />
+					<PostForm
+						isEdit={true}
+						post={post}
+						onToggleEditForm={onToggleEditForm}
+						initialImagePaths={post.Images.map((v) => v?.src)}
+					/>
 				) : (
 					<>
 						<div style={{ float: 'right' }}>

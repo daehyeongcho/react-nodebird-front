@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { Card, Button } from 'antd'
 
-import { logoutRequest } from '../../actions/user'
+import { logoutRequest } from '../../_actions/user'
 import LinkedAvatar from '../common/LinkedAvatar'
 
 /** UserProfile

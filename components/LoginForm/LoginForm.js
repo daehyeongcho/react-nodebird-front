@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Button, Form, Input } from 'antd'
 
 import useInputs from '../../hooks/useInputs'
-import { loginRequest } from '../../actions/user'
+import { loginRequest } from '../../_actions/user'
 import styles from './LoginForm.module.css'
 
 /** 로그인 폼

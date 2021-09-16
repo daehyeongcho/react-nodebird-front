@@ -7,8 +7,8 @@ import { useRouter } from 'next/router'
 import axios from 'axios'
 
 import AppLayout from '../../components/AppLayout/AppLayout'
-import { loadMyInfoRequest } from '../../actions/user'
-import { loadPostRequest } from '../../actions/post'
+import { loadMyInfoRequest } from '../../_actions/user'
+import { loadPostRequest } from '../../_actions/post'
 import wrapper from '../../store/configureStore'
 import PostCard from '../../components/PostCard/PostCard'
 

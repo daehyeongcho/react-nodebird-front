@@ -9,7 +9,7 @@ import useSWR from 'swr'
 import AppLayout from '../components/AppLayout/AppLayout'
 import FollowList from '../components/FollowList/FollowList'
 import NicknameEditForm from '../components/NicknameEditForm/NicknameEditForm'
-import { loadMyInfoRequest } from '../actions/user'
+import { loadMyInfoRequest } from '../_actions/user'
 import wrapper from '../store/configureStore'
 import { backURL } from '../config/config'
 

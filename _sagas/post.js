@@ -22,9 +22,6 @@ import {
 	REMOVE_POST_REQUEST,
 	REMOVE_POST_SUCCESS,
 	REMOVE_POST_FAILURE,
-	UPLOAD_IMAGES_REQUEST,
-	UPLOAD_IMAGES_SUCCESS,
-	UPLOAD_IMAGES_FAILURE,
 	LIKE_POST_REQUEST,
 	LIKE_POST_SUCCESS,
 	LIKE_POST_FAILURE,
@@ -37,8 +34,8 @@ import {
 	ADD_COMMENT_REQUEST,
 	ADD_COMMENT_SUCCESS,
 	ADD_COMMENT_FAILURE,
-} from '../actions/post'
-import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../actions/user'
+} from '../_actions/post'
+import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../_actions/user'
 import * as API from '../api/post'
 import { camelize } from '../utils'
 
@@ -50,7 +47,6 @@ const requestActionTypes = [
 	ADD_POST_REQUEST,
 	EDIT_POST_REQUEST,
 	REMOVE_POST_REQUEST,
-	UPLOAD_IMAGES_REQUEST,
 	LIKE_POST_REQUEST,
 	UNLIKE_POST_REQUEST,
 	RETWEET_REQUEST,
@@ -181,23 +177,6 @@ workers.removePost = function* removePost(action) {
 		console.error(err)
 		yield put({
 			type: REMOVE_POST_FAILURE,
-			error: err.response.data,
-		})
-	}
-}
-
-/* 이미지 업로드 요청 처리 */
-workers.uploadImages = function* uploadImages(action) {
-	try {
-		const result = yield call(API.uploadImagesAPI, action.data)
-		yield put({
-			type: UPLOAD_IMAGES_SUCCESS,
-			data: result.data,
-		})
-	} catch (err) {
-		console.error(err)
-		yield put({
-			type: UPLOAD_IMAGES_FAILURE,
 			error: err.response.data,
 		})
 	}

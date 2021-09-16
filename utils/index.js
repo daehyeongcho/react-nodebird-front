@@ -1,7 +1,7 @@
 // import { nanoid } from 'nanoid'
 // import { delay, put } from 'redux-saga/effects'
 
-// import { ADD_POST_TO_ME } from '../actions/user'
+// import { ADD_POST_TO_ME } from '../_actions/user'
 
 /** underscore 형태의 string을 camelCase로 변형
  * - ex. ADD_POST -> addPost

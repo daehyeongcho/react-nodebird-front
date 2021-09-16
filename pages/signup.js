@@ -10,7 +10,7 @@ import { Form, Input, Checkbox, Button } from 'antd'
 
 import AppLayout from '../components/AppLayout/AppLayout'
 import useInputs from '../hooks/useInputs'
-import { signupRequest, loadMyInfoRequest } from '../actions/user'
+import { signupRequest, loadMyInfoRequest } from '../_actions/user'
 import wrapper from '../store/configureStore'
 import styles from './signup.module.css'
 

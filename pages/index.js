@@ -4,8 +4,8 @@ import { END } from 'redux-saga'
 import axios from 'axios'
 
 import wrapper from '../store/configureStore'
-import { loadMyInfoRequest } from '../actions/user'
-import { loadPostsRequest } from '../actions/post'
+import { loadMyInfoRequest } from '../_actions/user'
+import { loadPostsRequest } from '../_actions/post'
 
 import AppLayout from '../components/AppLayout/AppLayout' // 공통 메뉴 및 레이아웃
 import PostForm from '../components/PostForm/PostForm' // 새 글 쓰기 폼

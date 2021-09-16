@@ -34,7 +34,7 @@ import {
 	LOAD_FOLLOWINGS_REQUEST,
 	LOAD_FOLLOWINGS_SUCCESS,
 	LOAD_FOLLOWINGS_FAILURE,
-} from '../actions/user'
+} from '../_actions/user'
 import * as API from '../api/user'
 import { camelize } from '../utils'
 

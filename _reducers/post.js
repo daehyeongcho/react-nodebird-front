@@ -9,22 +9,17 @@ import {
 	ADD_POST_SUCCESS, // 트윗 작성 성공 액션
 	EDIT_POST_SUCCESS, // 트윗 수정 성공 액션
 	REMOVE_POST_SUCCESS, // 트윗 삭제 성공 액션
-	UPLOAD_IMAGES_SUCCESS, // 이미지 업로드 성공 액션
 	LIKE_POST_SUCCESS, // 좋아요 성공 액션
 	UNLIKE_POST_SUCCESS, // 좋아요 해제 성공 액션
 	RETWEET_SUCCESS, // 리트윗 성공 액션
 	ADD_COMMENT_SUCCESS, // 댓글 작성 성공 액션
-	OPEN_EDIT_FORM, // 수정 폼에 이미지 추가하기 액션
-	CLOSE_EDIT_FORM, // 수정 폼 닫을 때 이미지 삭제하기 액션
-	REMOVE_IMAGE, // 수정/새글 작성 폼에 이미지 삭제 액션
-} from '../actions/post'
+} from '../_actions/post'
 
 /** post state에 들어있는 property들 */
 export const initialState = {
 	/* 서버 쪽에서 데이터를 어떤 식으로 보낼 건지 미리 물어봐야 함 */
 	mainPosts: [],
 	singlePost: null, // 트윗 하나만 불러올 때
-	imagePaths: [], // 이미지 업로드 시 경로
 	hasMorePosts: true, // 더 불러올 트윗이 있는지
 	loadPostsLoading: false, // 트윗들 불러오기 시도 중
 	loadPostsDone: false, // 트윗들 불러오기 완료
@@ -47,9 +42,6 @@ export const initialState = {
 	removePostLoading: false, // 트윗 삭제 시도 중
 	removePostDone: false, // 트윗 삭제 완료
 	removePostError: null, // 트윗 삭제 에러
-	uploadImagesLoading: false, // 트윗 삭제 시도 중
-	uploadImagesDone: false, // 트윗 삭제 완료
-	uploadImagesError: null, // 트윗 삭제 에러
 	likePostLoading: false, // 좋아요 시도 중
 	likePostDone: false, // 좋아요 완료
 	likePostError: null, // 좋아요 에러
@@ -95,7 +87,6 @@ const reducer = (state = initialState, action) =>
 				draft.addPostLoading = false
 				draft.addPostDone = true
 				draft.mainPosts.unshift(action.data)
-				draft.imagePaths = []
 				break
 			case EDIT_POST_SUCCESS: {
 				// mainPosts에서 action.data.id 찾아서 action.data 대입
@@ -103,18 +94,12 @@ const reducer = (state = initialState, action) =>
 				draft.editPostDone = true
 				const index = draft.mainPosts.findIndex((v) => v.id === action.data.id)
 				draft.mainPosts[index] = action.data
-				draft.imagePaths = []
 				break
 			}
 			case REMOVE_POST_SUCCESS: // mainPosts에서 action.data.id랑 같은 post 삭제
 				draft.removePostLoading = false
 				draft.removePostDone = true
 				draft.mainPosts = draft.mainPosts.filter((v) => v.id !== action.data.id)
-				break
-			case UPLOAD_IMAGES_SUCCESS:
-				draft.uploadImagesLoading = false
-				draft.uploadImagesDone = true
-				draft.imagePaths = draft.imagePaths.concat(action.data)
 				break
 			case LIKE_POST_SUCCESS: {
 				/* mainPosts에서 action.data.PostId랑 같은 id의 post를 찾아서 Likers에 action.data.UserEmail 넣어줌 */
@@ -144,17 +129,6 @@ const reducer = (state = initialState, action) =>
 				post.Comments.unshift(action.data)
 				break
 			}
-			case OPEN_EDIT_FORM: // 동기액션이라 action type이 하나면 된다.
-				draft.imagePaths = draft.imagePaths.concat(action.data)
-				break
-			case CLOSE_EDIT_FORM: // 동기액션이라 action type이 하나면 된다.
-				draft.imagePaths = []
-				break
-			case REMOVE_IMAGE:
-				draft.imagePaths = draft.imagePaths.filter(
-					(v, index) => index !== action.data.index,
-				)
-				break
 			default:
 				reducerWithRequestAndFailure(action, draft)
 				break

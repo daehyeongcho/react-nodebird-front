@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Input, Form, Button } from 'antd'
 
 import { useInput } from '../../hooks/useInputs'
-import { addCommentRequest } from '../../actions/post'
+import { addCommentRequest } from '../../_actions/post'
 import styles from './CommentForm.module.css'
 
 /* 댓글 작성 폼 */

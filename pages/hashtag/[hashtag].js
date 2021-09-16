@@ -8,8 +8,8 @@ import axios from 'axios'
 import PostCard from '../../components/PostCard/PostCard'
 import AppLayout from '../../components/AppLayout/AppLayout'
 import wrapper from '../../store/configureStore'
-import { loadHashtagPostsRequest } from '../../actions/post'
-import { loadMyInfoRequest } from '../../actions/user'
+import { loadHashtagPostsRequest } from '../../_actions/post'
+import { loadMyInfoRequest } from '../../_actions/user'
 
 /* 특정 해쉬태그를 가진 글들만 보여주는 페이지 */
 const Hashtag = () => {

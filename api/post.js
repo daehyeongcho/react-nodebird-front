@@ -1,5 +1,10 @@
 import axios from 'axios'
 
+import { backURL } from '../config/config'
+
+axios.defaults.baseURL = backURL // axios 요청 앞에 항상 이 baseURL을 붙인다.
+axios.defaults.withCredentials = true // 쿠키 허용
+
 export const loadPostsAPI = (data) => axios.get(`/posts?lastId=${data?.lastId || 0}`)
 export const loadUserPostsAPI = (data) =>
 	axios.get(`/user/${data.email}/posts?lastId=${data?.lastId || 0}`)

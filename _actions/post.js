@@ -27,10 +27,6 @@ export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST'
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS'
 export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE'
 
-export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST'
-export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS'
-export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE'
-
 export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST'
 export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS'
 export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE'
@@ -46,11 +42,6 @@ export const RETWEET_FAILURE = 'RETWEET_FAILURE'
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST'
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS'
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE'
-
-export const OPEN_EDIT_FORM = 'OPEN_EDIT_FORM'
-export const CLOSE_EDIT_FORM = 'CLOSE_EDIT_FORM'
-
-export const REMOVE_IMAGE = 'REMOVE_IMAGE'
 
 /** action creator */
 export const loadPostsRequest = (data) => ({
@@ -82,10 +73,6 @@ export const removePostRequest = (data) => ({
 	type: REMOVE_POST_REQUEST,
 	data,
 })
-export const uploadImagesRequest = (data) => ({
-	type: UPLOAD_IMAGES_REQUEST,
-	data,
-})
 export const likePostRequest = (data) => ({
 	type: LIKE_POST_REQUEST,
 	data,
@@ -100,16 +87,5 @@ export const retweetRequest = (data) => ({
 })
 export const addCommentRequest = (data) => ({
 	type: ADD_COMMENT_REQUEST,
-	data,
-})
-export const openEditForm = (data) => ({
-	type: OPEN_EDIT_FORM,
-	data,
-})
-export const closeEditForm = () => ({
-	type: CLOSE_EDIT_FORM,
-})
-export const removeImage = (data) => ({
-	type: REMOVE_IMAGE,
 	data,
 })
