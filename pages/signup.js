@@ -88,6 +88,7 @@ const Signup = () => {
 	useEffect(() => {
 		/* 회원가입 성공하면 메인 페이지로 */
 		if (signupDone) {
+			alert('환영합니다.') // eslint-disable-line no-alert
 			Router.push('/')
 		}
 

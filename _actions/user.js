@@ -85,9 +85,11 @@ export const removeFollowerRequest = (data) => ({
 	type: REMOVE_FOLLOWER_REQUEST,
 	data,
 })
-export const loadFollowersRequest = () => ({
+export const loadFollowersRequest = (data) => ({
 	type: LOAD_FOLLOWERS_REQUEST,
+	data,
 })
-export const loadFollowingsRequest = () => ({
+export const loadFollowingsRequest = (data) => ({
 	type: LOAD_FOLLOWINGS_REQUEST,
+	data,
 })

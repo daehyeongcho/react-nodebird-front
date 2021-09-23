@@ -1,36 +1,42 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import Head from 'next/head'
 import Router from 'next/router'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { END } from 'redux-saga'
 import axios from 'axios'
-import useSWR from 'swr'
 
 import AppLayout from '../components/AppLayout/AppLayout'
 import FollowList from '../components/FollowList/FollowList'
 import NicknameEditForm from '../components/NicknameEditForm/NicknameEditForm'
-import { loadMyInfoRequest } from '../_actions/user'
+import { loadMyInfoRequest, loadFollowersRequest, loadFollowingsRequest } from '../_actions/user'
 import wrapper from '../store/configureStore'
-import { backURL } from '../config/config'
-
-const fetcher = (url) => axios.get(url, { withCredentials: true }).then((result) => result.data)
 
 /** 프로필 페이지
  * - 로그인 되어 있으면 닉네임 변경 폼과 팔로잉, 팔로우 목록을 보여준다.
  */
 const Profile = () => {
-	const { me } = useSelector((state) => state.user) // 현재 로그인 되어있는 유저
+	const dispatch = useDispatch()
+	const { me, loadFollowersError, loadFollowingsError } = useSelector((state) => state.user) // 현재 로그인 되어있는 유저
 	const [followersLimit, setFollowersLimit] = useState(3)
 	const [followingsLimit, setFollowingsLimit] = useState(3)
+	const loadMoreFollowings = useCallback(() => {
+		setFollowingsLimit((prev) => prev + 3)
+	}, [])
+	const loadMoreFollowers = useCallback(() => {
+		setFollowersLimit((prev) => prev + 3)
+	}, [])
 
-	const { data: followersData, error: followersError } = useSWR(
-		`${backURL}/user/followers?limit=${followersLimit}`,
-		fetcher,
-	)
-	const { data: followingsData, error: followingsError } = useSWR(
-		`${backURL}/user/followings?limit=${followingsLimit}`,
-		fetcher,
-	)
+	useEffect(() => {
+		dispatch(loadFollowersRequest({ limit: followersLimit }))
+		dispatch(loadFollowingsRequest({ limit: followingsLimit }))
+	}, [followersLimit, followingsLimit])
+
+	useEffect(() => {
+		if (loadFollowersError || loadFollowingsError) {
+			console.error(followersError || followingsError)
+			return <div>팔로잉/팔로워 로딩 중 에러가 발생했습니다.</div>
+		}
+	}, [loadFollowersError, loadFollowingsError])
 
 	useEffect(() => {
 		if (!me?.email) {
@@ -38,21 +44,8 @@ const Profile = () => {
 		}
 	}, [me?.email])
 
-	const loadMoreFollowings = useCallback(() => {
-		setFollowingsLimit((prev) => prev + 3)
-	}, [])
-
-	const loadMoreFollowers = useCallback(() => {
-		setFollowersLimit((prev) => prev + 3)
-	}, [])
-
 	if (!me) {
 		return '내 정보 로딩중...'
-	}
-
-	if (followersError || followingsError) {
-		console.error(followersError || followingsError)
-		return <div>팔로잉/팔로워 로딩 중 에러가 발생했습니다.</div>
 	}
 
 	return (
@@ -67,15 +60,15 @@ const Profile = () => {
 						<NicknameEditForm />
 						<FollowList
 							header='팔로잉 목록'
-							data={followingsData}
+							data={me?.Followings}
 							onClickMore={loadMoreFollowings}
-							loading={!followingsData && !followingsError}
+							loading={!me?.Followings && !loadFollowingsError}
 						/>
 						<FollowList
 							header='팔로워 목록'
-							data={followersData}
+							data={me?.Followers}
 							onClickMore={loadMoreFollowers}
-							loading={!followersData && !followersError}
+							loading={!me?.Followers && !loadFollowersError}
 						/>
 					</>
 				) : (
