@@ -266,17 +266,6 @@ requestActionTypes.forEach((REQUEST) => {
 	}
 })
 
-/* takeLatest 외에 다른 effect 쓰고 싶으면 재정의해주면 됨 */
-watchers.loadPosts = function* watcher() {
-	yield throttle(5000, LOAD_POSTS_REQUEST, workers.loadPosts)
-}
-watchers.loadUserPosts = function* watcher() {
-	yield throttle(5000, LOAD_USER_POSTS_REQUEST, workers.loadUserPosts)
-}
-watchers.loadHashtagPosts = function* watcher() {
-	yield throttle(5000, LOAD_HASHTAG_POSTS_REQUEST, workers.loadHashtagPosts)
-}
-
 /* watcher들 일괄적으로 fork함 */
 export default function* postSaga() {
 	yield all(Object.values(watchers).map((watcher) => fork(watcher)))

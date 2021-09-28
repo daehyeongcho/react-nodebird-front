@@ -62,7 +62,6 @@ const Home = () => {
 
 /* 여기에 넣어두면 Home보다 먼저 실행됨(SSR) */
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-	console.log(req.headers)
 	const cookie = req ? req.headers.cookie : ''
 	axios.defaults.headers.Cookie = '' // 서버에서 공유하는 쿠키를 우선 비워주고
 	if (req && cookie) {

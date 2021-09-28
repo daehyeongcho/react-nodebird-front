@@ -10,7 +10,7 @@ import rootSaga from '../_sagas'
 /* Redux store */
 const configureStore = () => {
 	const sagaMiddleware = createSagaMiddleware()
-	const middlewares = [sagaMiddleware].concat(process.env.NODE_ENV === 'production' ? logger : []) // 배포 모드가 아니면 redux-logger 붙임
+	const middlewares = [sagaMiddleware].concat(process.env.NODE_ENV === 'production' ? [] : logger) // 배포 모드가 아니면 redux-logger 붙임
 	const enhancer =
 		process.env.NODE_ENV === 'production'
 			? compose(applyMiddleware(...middlewares))
